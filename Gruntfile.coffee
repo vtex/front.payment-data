@@ -12,42 +12,34 @@ module.exports = (grunt) ->
     replaceMap: replaceMap
     livereload: !grunt.option('no-lr')
     open: false
+    copyIgnore: ['!**/*.coffee', '!**/*.less', '!script/**/*.html']
 
   # Add custom configuration here as needed
   customConfig =
-    concat:
-      templates:
-        options:
-          process: (src) ->
-            body = src.replace(/(\r\n|\n|\r)/g, "").replace(/\"/g, "\\\"")
-            return "document.body.innerHTML+='#{body}';"
-        src: 'src/templates/**/*.html'
-        dest: "build/<%= relativePath %>/script/payment-data-templates.js"
-      bundle:
-        src: ["build/<%= relativePath %>/script/payment-data-templates.js",
-              "build/<%= relativePath %>/script/payment-data.js"]
-        dest: "build/<%= relativePath %>/script/payment-data-bundle.js"
-
     webpack:
       options:
         module:
           loaders: [
-            test: /\.coffee$/, loader: "coffee-loader"
+            { test: /\.coffee$/, loader: "coffee-loader" }
+            { test: /\.html$/, loader: "html-loader" }
           ]
       main:
         entry: "./src/script/payment-data.coffee"
         output:
           path: "build/<%= relativePath %>/script/"
-          filename: "payment-data.js"
+          filename: "payment-data-bundle.js"
 
     watch:
       coffee:
         files: ['src/script/**/*.coffee']
-        tasks: ['coffeelint', 'webpack', 'concat:bundle']
+        tasks: ['coffeelint', 'webpack']
+      kotemplates:
+        files: ['src/script/**/*.html']
+        tasks: ['webpack']
 
   tasks =
     # Building block tasks
-    build: ['clean', 'jshint', 'concat:templates', 'copy:main', 'copy:pkg', 'coffeelint', 'recess', 'less', 'webpack', 'concat:bundle']
+    build: ['clean', 'jshint', 'copy:main', 'copy:pkg', 'coffeelint', 'recess', 'less', 'webpack']
     min: [] # minifies files
     # Deploy tasks
     dist: ['build', 'min', 'copy:deploy'] # Dist - minifies files

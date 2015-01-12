@@ -4,4 +4,6 @@ var vtexjs = { checkout: {} };
 $.getJSON('/front.payment-data/mock/orderform-1.json', function(orderForm) {
   vtexjs.checkout.orderForm = orderForm;
 });
+/* global ko */
+ko.applyBindings();
 
