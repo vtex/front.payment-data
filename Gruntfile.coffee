@@ -28,18 +28,32 @@ module.exports = (grunt) ->
         output:
           path: "build/<%= relativePath %>/script/"
           filename: "payment-data-bundle.js"
+      demo:
+        entry: "./src/script/demo.js"
+        output:
+          path: "build/<%= relativePath %>/script/"
+          filename: "demo.js"
 
     watch:
       coffee:
         files: ['src/script/**/*.coffee']
-        tasks: ['coffeelint', 'webpack']
+        tasks: ['webpack']
       kotemplates:
         files: ['src/script/**/*.html']
         tasks: ['webpack']
+      script:
+        files: ['src/script/**/*.js']
+        tasks: ['jshint', 'webpack']
+      main:
+        files: ['src/i18n/**/*.json',
+                'src/img/**/*',
+                'src/lib/**/*',
+                'src/index.html']
+        tasks: ['jshint', 'copy:main', 'getTags', 'copy:dev']
 
   tasks =
     # Building block tasks
-    build: ['clean', 'jshint', 'copy:main', 'copy:pkg', 'coffeelint', 'recess', 'less', 'webpack']
+    build: ['clean', 'jshint', 'copy:main', 'copy:pkg', 'recess', 'less', 'webpack']
     min: [] # minifies files
     # Deploy tasks
     dist: ['build', 'min', 'copy:deploy'] # Dist - minifies files

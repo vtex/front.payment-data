@@ -1,1 +1,56 @@
-Olar, Guilherme
+<div class="step accordion-group" data-bind="css: {active: active, filled: visited() && !active()}">
+    <div class="accordion-heading">
+        <span class="accordion-toggle collapsed" data-bind="css: {'accordion-toggle-active': active}">
+            <i class="icon-credit-card"></i>
+            <span data-i18n="paymentData.payment">Pagamento</span>
+            <a href="#/payment" class="link-box-edit btn btn-small" tabindex="-1" data-bind="visible: visited() && !active()" data-i18n="[title]global.edit"><i class="icon-edit"></i></a>
+        </span>
+    </div>
+    <div class="accordion-body collapse in payment-body">
+        <div class="accordion-inner">
+            <p class="notification" data-bind="visible: !active()" data-i18n="global.waiting"></p>
+            <div class="box-step">
+                <p data-bind="visible: active() && totalIsFree()" data-i18n="paymentData.totalIsFree"></p>
+                <div data-bind="fadeVisible: active() && validationError()" class="alert alert-block payment-alert-error fade in">
+                    <button type="button" class="close" data-bind="click: clearValidationError">×</button>
+                    <p data-i18n="global.validationErrorInThisForm"></p>
+                </div>
+                <div data-bind="fadeVisible: active() && giftCardMessages().length > 0" class="alert alert-block gift-card-message-container fade in">
+                    <!-- ko foreach: giftCardMessages -->
+                    <p data-bind="attr: { 'class': 'gift-card-message '+providerName}">
+                        <span class="gift-card-provider-name" data-bind="text: providerName"></span><span class="gift-card-message-separator">: </span>
+                        <span class="gift-card-message-text" data-bind="text: message"></span>
+                    </p>
+                    <!-- /ko -->
+                </div>
+
+                <!-- Loading do passo -->
+                <div class="loading loading-bg" data-bind="fadeVisible: loading">
+                    <div class="loading-img">
+                        <i class="icon-spinner icon-spin icon-2x">
+                            <span data-i18n="global.loading"></span>
+                        </i>
+                    </div>
+                </div>
+
+                <!-- Pagamentos -->
+                <!-- TODO
+                <div class="box-step-content" data-bind="fadeVisible: active() || visited(),
+                    template: {name: 'paymentForm-template', foreach: paymentForms, afterRender: vtex.i18n.translateHtml }">
+                </div>-->
+            </div>
+
+            <!-- Botões de adicionar pagamento ou vale -->
+            <!-- TODO
+            <div class="add-payment-wrapper" data-bind="visible: active(), template: 'addPayment-template'"></div>-->
+
+            <!-- Form para envio de pagamentos, preenchido e enviado programaticamente -->
+            <form id="sendPayments" data-event="sendPayments" method="post" name="sendPayments" action="">
+                <input id="paymentsArray" name="paymentsArray" type="hidden"/>
+                <input id="callbackURL" name="callbackUrl" type="hidden" data-bind="value: API._getGatewayCallbackURL"/>
+            </form>
+
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>

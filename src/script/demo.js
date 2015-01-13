@@ -1,9 +1,14 @@
+/* global $, ko, window */
 'use strict';
-var vtexjs = { checkout: {} };
-/* global $ */
+window.vtexjs = { checkout: {
+  _getGatewayCallbackURL: ''
+} };
+var OrderFormViewModel = require('./common/orderform.coffee');
 $.getJSON('/front.payment-data/mock/orderform-1.json', function(orderForm) {
-  vtexjs.checkout.orderForm = orderForm;
+  window.vtexjs.checkout.orderForm = orderForm;
+  $(window).trigger('orderFormUpdated.vtex', [orderForm]);
 });
-/* global ko */
-ko.applyBindings();
-
+ko.applyBindings({
+  API: window.vtexjs.checkout,
+  orderForm: new OrderFormViewModel()
+});
