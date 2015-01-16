@@ -19,8 +19,8 @@ module.exports =
   go: (to) ->
     hasher.setHash(to)
 
-  included: ->
+  setupRouter: ->
     # Add hash change listener
-    hasher.changed.add(@::handleChanges)
+    hasher.changed.add(@handleChanges.bind(this))
     # Add initialized listener (to grab initial value in case it is already set)
-    hasher.initialized.add(@::handleChanges)
+    hasher.initialized.add(@handleChanges.bind(this))

@@ -106,7 +106,7 @@ class CreditCardViewModel
       @updateShippingAddress(vtexjs.checkout.orderForm.shippingData.address)
 
     $(window).on 'orderFormUpdated.vtex', (e, orderForm) =>
-      return unless orderForm.shippingData
+      return unless orderForm.shippingData?.address
       @updateShippingAddress(orderForm.shippingData.address)
 
   # constructor

@@ -1,6 +1,4 @@
-localeUtils = {}
-localeUtils['BRA'] = require '../locales/bra.js'
-localeUtils['USA'] = require '../locales/usa.js'
+localeUtils = vtex.localeUtils
 templateBRA = require './bra.html'
 templates = {}
 templates['BRA'] = require('../../common/append-template.coffee')('shipping-address-bra', templateBRA)
@@ -213,9 +211,6 @@ class ShippingAddressViewModel extends Module
     @loading false
     postalCodeChanged = false
     @deliveryCountry address.country  if address.country
-
-    if address.postalCode?.replace(/[^\w\s]/gi, '') isnt @_cache.postalCode?.replace(/[^\w\s]/gi, '')
-      postalCodeChanged = true unless @isNotUsingPostalCode()
     @street _.capitalizeSentence(address.street)  if postalCodeChanged or (address.street and address.street.length > 0)
     @neighborhood _.capitalizeSentence(address.neighborhood)  if postalCodeChanged or (address.neighborhood and address.neighborhood.length > 0)
 
@@ -224,12 +219,6 @@ class ShippingAddressViewModel extends Module
       address.state = "Ciudad Autónoma de Buenos Aires"
       address.city = "Ciudad Autónoma Buenos Aires"
 
-    if postalCodeChanged or (address.state and address.state.length > 0)
-      state = _.find(checkout.getStates(@deliveryCountry()), (s) -> return s.toUpperCase() is address.state.toUpperCase() )
-      if state
-        @state state
-      else
-        @state address.state
     @city _.capitalizeSentence(address.city)  if postalCodeChanged or (address.city and address.city.length > 0)
     @number address.number  if postalCodeChanged or (address.number and address.number.length > 0)
     @complement address.complement  if postalCodeChanged or (address.complement and address.complement.length > 0)
@@ -264,8 +253,7 @@ class ShippingAddressViewModel extends Module
     else
       @validate(giveFocus: true, silent: true)
 
-    @commit()
-    return @
+    return this
 
   validate: (options) =>
     # Caso esteja com os dados mascarados a validação retorna valido

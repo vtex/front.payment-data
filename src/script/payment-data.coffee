@@ -18,6 +18,8 @@ class PaymentDataViewModel extends Module
     @id = 'paymentData'
     @route = params.route
 
+    @setupRouter()
+
     @wannaChangePaymentValue = ko.observable(false)
     @paymentSystems = ko.observableArray([])
     @availableAccounts = ko.observableArray([])
@@ -32,7 +34,8 @@ class PaymentDataViewModel extends Module
         false
       deferEvaluation: true
 
-    @totalToPay = ko.computed => return window.checkout.total()
+    @totalToPay = ko.computed =>
+      window.checkout.total?() ? window.summary.total()
 
     @totalPaid = ko.computed =>
       payments = @getAllPayments(true)
@@ -59,6 +62,13 @@ class PaymentDataViewModel extends Module
     $(window).on 'paidValueUpdated.vtex', @paidValueUpdatedHandler
 
     $(window).on 'paymentUpdated.vtex', _.debounce(@paymentUpdatedHandler, 100)
+
+  enter: =>
+    @visited(true)
+    @active(true)
+
+  exit: =>
+    @active(false)
 
   enable: =>
     @visited true
@@ -176,7 +186,7 @@ class PaymentDataViewModel extends Module
       return false
 
     paymentSystemRequiresAuthentication = _.any @paymentForms(), (pf) -> pf.requiresAuthentication()
-    authenticated = orderForm.loggedIn() or orderForm.userType() is 'callCenterOperator'
+    authenticated = checkout.loggedIn() or checkout.userType() is 'callCenterOperator'
     if paymentSystemRequiresAuthentication and not authenticated
       return @authenticateBeforePaying(@submit)
 

@@ -30,7 +30,7 @@
     </p>
     <!-- ko if: !sameBillingAddress() -->
     <h5 data-i18n="paymentData.billingAddress">Endereço de cobrança</h5>
-    <div data-bind="template: {data: billingAddress, name: billingAddressTemplate, afterRender: billingAddress.afterRenderAddress}"></div>
+    <div data-bind="template: {data: billingAddress, name: billingAddress.addressTemplate, afterRender: vtex.i18n.translateHtml}"></div>
     <!-- /ko -->
   </div>
 
