@@ -1,0 +1,39 @@
+﻿<fieldset class="box-payment-group2 box-payment-option box-payment-paypal newPayPalPaymentGroup">
+    <h3 data-bind="text: localizedLabel"></h3>
+    <!-- ko if: installments() -->
+    <p class="payment-paypal-title">
+        <span class="payment-paypal-title-logo">PayPal</span><span class="payment-paypal-title-installments">
+        <!-- ko if: installments().length > 1 -->
+            <span class="payment-paypal-title-installments-before" data-i18n="paymentData.paymentGroup.payPal.installmentsBefore"></span>
+            <span class="payment-paypal-title-installments-value"><span data-bind="text: maxInstallmentOption().number()"></span><span data-i18n="paymentData.paymentGroup.payPal.installmentsNumber"></span></span>
+            <span class="payment-paypal-title-installments-after" data-i18n="paymentData.paymentGroup.payPal.installmentsAfter"></span>
+        <!-- /ko -->
+        <!-- ko if: installments().length == 1 -->
+            <span class="payment-paypal-title-installments-value" data-i18n="paymentData.paymentGroup.payPal.installmentsCash"></span>
+        <!-- /ko -->
+        </span>
+    </p>
+    <!-- /ko -->
+    <p class="payment-paypal-subtitle" data-i18n="paymentData.paymentGroup.payPal.subtitle"></p>
+    <ul class="payment-paypal-benefits unstyled row-fluid">
+        <li class="payment-paypal-benefit payment-paypal-benefit-protection span4">
+            <p class="payment-paypal-benefit-title" data-i18n="paymentData.paymentGroup.payPal.protectionTitle"></p>
+            <p class="payment-paypal-benefit-description" data-i18n="paymentData.paymentGroup.payPal.protectionDescription"></p>
+        </li>
+        <li class="payment-paypal-benefit payment-paypal-benefit-easy span4">
+            <p class="payment-paypal-benefit-title" data-i18n="paymentData.paymentGroup.payPal.easyTitle"></p>
+            <p class="payment-paypal-benefit-description" data-i18n="paymentData.paymentGroup.payPal.easyDescription"></p>
+        </li>
+        <li class="payment-paypal-benefit payment-paypal-benefit-safe span4">
+            <p class="payment-paypal-benefit-title" data-i18n="paymentData.paymentGroup.payPal.safeTitle"></p>
+            <p class="payment-paypal-benefit-description" data-i18n="paymentData.paymentGroup.payPal.safeDescription"></p>
+        </li>
+    </ul>
+    <p class="payment-paypal-help">
+        <span class="payment-paypal-help-text" data-i18n="paymentData.paymentGroup.payPal.helpTitle"></span>
+        <span class="payment-paypal-help-number" data-i18n="paymentData.paymentGroup.payPal.helpNumber"></span>
+    </p>
+    <p class="payment-paypal-postscript row-fluid">
+        <span class="span9" data-i18n="paymentData.paymentGroup.payPal.postScript"></span>
+    </p>
+</fieldset>

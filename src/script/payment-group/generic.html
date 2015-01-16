@@ -1,0 +1,17 @@
+﻿<fieldset class="box-payment-group2 box-payment-option" data-bind="css: groupName()">
+    <h3 data-bind="text: localizedLabel"></h3>
+    <p class="payment-description" data-bind="text: localizedDescription"></p>
+    <div data-bind="template: { name: 'paid-value', afterRender: vtex.i18n.translateHtml }" class="paid-value"></div>
+    <!-- ko if: installments() -->
+    <div class="installments">
+        <!-- ko if: installments().length > 1 -->
+            <label class="available-installments" data-i18n="paymentData.paymentGroup.availableInstallments"></label>
+            <ul>
+                <!-- ko foreach: installments -->
+                <li data-bind="text: text"></li>
+                <!-- /ko -->
+            </ul>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+</fieldset>

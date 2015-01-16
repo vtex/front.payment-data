@@ -1,0 +1,36 @@
+<fieldset class="payment-discounts">
+    <div class="payment-discounts-list">
+        <h5 class="payment-discoints-title hide" data-i18n="paymentData.paymentGroup.specialGiftCard.title">Créditos</h5>
+        <table class="payment-discoints-table table table-condensed">
+            <thead class="hide">
+                <tr>
+                    <th class="code" data-i18n="paymentData.paymentGroup.giftCard.code">Código</th>
+                    <th class="number" data-i18n="global.value">Valor</th>
+                    <th class="action"></th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: specialGiftCards">
+                <tr data-bind="css: { 'gift-card-enabled': inUse, 'gift-card-disabled': !inUse()},
+                               attr: { 'class': captionClass() }">
+                    <td class="code">
+                        <span data-bind="text: friendlyName"></span>
+                    </td>
+                    <td class="number">
+                        <!-- ko if: !inUse() && !$parent.loadingGiftCard() -->
+                        <span class="muted" data-bind="text: balanceLabel"></span>
+                        <!-- /ko -->
+                        <!-- ko if: inUse() && !$parent.loadingGiftCard() -->
+                        <span data-bind="text: valueLabel"></span>
+                        <i class="icon icon-ok"></i>
+                        <!-- /ko -->
+                        <i class="icon icon-spinner icon-spin" data-bind="visible: $parent.loadingGiftCard"></i>
+                    </td>
+                    <td class="action">
+                        <a href="javascript:void(0);" data-bind="visible: inUse() && !$parent.loadingGiftCard(), click: dontUse" data-i18n="global.keepCredit">remover</a>
+                        <a href="javascript:void(0);" data-bind="visible: !inUse() && !$parent.loadingGiftCard(), click: use" data-i18n="global.addCredit">adicionar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</fieldset>

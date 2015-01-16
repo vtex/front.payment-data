@@ -1,17 +1,22 @@
-template = require("./payment-data.html")
-Module = require("./common/module.coffee")
-Translatable = require("./common/translatable.coffee")
-Step = require("./common/step.coffee")
-debug = vtex.debug 'payment'
+template = require './payment-data.html'
+Module = require './common/module.coffee'
+Translatable = require './common/translatable.coffee'
+Step = require './common/step.coffee'
+Routable = require './common/routable.coffee'
+PaymentFormViewModel = require './payment-form/payment-form.coffee'
+PaymentSystem = require './payment-system/payment-system.coffee'
+AvailableAccountViewModel = require './payment-group/credit-card/available-account-vm.coffee'
+GiftCardViewModel = require './payment-group/gift-card-vm.coffee'
+debug = require('./common/debug.coffee')('payment')
 
 class PaymentDataViewModel extends Module
   @include Translatable
+  @include Routable
   @include Step
 
   constructor: (params) ->
-    @id = "paymentData"
-    @orderForm = params.orderForm
-    @API = params.API
+    @id = 'paymentData'
+    @route = params.route
 
     @wannaChangePaymentValue = ko.observable(false)
     @paymentSystems = ko.observableArray([])
@@ -27,7 +32,7 @@ class PaymentDataViewModel extends Module
         false
       deferEvaluation: true
 
-    @totalToPay = ko.computed => return @orderForm.total()
+    @totalToPay = ko.computed => return window.checkout.total()
 
     @totalPaid = ko.computed =>
       payments = @getAllPayments(true)
@@ -48,7 +53,7 @@ class PaymentDataViewModel extends Module
 
     $(window).on 'orderFormUpdated.vtex', (e, orderForm) =>
       return unless orderForm.paymentData
-      debug "Parsing payment data from event"
+      debug 'Parsing payment data from event'
       @update(orderForm)
 
     $(window).on 'paidValueUpdated.vtex', @paidValueUpdatedHandler
@@ -61,7 +66,7 @@ class PaymentDataViewModel extends Module
     @isValid({giveFocus: true, showErrorMessage: false, applyErrorClass: false})
     if window.Mobile
       Mobile.SwipeCardReaderIsConnected()
-    radio('checkout.fixCart').broadcast()
+    $(window).trigger('checkout.fixCart') # TODO
 
   addPaymentForm: =>
     # Don't add a payment unless all existing payments are valid
@@ -72,7 +77,7 @@ class PaymentDataViewModel extends Module
       referenceValue: if diff > 0 then diff else 0
       installment: 1
 
-    paymentForm = new vtex.checkout.PaymentFormViewModel(newPayment, @paymentSystems, @availableAccounts, @giftCards)
+    paymentForm = new PaymentFormViewModel(newPayment, @paymentSystems, @availableAccounts, @giftCards)
     @paymentForms.push paymentForm
     @selectPaymentForm paymentForm
 
@@ -102,7 +107,7 @@ class PaymentDataViewModel extends Module
       payments: _.filter payments, (p) -> p.group isnt 'giftCardPaymentGroup'
       giftCards: _.map @giftCards(), (g) -> g.toJSON()
 
-    API.sendAttachment('paymentData', paymentAttachment)
+    window.vtexjs.checkout.sendAttachment('paymentData', paymentAttachment)
 
   paidValueUpdatedHandler: (e, data) =>
     totalToPay = @totalToPay()
@@ -131,7 +136,7 @@ class PaymentDataViewModel extends Module
       if payment.value and payment.referenceValue
         interest += payment.value - payment.referenceValue
 
-    radio('checkout.totalizers.interest').broadcast(interest)
+    $(window).trigger('checkout.totalizers.interest', [interest])
 
   # @return {string} O array de Payments serializados como JSON
   paymentsArrayJSON: => return JSON.stringify @getAllPayments()
@@ -142,9 +147,9 @@ class PaymentDataViewModel extends Module
   validatePaidValue: =>
     totalPaidByPaymentForms = _.reduce(@getAllPayments(true), ((memo, p)-> memo + p.referenceValue), 0)
     if totalPaidByPaymentForms < @totalToPay()
-      totalPaidValidationResult = { result: false, message: i18n.t("paymentData.paymentsValueInsufficient") }
+      totalPaidValidationResult = { result: false, message: i18n.t('paymentData.paymentsValueInsufficient') }
     else if totalPaidByPaymentForms > @totalToPay()
-      totalPaidValidationResult = { result: false, message: i18n.t("paymentData.paymentsValueExceeding") }
+      totalPaidValidationResult = { result: false, message: i18n.t('paymentData.paymentsValueExceeding') }
     else
       totalPaidValidationResult = { result: true }
 
@@ -171,7 +176,7 @@ class PaymentDataViewModel extends Module
       return false
 
     paymentSystemRequiresAuthentication = _.any @paymentForms(), (pf) -> pf.requiresAuthentication()
-    authenticated = checkout.loggedIn() or checkout.userType() is 'callCenterOperator'
+    authenticated = orderForm.loggedIn() or orderForm.userType() is 'callCenterOperator'
     if paymentSystemRequiresAuthentication and not authenticated
       return @authenticateBeforePaying(@submit)
 
@@ -179,24 +184,24 @@ class PaymentDataViewModel extends Module
     value = _.reduce(payments, ((memo, p)-> memo + p.value), 0)
     referenceValue = _.reduce(payments, ((memo, p)-> memo + p.referenceValue), 0)
     @loading true
-    radio('checkout.paymentData.submit').broadcast(value, referenceValue, payments)
+    $(window).trigger('checkout.paymentData.submit', [value, referenceValue, payments])
     return false
 
   authenticateBeforePaying: (callback) =>
     vtexid.start
       returnUrl: window.location.href
       userEmail: window.clientProfileData.email()
-      locale: checkout.locale()
+      locale: window.checkout.locale()
       title: i18n.t('paymentData.requiresAuthentication')
       $(window).one 'authenticatedUser.vtexid', ->
         oldEmail = window.clientProfileData.email()
-        checkout.loading(true)
-        xhr = checkout.update()
+        $(window).trigger('startLoading.vtex')
+        xhr = vtexjs.checkout.getOrderForm()
         xhr.then ->
-          if oldEmail is window.clientProfileData.email()
+          if oldEmail is window.vtexjs.checkout.orderForm.clientProfileData.email
             callback()
         xhr.always ->
-          checkout.loading(false)
+          $(window).trigger('stopLoading.vtex')
     return false
 
   updatePaymentSystems: (paymentData) =>
@@ -208,7 +213,7 @@ class PaymentDataViewModel extends Module
       if ps
         ps.update psJson
       else
-        ps = new vtex.checkout.PaymentSystem(psJson)
+        ps = new PaymentSystem(psJson)
         @paymentSystems.push(ps)
 
       # Atualiza os installmentOptions desse paymentSystem
@@ -226,7 +231,7 @@ class PaymentDataViewModel extends Module
         availableAccount.update availableAccountJSON
       else
         paymentSystem = _.find @paymentSystems(), (ps) -> parseInt(ps.id()) is parseInt(availableAccountJSON.paymentSystem)
-        availableAccount = new vtex.checkout.AvailableAccountViewModel(availableAccountJSON, paymentSystem)
+        availableAccount = new AvailableAccountViewModel(availableAccountJSON, paymentSystem)
         @availableAccounts.push(availableAccount)
 
   updateGiftCards: (paymentData) =>
@@ -237,7 +242,7 @@ class PaymentDataViewModel extends Module
       if giftCard
         giftCard.update giftCardJSON
       else
-        giftCard = new vtex.checkout.GiftCardViewModel(giftCardJSON)
+        giftCard = new GiftCardViewModel(giftCardJSON)
         @giftCards.push(giftCard)
 
   updatePaymentForms: (payments, giftPayments) =>
@@ -254,7 +259,7 @@ class PaymentDataViewModel extends Module
       try
         paymentsArray[i].update payment
       catch e
-        @paymentForms.push new vtex.checkout.PaymentFormViewModel(payment, @paymentSystems, @availableAccounts, @giftCards)
+        @paymentForms.push new PaymentFormViewModel(payment, @paymentSystems, @availableAccounts, @giftCards)
 
     updatePayments(payment, paymentForms) for payment, i in payments
     updatePayments(payment, giftPaymentForms) for payment, i in giftPayments
@@ -288,7 +293,7 @@ class PaymentDataViewModel extends Module
     #@ultraUglyAutomaticInstallmentSelectionThatShouldTotallyBeDoneByAPI()
 
     validationResults = @validate(dontChangeDOM: true)
-    $("#payment-data").trigger("componentValidated.vtex", [validationResults])
+    $('#payment-data').trigger('componentValidated.vtex', [validationResults])
 
   getGiftsAsPayments: (paymentData) =>
     giftToPayment = (g) ->
@@ -350,10 +355,15 @@ class PaymentDataViewModel extends Module
         payments: payments
         giftCards: paymentData.giftCards
 
-      API.sendAttachment('paymentData', paymentAttachment)
+      window.vtexjs.checkout.sendAttachment('paymentData', paymentAttachment)
 
     return adjustmentsMade
 
+# TODO: remove global declaration
+window.PaymentDataViewModel = PaymentDataViewModel
+window.paymentDataTemplate = template;
+###
 ko.components.register 'payment-data',
-  viewModel: PaymentDataViewModel
+  viewModel: {instance: window.paymentData}
   template: template
+###

@@ -1,0 +1,12 @@
+﻿<fieldset data-bind="attr: {'class': className + ' box-payment-option'}, css: { 'is-custom': isCustom() }">
+  <h3 data-bind="attr: { 'data-i18n': pgTitle }"></h3>
+    <span class="security payment-security">
+        <i class="icon-lock"></i>
+        <span class="payment-security-text" data-i18n="paymentData.secureEnvironment">Ambiente Seguro</span>
+    </span>
+  <div class="card-fields-container" data-bind="with: card, attr: { id: 'payment-card' + id }">
+    <div data-bind="template: { name: 'paid-value', afterRender: vtex.i18n.translateHtml, data: $parent }" class="paid-value"></div>
+    <div data-bind="template: { name: 'available-accounts', afterRender: vtex.i18n.translateHtml, if: !isUsingNewCard() }"></div>
+    <div data-bind="template: { name: 'new', afterRender: vtex.i18n.translateHtml, if: isUsingNewCard }"></div>
+  </div>
+</fieldset>

@@ -18,7 +18,7 @@
             <div class="orderform-template-holder span12">
                 <div class="row-fluid">
                     <div id="payment-data" class="span12 pull-right payment-data">
-                        <payment-data params="{API: API, orderForm: orderForm}"></payment-data>
+                        <payment-data></payment-data>
                     </div>
                 </div>
             </div>
@@ -30,6 +30,9 @@
 <script src="//io.vtex.com.br/front-libs/jquery/2.0.3/jquery-2.0.3.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-debug.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/js-signals/1.0.0/js-signals.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/hasher/1.2.0/hasher.js"></script>
+<script src="/front.payment-data/bower_components/front.utils/dist/vtex-utils.js"></script>
 <!--/LIBS-->
 <script>vtex = { debug: function(){ return function() { console.log.apply(arguments) } } }</script>
 <script src="/front.payment-data/script/payment-data-bundle.js"></script>

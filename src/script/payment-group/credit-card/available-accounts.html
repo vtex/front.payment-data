@@ -1,0 +1,27 @@
+<div class="saved-cards" data-bind="if: unusedAvailableAccounts().length, css: { active: unusedAvailableAccounts().length > 0 }">
+  <fieldset class="clearfix">
+    <div class="btn-group btn-group-vertical card-list-saved">
+      <!-- ko foreach: unusedAvailableAccounts -->
+      <label class="input btn label-vertical-group card-list-saved-item"
+             data-bind="attr: { htmlFor: 'card'+$parentContext.$index() }, css: { 'active':  $parent.selectedAvailableAccountId() == accountId() }, click: focusOnCCV">
+        <input type="radio" tabindex="-1"
+               data-bind="attr: { id: 'card'+$parentContext.$index(), value: accountId, name: 'savedCreditCard'+$parentContext.$index() }, checked: $parent.selectedAvailableAccountId, disable: checkout.disableInputs()">
+        <span class="card-flags">
+            <span class="card-flag card-selected saved-card-flag" data-bind="text: $data.paymentSystemName(),
+                    attr: {'class': 'card-flag saved-card-flag ' + $data.paymentSystemName()}"></span>
+        </span>
+        <span class="card-label card-list-saved-label" data-bind="text: cardNumberLabel"></span>
+        <i class="icon-ok-circle" data-bind="visible: $parent.selectedAvailableAccountId() == accountId()"></i>
+        <i class="icon-circle-blank" data-bind="visible: $parent.selectedAvailableAccountId() != accountId()"></i>
+
+        <a class="link-delete btn" href="javascript:void(0);" data-bind="click: remove, visible: checkout.loggedIn() == true" data-i18n="[title]paymentData.paymentGroup.creditCard.removeCard"><i class="icon-remove"></i> <span class="text hide" data-i18n="paymentData.paymentGroup.creditCard.removeCard">Excluir cartão</span></a>
+      </label>
+      <!-- /ko -->
+      <label class="btn label-vertical-group link-use-another-card"
+             data-bind="click: showNewCard">
+        <a href="javascript:void(0);" id="use-another-card" data-bind="visible: $data.isUsingNewCard() == false" data-i18n="paymentData.paymentGroup.creditCard.useAnotherCard"></a>
+      </label>
+    </div>
+  </fieldset>
+  <div data-bind="template: 'cvv'"></div>
+</div>

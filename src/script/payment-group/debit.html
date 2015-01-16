@@ -1,0 +1,35 @@
+﻿<fieldset class="box-payment-group2 box-payment-option">
+    <h3 data-bind="text: localizedLabel"></h3>
+
+    <p class="payment-description" data-bind="text: localizedDescription"></p>
+
+    <p class="payment-select-bank" data-i18n="paymentData.paymentGroup.debit.chooseBank"></p>
+
+    <fieldset class="clearfix">
+        <div class="btn-group btn-group-vertical debit-options debit-long-list" data-bind="if: paymentSystems().length >= 8">
+            <select class="btn debit-list-selector" data-bind="
+            attr: { id: 'debit-option-item' + $index() },
+            options: paymentSystems,
+            optionsText: function(item) { return item.name() },
+            value: paymentSystem">
+            </select>
+        </div>
+        <div class="btn-group btn-group-vertical debit-options debit-list" data-bind="if: paymentSystems().length < 8">
+            <!-- ko foreach: paymentSystems -->
+            <label class="input btn label-vertical-group debit-list-item"
+                   data-bind="attr: { htmlFor: 'debit'+$index() }, css: { 'active':  $parent.paymentSystem().id() == $data.id() }">
+                <input type="radio" tabindex="-1"
+                       data-bind="attr: { id: 'debit'+$index(), name: 'debit'+$index() }, value: $data, checked: $parent.paymentSystem, disable: checkout.disableInputs">
+                <span class="debit-icons">
+                    <span class="debit-icon" data-bind="text: name(),
+                            attr: {'class': 'debit-icon debit-' + _.sanitize(_.spacesToHyphens(name())).toLowerCase() }"></span>
+                </span>
+                <i class="icon-ok-circle" data-bind="visible: $parent.paymentSystem() == $data"></i>
+                <i class="icon-circle-blank" data-bind="visible: $parent.paymentSystem() != $data"></i>
+            </label>
+            <!-- /ko -->
+         </div>
+    </fieldset>
+
+    <div data-bind="template: { name: 'paid-value', afterRender: vtex.i18n.translateHtml }" class="paid-value"></div>
+</fieldset>

@@ -1,0 +1,142 @@
+<p class="card-scanner-scan" data-bind="if: checkout.isTotem">
+    <a class="card-scanner-scan-link" href="javascript:void(0);"
+       data-bind="visible: canUseCardScanner() && !labelCardFields(), click: toggleCardForm"
+       data-i18n="paymentData.paymentGroup.creditCard.scanner.scanCard">Usar leitor de cartão</a>
+</p>
+<div class="skeuocard skeuocard-frontside" data-bind="css: { 'skeuocard-bigger': cardCodeMask().length > 3 }">
+    <div class="payment-card-cvv-container" data-bind="template: 'cvv', css: { 'transparent': cardCodeMask().length <= 3 }"></div>
+
+    <p class="payment-card-number input text required clearLeft">
+        <label class="hide" data-bind="attr: {'for': $parent.identifier()+'payment-card' + id + 'Number', htmlFor: $parent.identifier()+'payment-card' + id + 'Number'}">
+            <span data-i18n="paymentData.paymentGroup.creditCard.number">Número</span>
+        </label>
+        <!-- ko if: checkout.isTotem -->
+        <input type="password"
+               data-bind="attr: {id: $parent.identifier()+'payment-card' + id + 'Number', maxlength: 19 },
+                    value: cardNumberTotem, valueUpdate: 'afterkeydown', validate: validateCreditCard, required: true,
+                    disable: checkout.disableInputs()"
+               class="input-medium autofocus input-totem dont-track-input">
+        <!-- /ko -->
+        <!-- ko ifnot: checkout.isTotem -->
+        <input type="tel"
+               data-bind="attr: {id: $parent.identifier()+'payment-card' + id + 'Number'},
+                    value: cardNumber, valueUpdate: 'afterkeydown', validate: validateCreditCard, required: true,
+                    disable: checkout.disableInputs()"
+               class="input-medium autofocus dont-track-input" data-i18n="[placeholder]paymentData.paymentGroup.creditCard.number">
+        <!-- /ko -->
+        <span class="help hide">
+        <span class="helpTitle" href="javascript:void(0);" data-i18n="global.help">Ajuda</span>
+        <span class="helpMessage hide"
+              data-i18n="paymentData.paymentGroup.creditCard.helpHiperCard">
+            Se o seu cartão Hipercard possui uma sequência de 6 números acima da sequência principal de 13 dígitos, será necessário digitar todos os números, começando pelos 6 pequenos, totalizando 19 dígitos.
+          </span>
+       </span>
+    </p>
+
+    <div class="payment-card-due text" data-bind="css: {'hide': !cardExpirationDateRequired()}">
+        <label class="payment-card-due-label pull-left" data-bind="attr: {'for': $parent.identifier()+'payment-card' + id + 'Month'}">
+            <span data-i18n="paymentData.paymentGroup.creditCard.dueDate">Válido até</span>
+        </label>
+
+        <p class="payment-card-due-month input text" data-bind="css: {'required': cardExpirationDateRequired}">
+            <input type="tel" class="input-nano" data-i18n="[placeholder]paymentData.paymentGroup.creditCard.dueMonth" maxlength="2" data-bind="attr: {id: $parent.identifier()+'payment-card' + id + 'Month'}, value: cardDueMonth, validate: validateDueMonth, required: cardExpirationDateRequired, disable: checkout.disableInputs" />
+        </p>
+
+        <p class="payment-card-lash">/</p>
+
+        <p class="payment-card-due-year input text" data-bind="css: {'required': cardExpirationDateRequired}">
+            <input type="tel" class="input-nano" data-i18n="[placeholder]paymentData.paymentGroup.creditCard.dueYear" maxlength="2" data-bind="attr: {id: $parent.identifier()+'payment-card' + id + 'Year'}, value: cardDueYear, validate: validateDueYear, required: cardExpirationDateRequired, disable: checkout.disableInputs">
+        </p>
+    </div>
+    <p class="payment-card-name input text" data-bind="css: {'required': cardOwnerNameRequired, 'hide': !cardOwnerNameRequired()}">
+        <label class="hide" data-bind="attr: {'for': $parent.identifier()+'payment-card' + id + 'Name', htmlFor: $parent.identifier()+'payment-card' + id + 'Name'}">
+        <span data-i18n="paymentData.paymentGroup.creditCard.holderName">Nome impresso no cartão</span></label>
+        <input type="text" class="input-large"
+               data-bind="attr: {id: $parent.identifier()+'payment-card' + id + 'Name'},
+                   value: cardOwnerName, valueUpdate:'afterkeydown',
+                   validate: 'alpha', required: cardOwnerNameRequired, disable: checkout.disableInputs()"
+                data-i18n="[placeholder]paymentData.paymentGroup.creditCard.holderName">
+    </p>
+    <!-- ko foreach: paymentGroup.paymentSystems -->
+         <span class="card-flag" data-bind="visible: $parent.paymentGroup.paymentSystem() == $data && $parent.cardNumber.lastValidationResult,
+            attr: {'class': 'skeuocard-flag card-flag card-selected ' + name()}"></span>
+    <!-- /ko -->
+</div>
+
+<div class="skeuocard skeuocard-backside" data-bind="css: {'transparent': !cardSafetyCodeRequired() || cardCodeMask().length > 3 }">
+    <div class="skeuocard-stripe"></div>
+    <div data-bind="template: 'cvv'"></div>
+</div>
+
+<div class="card-scanner-label-all-fields" data-bind="if: !labelCardFields()">
+    <div class="card-flags-container clearfix form-inline" data-bind="css: {'hide': isCreditCardCustom}">
+        <p class="card-flags" data-bind="css: { 'active': $parent.paymentSystem() }">
+            <!-- ko foreach: paymentGroup.paymentSystems -->
+            <label class="radio card-flag-label"
+                   data-bind="attr:{'for': $parents[1].identifier()+'selectedCard' + $index() + 'cc' +  $parent.id, 'htmlFor': $parents[1].identifier()+'selectedCard' + $index() + 'cc' +  $parent.id, title: name}">
+                <input class="card-flag-radio" type="radio" tabindex="-1"
+                       data-bind="attr: { name: $parents[1].identifier()+'selectedCardFlag' + $parent.id, id: $parents[1].identifier()+'selectedCard' + $index() + 'cc' +  $parent.id },
+                        value: $data, checked: $parent.paymentGroup.paymentSystem, disable: checkout.disableInputs()">
+                 <span class="card-flag" data-bind="text: name,
+                    attr: {'class': 'card-flag ' + name()},
+                    css: {'card-selected': $parent.paymentGroup.paymentSystem() == $data}"></span>
+            </label>
+            <!-- /ko -->
+        </p>
+    </div>
+</div>
+
+<div data-bind="template: { name: 'installments', afterRender: vtex.i18n.translateHtml, if: !$parent.isDebitCard() }"></div>
+
+<div class="card-scanner-resume clearfix" data-bind="if: labelCardFields">
+    <div class="card-scanner-resume-info">
+        <p class="card-scanner-resume-header">
+            <!-- ko foreach: paymentGroup.paymentSystems -->
+            <!-- ko if: $parent.paymentGroup.paymentSystem() == $data -->
+             <span class="card-flag card-scanner-resume-card-flag" data-bind="text: name, attr: {'class': 'card-flag card-scanner-resume-card-flag card-selected ' + name()}"></span>
+            <!-- /ko -->
+            <!-- /ko -->
+            <span class="card-scanner-resume-number" data-bind="text: cardNumberTotemLabel"></span>
+            <a class="card-scanner-resume-dismiss-link" href="javascript:void(0);" data-bind="click: toggleCardForm" data-i18n="[title]paymentData.paymentGroup.creditCard.scanner.useAnotherCard">
+                <small><i class="icon-remove-sign"></i></small>
+            </a>
+        </p>
+        <p class="card-scanner-resume-holder-name hide" data-bind="visible: isCardOwnerNameLabel">
+            <span class="card-scanner-resume-holder-name-label" data-i18n="paymentData.paymentGroup.creditCard.holderName"></span>:
+            <span class="card-scanner-resume-holder-name-value" data-bind="text: cardOwnerName"></span>
+        </p>
+        <p class="card-scanner-resume-due-date hide">
+            <span class="card-scanner-resume-due-date-label" data-i18n="paymentData.paymentGroup.creditCard.dueDate"></span>:
+            <span class="card-scanner-resume-due-date-month" data-bind="text: cardDueMonth"></span><span class="card-scanner-resume-due-date-dep">/</span><span class="card-scanner-resume-due-date-year" data-bind="text: cardDueYear"></span>
+        </p>
+    </div>
+
+    <p class="payment-card-name input text" data-bind="css: {'required': cardOwnerNameRequired, 'hide': !cardOwnerNameRequired() || isCardOwnerNameLabel()}">
+        <label data-bind="attr: {'for': $parent.identifier()+'payment-card' + id + 'Name', htmlFor: $parent.identifier()+'payment-card' + id + 'Name'}">
+        <span data-i18n="paymentData.paymentGroup.creditCard.holderName">Nome impresso no cartão</span></label>
+        <input type="text" class="input-medium"
+               data-bind="attr: {id: $parent.identifier()+'payment-card' + id + 'Name'},
+                   value: cardOwnerName, valueUpdate:'afterkeydown',
+                   validate: 'alpha', required: cardOwnerNameRequired, disable: checkout.disableInputs()">
+    </p>
+
+    <div class="box-installments box-default">
+        <p class="select required">
+            <label data-bind="attr: {'for': $parent.identifier()+'payment-card' + id + 'Brand', htmlFor: $parent.identifier()+'payment-card' + id + 'Brand'}">Parcelamento</label>
+            <select class="input-xlarge"
+                    data-bind="attr: {id: $parent.identifier()+'payment-card' + id + 'Brand'},
+                    options: $parent.installments, value: $parent.selectedInstallmentNumber, required: true,
+                    optionsText: 'text', optionsValue: 'number', optionsCaption: $parent.installmentsCaption, optionsAfterRender: setOptionDisable">
+            </select>
+        </p>
+    </div>
+</div> <!-- labelCardFields -->
+
+
+<p class="holder-document input text required mask" data-bind="css: {'holder-document-required':holderDocumentRequired, 'hide': !holderDocumentRequired()}">
+    <label for="holder-document" data-i18n="paymentData.paymentGroup.creditCard.cpfOwner">CPF do Portador</label>
+    <input type="text" id="holder-document" class="input-small"
+           data-bind="value: document, valueUpdate:'afterkeydown',
+                validate: validateDocument, required: holderDocumentRequired,
+                maskOnBlur: checkout.documentMask(), attr: documentAttributeBindings, disable: checkout.disableInputs()">
+</p>

@@ -1,0 +1,85 @@
+<!-- ko if: availableDeliveryCountries().length > 1 -->
+<p class="ship-international input">
+    <select id="ship-country" class="input-medium"
+            data-bind="options: availableDeliveryCountries(),
+            optionsText: nameForCountry,
+            value: deliveryCountry"></select>
+</p>
+<!-- /ko -->
+<!-- ko if: availableDeliveryCountries().length == 1 -->
+<p class="ship-international input one-delivery-country">
+    <span data-i18n="shippingData.deliveryCountry"></span>: <span data-bind="text: deliveryCountryName"></span>
+</p>
+<!-- /ko -->
+<p class="ship-postal-code required input text mask">
+    <label for="ship-postal-code">Código Postal Argentino <span class="item-required">*</span></label>
+    <input type="tel" autocomplete="off" id="ship-postal-code" class="ship-postal-code postal-code-cpa input-small"
+           data-bind="value: postalCode, valueUpdate:'afterkeydown', validate: 'cpARG', required: true, disable: loading() || checkout.disableInputs(), mask: vtex.validation.masks.cpARG">
+    <i class="loading-inline icon-spinner icon-spin" data-bind="fadeInlineVisible: loading">
+        <span data-i18n="cart.wait"></span>
+    </i>
+    <!-- TODO deve utilizar o proprio delivery country para determinar url -->
+    <small data-bind="visible: !showPostalCode()"><a data-bind="attr: { 'href': checkout.postalCodeForgottenURL }" id="dont-know-postal-code" target="_blank"
+              data-i18n="totalizers.dontKnowPostalCode">Não sei meu CEP</a></small>
+</p>
+<div class="box-delivery" data-bind="visible: showPostalCode">
+
+    <p class="ship-filled-data" data-bind="if: labelShippingFields">
+    <span class="ship-street-text">
+        <span data-bind="text: street"></span> - <a class="link-edit" href="javascript:void(0);" data-bind="click: forceShippingFields" id="force-shipping-fields" data-i18n="global.edit">Alterar</a>
+    </span>
+        <br>
+    <span class="ship-info-text">
+        <span data-bind="text: neighborhood"></span> - <span data-bind="text: city"></span> - <span data-bind="text: state"></span>
+    </span>
+    </p>
+
+    <p class="ship-street required input text" data-bind="css: { hide: labelShippingFields }">
+        <label for="ship-street"><span data-i18n="shippingData.shippingAddress.street"></span> <span class="item-required">*</span></label>
+        <input type="text" id="ship-street" class="input-xlarge" data-bind="value: street, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', required: true, disable: checkout.disableInputs()">
+    </p>
+
+    <p class="ship-number required input text">
+        <label for="ship-number"><span  data-i18n="shippingData.shippingAddress.number"></span> <span class="item-required">*</span></label>
+        <input type="text" id="ship-number" class="input-mini" data-bind="value: number, validate: 'alphaNumeric', valueUpdate:'afterkeydown', required: true, disable: checkout.disableInputs()">
+    </p>
+
+    <p class="ship-more-info input text">
+        <label for="ship-more-info"><span data-i18n="shippingData.shippingAddress.additionalInfo"></span></label>
+        <input type="text" id="ship-more-info" class="input-medium" data-bind="value: complement, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', disable: checkout.disableInputs()">
+    </p>
+
+    <p class="ship-reference input text hide">
+        <label for="ship-reference"><span data-i18n="shippingData.shippingAddress.reference"></span></label>
+        <input type="text" id="ship-reference" class="input-xlarge" data-bind="value: reference, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', disable: checkout.disableInputs()">
+    </p>
+
+    <p class="ship-neighborhood input text hide">
+        <label for="ship-neighborhood"><span data-i18n="shippingData.shippingAddress.district"></span></label>
+        <input type="text" id="ship-neighborhood" class="input-xlarge" data-bind="value: neighborhood, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', disable: checkout.disableInputs()">
+    </p>
+
+    <p class="ship-state required input text" data-bind="css: { hide: labelShippingFields }">
+        <label for="ship-state"><span data-i18n="shippingData.shippingAddress.state"></span> <span class="item-required">*</span></label>
+        <input type="text" id="ship-state" class="input-large" data-bind="value: state, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', required: true, disable: checkout.disableInputs()">
+    </p>
+
+    <p class="ship-city required input text" data-bind="css: { hide: labelShippingFields }">
+        <label for="ship-city"><span data-i18n="shippingData.shippingAddress.locality"></span> <span class="item-required">*</span></label>
+        <input type="text" id="ship-city" class="input-large" data-bind="value: city, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', required: true, disable: checkout.disableInputs()">
+    </p>
+
+    <!-- ko if: !hasOwnProperty('isBillingAddress') -->
+    <p class="ship-commercial input checkbox">
+        <label for="ship-commercial">
+            <input type="checkbox" id="ship-commercial" data-bind="checked: addressTypeCommercial, disable: checkout.disableInputs()"/>
+            <span data-i18n="shippingData.shippingAddress.commercial">Endereço comercial</span>
+        </label>
+    </p>
+
+    <p class="ship-name required input text separate">
+        <label for="ship-name"><span data-i18n="shippingData.shippingAddress.receiver">Quem receberá</span> <span class="item-required">*</span></label>
+        <input type="text" id="ship-name" class="input-xlarge" data-bind="value: receiverName, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', required: true, disable: checkout.disableInputs()">
+    </p>
+    <!-- /ko -->
+</div>

@@ -5,9 +5,11 @@ class OrderFormViewModel
   salesChannel: ko.observable(1)
   countryCode: ko.observable('BRA')
   total: ko.observable()
+  countriesWithNoPostalCode: []
+  countriesWithPostalCodeAccordingToCity: []
 
   constructor: ->
-    $(window).on('orderFormUpdated.vtex', @parseOrderForm)
+    $(window).on('orderFormUpdated.vtex', (e, orderForm) => @parseOrderForm(orderForm))
     if (orderForm = window.vtexjs.checkout.orderForm)?
       @parseOrderForm(orderForm)
 
@@ -24,7 +26,7 @@ class OrderFormViewModel
 
     @canEditData(orderForm.canEditData)
     @loggedIn(orderForm.loggedIn)
-    @total(orderForm.total)
+    @total(_.reduce(orderForm.totalizers, ((memo, t) -> memo + t.value), 0))
 
     if orderForm.salesChannel
       @salesChannel(orderForm.salesChannel)

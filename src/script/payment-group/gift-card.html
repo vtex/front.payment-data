@@ -1,0 +1,39 @@
+<fieldset class="payment-discounts">
+  <div class="new-gift-card" data-bind="if: !card()">
+    <p class="payment-discounts-options text input form-inline">
+      <label for="payment-discounts-code" data-i18n="paymentData.paymentGroup.giftCard.codeCard">Código do vale</label>
+      <input type="text" id="payment-discounts-code" class="payment-discounts-cod" data-bind="value: giftCardCode, validate: validateGiftCardCode,
+                     valueUpdate: 'keyup', css: { 'loadingGiftCard': loadingGiftCard }, disable: loadingGiftCard">
+      <span class="loading-inline" data-bind="visible: loadingGiftCard"></span>
+      <button id="btn-add-gift-card" class="btn" type="button" data-bind="click: submitGiftCard.bind(this, false), disable: loadingGiftCard"
+              data-i18n="global.add">Adicionar
+      </button>
+    </p>
+    <div class="payment-discounts-list" data-bind="visible: availableGiftCards().length > 0">
+      <h5 data-i18n="paymentData.paymentGroup.giftCard.used">Vales disponíveis</h5>
+      <table>
+        <thead class="hide">
+        <tr>
+          <th class="code" data-i18n="paymentData.paymentGroup.giftCard.code">Código</th>
+          <th class="number" data-i18n="global.value">Valor</th>
+        </tr>
+        </thead>
+        <tbody data-bind="foreach: availableGiftCards">
+        <tr data-bind="css: { 'gift-card-disabled': !inUse() }">
+          <td class="code" data-bind="text: redemptionCode"></td>
+          <td class="use">
+            <button class="btn-link" data-bind="click: $parent.submitGiftCard, clickBubble: false">Usar</button>
+          </td>
+          <td class="number" data-bind="text: valueLabel, visible: inUse"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="existing-gift-card"  data-bind="if: card">
+    <div data-bind="with: card">
+      <p class="code" data-bind="text: redemptionCode"></p>
+      <p class="number" data-bind="text: valueLabel"></p>
+    </div>
+  </div>
+</fieldset>

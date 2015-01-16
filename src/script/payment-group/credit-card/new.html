@@ -1,0 +1,37 @@
+<div class="clearfix card-data" data-bind="css: { 'active': isUsingNewCard }">
+  <div class="clearfix">
+    <p class="link link-box-new" data-bind="visible: unusedAvailableAccounts().length > 0">
+      <a href="javascript:void(0);"
+         data-bind="click: showSavedCreditCards, text: i18n.t('paymentData.backCreditCardList')"></a>
+    </p>
+
+    <!-- is waiting for card scanner -->
+    <div class="card-scanner-waiting"
+         data-bind="template: { name: 'card-scanner', 'if': checkout.isTotem() && isWaitingForCardScanner(), afterRender: vtex.i18n.translateHtml }"></div>
+
+    <!-- is not waiting for card scanner -->
+    <div class="card-ready-for-typing"
+         data-bind="template: { name: 'card-fields', 'if': !checkout.isTotem() || !isWaitingForCardScanner(), afterRender: vtex.i18n.translateHtml }"></div>
+  </div>
+
+
+  <div data-bind="if: cardFormVisible() && billingAddressRequired()">
+    <p class="same-address checkbox" data-bind="visible: !checkout.isUsingGiftRegistryAddress()">
+      <input type="checkbox"
+             data-bind="checked: sameBillingAddress, attr:{'id':'same-address'+$parentContext.$index()}, disable: checkout.disableInputs()"/>
+      <label data-bind="attr:{'for':'same-address'+$index(), 'htmlFor':'same-address'+$parentContext.$index()}">
+        <span class="same-adress-text" data-i18n="paymentData.sameBillingAddress">O endereço da fatura do cartão é</span>
+        <em class="short-billing-address">
+          <span class="short-billing-address-street" data-bind="text: shippingAddress.street"></span>,
+          <span class="short-billing-address-number" data-bind="text: shippingAddress.number"></span> -
+          <span class="short-billing-address-neighborhood" data-bind="text: shippingAddress.neighborhood"></span>
+        </em>
+      </label>
+    </p>
+    <!-- ko if: !sameBillingAddress() -->
+    <h5 data-i18n="paymentData.billingAddress">Endereço de cobrança</h5>
+    <div data-bind="template: {data: billingAddress, name: billingAddressTemplate, afterRender: billingAddress.afterRenderAddress}"></div>
+    <!-- /ko -->
+  </div>
+
+</div>

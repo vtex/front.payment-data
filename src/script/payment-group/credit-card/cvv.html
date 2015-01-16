@@ -1,0 +1,19 @@
+<p class="payment-card-cvv input text" data-bind="css: {'required': cardSafetyCodeRequired }">
+  <label class="payment-card-cvv-label pull-left"
+         data-bind="attr: {'for': $parent.identifier()+'payment-card' + id + 'Code', htmlFor: $parent.identifier()+'payment-card' + id + 'Code'}">
+    <span data-i18n="paymentData.paymentGroup.creditCard.ccv"></span>
+  </label>
+  <input type="tel" class="card-cvv input-micro dont-track-input"
+         data-bind="attr: {
+                      id: $parent.identifier()+'payment-card' + id + 'Code',
+                      'maxlength': cardCodeMask().length,
+                      type: checkout.isTotem() ? 'password' : 'tel'
+                    },
+                    value: cardSafetyCode,
+                    valueUpdate:'afterkeydown',
+                    validate: validateCardCode,
+                    required: cardSafetyCodeRequired,
+                    maskOnBlur: cardCodeMask,
+                    hasfocus: cardSafetyCodeHasFocus,
+                    disable: checkout.disableInputs()">
+</p>
