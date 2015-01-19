@@ -99,6 +99,10 @@ class PaymentDataViewModel extends Module
 
   removePaymentForm: (paymentForm) =>
     debug 'remove payment', paymentForm
+    if paymentForm is @selectedPaymentFormViewModel()
+      indexOfPaymentForm = _.indexOf(@paymentForms(), paymentForm)
+      newPaymentFormIndex = Math.abs(indexOfPaymentForm - 1) # if 0, select 1
+      @selectPaymentForm(@paymentForms()[newPaymentFormIndex])
     @paymentForms.remove(paymentForm)
     paymentForm.selectedPaymentGroupViewModel()?.removeGiftCard?()
     @sendAttachment()

@@ -1,5 +1,5 @@
 ﻿<div class="payment-form">
-    <div class="payment-summary" data-bind="if: $parent.selectedPaymentFormViewModel() != $data, click: $parent.selectPaymentForm">
+    <div class="payment-summary" data-bind="click: $parent.selectPaymentForm">
         <div data-bind="if: selectedPaymentGroupViewModel">
             <strong class="payment-summary-name" data-bind="text: selectedPaymentGroupViewModel().localizedLabel"></strong>
             <span class="payment-summary-data pull-right">
