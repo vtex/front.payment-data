@@ -34,15 +34,18 @@ class PaymentFormViewModel
   selectPaymentGroup: (paymentGroupViewModel) =>
     debug @id, 'selected payment group', paymentGroupViewModel
     currentPaymentGroup = @selectedPaymentGroupViewModel()
-    if currentPaymentGroup.card
+    if currentPaymentGroup?.card
       currentPaymentGroup.card?()?.inUse(false)
-    paidValue = currentPaymentGroup.paidValue()
-    paymentGroupViewModel.updatePayment({
+    paidValue = currentPaymentGroup?.paidValue() ? 0
+    paymentGroupViewModel?.updatePayment({
       referenceValue: paidValue
     })
     @selectedPaymentGroupViewModel(paymentGroupViewModel)
     # User changed selected payment group, let API know of this change
-    $(window).trigger('paymentUpdated.vtex') if paidValue > 0
+    $(window).trigger('paymentUpdated.vtex') if paidValue > 0 and paymentGroupViewModel
+
+  unselectPaymentGroup: =>
+    @selectPaymentGroup(undefined)
 
   clearValidationError: => @validationError false
 
@@ -74,7 +77,7 @@ class PaymentFormViewModel
           return PaymentGroupViewModel # generic
 
   getPayment: (masked) =>
-    @selectedPaymentGroupViewModel().getPayment(masked)
+    @selectedPaymentGroupViewModel()?.getPayment(masked)
 
   requiresAuthentication: =>
     # TODO check if payment's paymentSystem.requiresAuthentication
@@ -92,15 +95,12 @@ class PaymentFormViewModel
         @paymentGroups.push new PaymentGroupViewModelClass(paymentSystems, availableAccountsForPaymentGroup, @giftCards)
 
     # Initialization
-    if not paymentJSON.paymentSystem?
-      debug @id, 'selected default payment group'
-      @selectedPaymentGroupViewModel(@paymentGroups()[0])
-    else if not @selectedPaymentGroupViewModel()? # No paymentGroup, select according to paymentSystem
+    if paymentJSON.paymentSystem? and not @selectedPaymentGroupViewModel()? # No paymentGroup, select according to paymentSystem
       paymentSystem = _.find @paymentSystems(), (ps) => ps.id().toString() is paymentJSON.paymentSystem.toString()
       pg = _.find @paymentGroups(), (pg) -> pg.groupName() is paymentSystem.groupName()
       @selectedPaymentGroupViewModel(pg)
 
-    @selectedPaymentGroupViewModel().updatePayment(paymentJSON)
+    @selectedPaymentGroupViewModel()?.updatePayment(paymentJSON)
 
 ###
 TODO: refactor into component, add child elements to payment-data.html

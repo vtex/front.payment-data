@@ -50,9 +50,15 @@ class PaymentDataViewModel extends Module
       return @active() and !@totalIsFree()
 
     @isScanningCard = ko.observable(false)
-    # TODO radio('checkout.paymentData.creditCardPaymentGroup.isScanningCard').subscribe @isScanningCard
 
-    # TODO radio('checkout.paymentData.submit.fail').subscribe (reason) =>  @loading false
+    @showPaymentGroupSelector = ko.computed =>
+      paymentForms = @paymentForms()
+      selectedPaymentForm = @selectedPaymentFormViewModel()
+      selectedPaymentGroup = selectedPaymentForm?.selectedPaymentGroupViewModel()
+      if paymentForms.length is 1 or not selectedPaymentGroup?
+        return true
+      else
+        return false
 
     $(window).on 'orderFormUpdated.vtex', (e, orderForm) =>
       return unless orderForm.paymentData
@@ -125,8 +131,8 @@ class PaymentDataViewModel extends Module
     if data.paidValue and data.paymentGroupId and paymentForms.length is 2
       otherPaymentForm = _.find(paymentForms, (pf) -> pf.selectedPaymentGroupViewModel()?.id isnt data.paymentGroupId)
       remainingValue = totalToPay - data.paidValue
-      if otherPaymentForm and otherPaymentForm.selectedPaymentGroupViewModel().paidValue() isnt remainingValue # do nothing if other payment is correct
-        otherPaymentForm.selectedPaymentGroupViewModel().paidValue(remainingValue)
+      if otherPaymentForm and otherPaymentForm.selectedPaymentGroupViewModel()?.paidValue() isnt remainingValue # do nothing if other payment is correct
+        otherPaymentForm.selectedPaymentGroupViewModel()?.paidValue(remainingValue)
 
   paymentUpdatedHandler: =>
     # If we are not active, this update can be ignored because the API
