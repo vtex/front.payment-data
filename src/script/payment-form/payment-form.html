@@ -1,16 +1,24 @@
-﻿<div class="payment-form">
-    <div class="payment-summary" data-bind="click: $parent.selectPaymentForm">
-        <div data-bind="if: selectedPaymentGroupViewModel">
-            <strong class="payment-summary-name" data-bind="text: selectedPaymentGroupViewModel().localizedLabel"></strong>
-            <span class="payment-summary-data pull-right">
-                <span class="payment-summary-value" data-bind="text: selectedPaymentGroupViewModel().paidValueInput"></span>
-                <button class="payment-summary-remove btn btn-link" data-bind="click: $parent.removePaymentForm, clickBubble: false"><i class="icon-remove"></i></button>
-            </span>
-        </div>
+﻿<div class="payment-content">
+    <div class="payment-summary" data-bind="click: $parent.selectPaymentForm, visible: $parent.paymentForms().length > 1">
+    <!-- ko if: selectedPaymentGroupViewModel -->
+        <strong class="payment-summary-name" data-bind="text: selectedPaymentGroupViewModel().localizedLabel"></strong>
+        <button class="btn btn-link" data-bind="click: unselectPaymentGroup, clickBubble: false, visible: !$parent.showPaymentGroupSelector() && $parent.selectedPaymentFormViewModel() == $data">Change payment group</button>
+        <span class="payment-summary-data pull-right">
+            <span class="payment-summary-value" data-bind="text: selectedPaymentGroupViewModel().paidValueInput"></span>
+            <button class="payment-summary-remove btn btn-link" data-bind="click: $parent.removePaymentForm, clickBubble: false"><i class="icon-remove"></i></button>
+        </span>
+    <!-- /ko -->
+    <!-- ko if: !selectedPaymentGroupViewModel() -->
+        <strong class="payment-summary-name">Novo pagamento</strong>
+        <span class="payment-summary-data pull-right">
+            <button class="payment-summary-remove btn btn-link" data-bind="click: $parent.removePaymentForm, clickBubble: false"><i class="icon-remove"></i></button>
+        </span>
+    <!-- /ko -->
     </div>
 
-    <form action="" data-event="finishPayment" class="form-step box-new row-fluid" data-bind="submit: $parent.submit, if: $parent.selectedPaymentFormViewModel() == $data">
-        <fieldset class="payment-group" data-bind="css: { 'payment-group-wrapped': $parent.paymentForms().length > 1 }, if: $parent.showPaymentGroupSelector">
+    <form action="" data-event="finishPayment" class="form-step box-new" data-bind="submit: $parent.submit, if: $parent.selectedPaymentFormViewModel() == $data">
+        <!-- ko if: $parent.showPaymentGroupSelector -->
+        <fieldset class="payment-group" data-bind="css: { 'payment-group-wrapped': $parent.paymentForms().length > 1 }">
             <div class="required payment-group-list-btn" data-bind="foreach: paymentGroups">
                 <a href="javascript:void(0);" data-bind="click: $parent.selectPaymentGroup, attr:{ 'id':'payment-group-' + groupName(), 'class': className + ' payment-group-item' }, css: { active: $parent.selectedPaymentGroupViewModel() && $parent.selectedPaymentGroupViewModel().id == id }">
                     <span class="payment-group-item-flag"></span>
@@ -18,14 +26,12 @@
                 </a>
             </div>
         </fieldset>
-        <div data-bind="if: !$parent.showPaymentGroupSelector()">
-            <button class="btn btn-link" data-bind="click: unselectPaymentGroup, clickBubble: false">Change payment group</button>
-        </div>
+        <!-- /ko -->
 
-        <div class="steps-view payment-form" data-bind="if: selectedPaymentGroupViewModel">
-            <!-- ko with: selectedPaymentGroupViewModel -->
-            <div data-bind="template: template"></div>
-            <!-- /ko -->
-        </div>
+        <!-- ko if: selectedPaymentGroupViewModel -->
+        <!-- ko with: selectedPaymentGroupViewModel -->
+        <div class="payment-form" data-bind="template: template"></div>
+        <!-- /ko -->
+        <!-- /ko -->
     </form>
 </div>
