@@ -13,6 +13,7 @@ class AvailableAccountViewModel
     @groupName = "creditCardPaymentGroup"
     @cardSafetyCodeRequired = ko.observable if paymentSystem then paymentSystem.useCvv() else false
     @cardCodeMask = ko.observable("9999")
+    @selected = ko.observable()
 
     @update json, paymentSystem
 

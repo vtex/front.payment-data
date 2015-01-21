@@ -23,30 +23,16 @@ class CreditCardPaymentGroupViewModel extends PaymentGroupViewModel
 
     @isCustom = ko.observable @paymentSystems()[0].isCustom()
     @pgTitle = 'paymentData.paymentGroup.' + @identifier() + '.' + @identifier()
-    @isEditingSensitiveField = ko.observable()
 
     # TODO converter para mixin!!!
     @card = if vtex.totem then new CreditCardTotemViewModel(this) else new CreditCardViewModel(this)
 
   updatePayment: (payment) =>
-    card = @card
-    # Caso seja um cartão salvo, selecione o com accountId relativo
+    super
     if payment.accountId
-      card.selectedAvailableAccountId(payment.accountId)
-      card.showSavedCreditCards()
-    # Caso seja um cartão novo, selecione a bandeira
-    else if payment.paymentSystem
-      ps = _.find(@paymentSystems(), (ps) -> parseInt(ps.id()) is parseInt(payment.paymentSystem))
-      if ps isnt @paymentSystem()
-        @paymentSystem(ps)
-      card.showNewCard()
+      @card.showSavedCreditCards()
     else
-      @paymentSystem(@paymentSystems()[0])
-      card.showNewCard()
-
-    # Atualiza valor interno, pois não queremos trigger as modificações do computed.
-    @paidValue(payment.referenceValue)
-    @updateInstallments(payment.installments)
+      @card.showNewCard()
 
   findPaymentSystemByCardNumber: (cardNumber) =>
     cardNumberString = cardNumber + "" # Converte valores undefined ou int para string.
@@ -64,10 +50,6 @@ class CreditCardPaymentGroupViewModel extends PaymentGroupViewModel
   isValid: (options) =>
     validationResults = @validate(options or giveFocus: true)
     validationResults.length > 0 and _.all validationResults, (val) -> val.result is true
-
-  removeAvailableAccount: (ac) =>
-    window.vtexjs.checkout.removeAccountId(ac.accountId())
-    @availableAccounts.remove ac
 
   afterSelected: =>
     @validate(giveFocus:true, showErrorMessage: false, applyErrorClass: false)

@@ -87,12 +87,8 @@ class PaymentFormViewModel
     if @paymentGroups().length is 0
       paymentSystemsGroupedByPaymentGroup = _.groupBy @paymentSystems(), (ps) -> ps.groupName()
       for groupName, paymentSystems of paymentSystemsGroupedByPaymentGroup
-        paymentSystemIdArray = _.map(paymentSystems, (ps) -> parseInt(ps.id()))
-        availableAccountsForPaymentGroup = _.filter @availableAccounts(), (aa) ->
-          paymentSystemId = parseInt(aa.paymentSystem())
-          paymentSystemId in paymentSystemIdArray
         PaymentGroupViewModelClass = @getPaymentGroupClass(groupName)
-        @paymentGroups.push new PaymentGroupViewModelClass(paymentSystems, availableAccountsForPaymentGroup, @giftCards)
+        @paymentGroups.push new PaymentGroupViewModelClass(paymentSystems, @availableAccounts, @giftCards)
 
     # Initialization
     if paymentJSON.paymentSystem? and not @selectedPaymentGroupViewModel()? # No paymentGroup, select according to paymentSystem

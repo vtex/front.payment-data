@@ -3,16 +3,14 @@
     <div class="btn-group btn-group-vertical card-list-saved">
       <!-- ko foreach: unusedAvailableAccounts -->
       <label class="input btn label-vertical-group card-list-saved-item"
-             data-bind="attr: { htmlFor: 'card'+$parentContext.$index() }, css: { 'active':  $parent.selectedAvailableAccountId() == accountId() }, click: focusOnCCV">
-        <input type="radio" tabindex="-1"
-               data-bind="attr: { id: 'card'+$parentContext.$index(), value: accountId, name: 'savedCreditCard'+$parentContext.$index() }, checked: $parent.selectedAvailableAccountId, disable: checkout.disableInputs()">
+             data-bind="css: { 'active':  $parent.paymentGroup.selectedAvailableAccount() == $data }, click: $parent.paymentGroup.selectAvailableAccount">
         <span class="card-flags">
             <span class="card-flag card-selected saved-card-flag" data-bind="text: $data.paymentSystemName(),
                     attr: {'class': 'card-flag saved-card-flag ' + $data.paymentSystemName()}"></span>
         </span>
         <span class="card-label card-list-saved-label" data-bind="text: cardNumberLabel"></span>
-        <i class="icon-ok-circle" data-bind="visible: $parent.selectedAvailableAccountId() == accountId()"></i>
-        <i class="icon-circle-blank" data-bind="visible: $parent.selectedAvailableAccountId() != accountId()"></i>
+        <i class="icon-ok-circle" data-bind="visible: selected"></i>
+        <i class="icon-circle-blank" data-bind="visible: !selected()"></i>
 
         <a class="link-delete btn" href="javascript:void(0);" data-bind="click: $parent.paymentGroup.removeAvailableAccount, visible: checkout.loggedIn() == true" data-i18n="[title]paymentData.paymentGroup.creditCard.removeCard"><i class="icon-remove"></i> <span class="text hide" data-i18n="paymentData.paymentGroup.creditCard.removeCard">Excluir cartão</span></a>
       </label>

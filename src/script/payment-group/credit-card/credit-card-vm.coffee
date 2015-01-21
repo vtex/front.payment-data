@@ -33,12 +33,10 @@ class CreditCardViewModel
     @cardFormVisible = ko.observable(!vtex.totem)
     @labelCardFields = ko.observable(false)
     @isCardOwnerNameLabel = ko.observable(false)
-    @_selectedAvailableAccountId = ko.observable()
     # Ao acontecer mudanças no número do cartão, tentamos sugerir a bandeira e aplicar mascara.
     @cardFlagSuggested = ko.observable(false)
     @oldFlag = ko.observable()
-    @isUsingNewCard = ko.observable(@paymentGroup.availableAccounts().length is 0)
-    @oldSelectedAvailableAccountId = ko.observable()
+    @isUsingNewCard = ko.observable()
     @cardSafetyCodeHasFocus = ko.observable()
     # TODO check if giftRegistryData is same a selected address id
     @sameBillingAddress = ko.observable(!vtexjs.checkout.orderForm.giftRegistryData?.addressId is vtexjs.checkout.orderForm.shippingData?.address?.addressId)
@@ -54,24 +52,6 @@ class CreditCardViewModel
 
     @cardDueDate = ko.computed =>
       @cardDueMonth() + "/" + @cardDueYear()
-
-    @_selectedAvailableAccountId = ko.observable()
-    @selectedAvailableAccountId = ko.computed
-      read: =>
-        @_selectedAvailableAccountId()
-      write: (value) =>
-        currentAvailableAccountIdIsChanged = value isnt @_selectedAvailableAccountId.peek()
-        @_selectedAvailableAccountId value
-        # Avisa ao credit card payment group para pedir novos installments
-        if currentAvailableAccountIdIsChanged and value? and @paymentGroup.paidValue.peek() > 0
-          $("#payment-data").trigger "paymentUpdated.vtex"
-
-    @unusedAvailableAccounts = ko.computed =>
-      @paymentGroup.availableAccounts()
-
-    @selectedAvailableAccount = ko.computed =>
-      _.find @paymentGroup.availableAccounts(), (aa) =>
-        aa.accountId() is @selectedAvailableAccountId()
 
     @holderDocumentRequired = ko.computed =>
       @paymentGroup.paymentSystem()?.requiresDocument() ? false
@@ -103,6 +83,10 @@ class CreditCardViewModel
     @shippingAddress = new ShippingAddressViewModel()
     if vtexjs.checkout.orderForm?.shippingData?.address
       @updateShippingAddress(vtexjs.checkout.orderForm.shippingData.address)
+
+    @unusedAvailableAccounts = ko.computed =>
+      _.reject @paymentGroup.availableAccounts(), (aa) =>
+        aa.selected() and aa isnt @paymentGroup.selectedAvailableAccount()
 
     $(window).on 'orderFormUpdated.vtex', (e, orderForm) =>
       return unless orderForm.shippingData?.address
@@ -195,7 +179,7 @@ class CreditCardViewModel
       selectedInstallment = @paymentGroup.selectedInstallment()?.toJSON()
     selectedPaymentSystem = @paymentGroup.paymentSystem()
     return null unless selectedPaymentSystem?
-    account = @selectedAvailableAccount()
+    account = @paymentGroup.selectedAvailableAccount()
     fields = {}
 
     # Sempre que passar informações para o Checkout
@@ -204,10 +188,11 @@ class CreditCardViewModel
     if masked
       # Envia o BIN para verificar promoção por BIN
       bin = @cardBin() if @cardBin()?
-      accountId = account.accountId()  if account?
+      if account? and not @isUsingNewCard.peek()
+        accountId = account.accountId()
       fields = undefined
       # Caso seja um cartão salvo
-    else if account?
+    else if account? and not @isUsingNewCard.peek()
       fields =
         accountId: account.accountId()
         validationCode: account.cardSafetyCode()
@@ -332,8 +317,9 @@ class CreditCardViewModel
   # TODO validar installment
   validate: (options) =>
     fields = []
-    if @selectedAvailableAccountId() isnt `undefined`
-      fields.push @selectedAvailableAccount().cardSafetyCode  if @selectedAvailableAccount().cardSafetyCodeRequired()
+    if @paymentGroup.selectedAvailableAccount()?
+      if @paymentGroup.selectedAvailableAccount().cardSafetyCodeRequired()
+        fields.push @paymentGroup.selectedAvailableAccount().cardSafetyCode
     else
       properties = @requiredProperties
       fields = fields.concat(_.map(properties, (f) =>

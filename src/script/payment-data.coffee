@@ -100,6 +100,7 @@ class PaymentDataViewModel extends Module
       @selectPaymentForm(@paymentForms()[newPaymentFormIndex])
     @paymentForms.remove(paymentForm)
     paymentForm.selectedPaymentGroupViewModel()?.removeGiftCard?()
+    paymentForm.selectedPaymentGroupViewModel()?.selectedAvailableAccount()?.selected(false)
     @sendAttachment()
     return false
 

@@ -9,7 +9,7 @@ Payment = require '../payment-system/payment.coffee'
 
 debug = require('../common/debug.coffee')('paym-group')
 class PaymentGroupViewModel
-  constructor: (paymentSystemsArray, availableAccountsArray) ->
+  constructor: (paymentSystemsArray, availableAccountsObservableArray) ->
     @id = (new Date().getTime() * -1).toString() + Math.random().toString(36).substr(2)
     # As every payment system belongs to the same payment group, we can use the first one for these generic infos
     ps = paymentSystemsArray[0]
@@ -47,7 +47,15 @@ class PaymentGroupViewModel
       previousPaidValue = value
 
     @paymentSystems = ko.observableArray(paymentSystemsArray)
-    @availableAccounts = ko.observableArray(availableAccountsArray)
+    @availableAccountsObservableArray = availableAccountsObservableArray
+    @availableAccounts = ko.computed =>
+      paymentSystemIdArray = _.map(paymentSystemsArray, (ps) -> parseInt(ps.id()))
+      # Whenever the global availableAccounts change, this will be updated
+      _.filter availableAccountsObservableArray(), (aa) ->
+        paymentSystemId = parseInt(aa.paymentSystem())
+        paymentSystemId in paymentSystemIdArray
+
+    @selectedAvailableAccount = ko.observable()
 
     @template = ko.observable switch @name
       when 'PayPal' then payPalTemplateId
@@ -108,7 +116,36 @@ class PaymentGroupViewModel
     @installmentsCaption = ko.computed =>
       i18n.t("paymentData.paymentGroup.installmentsCaption")
 
+  setAvailableAccount: (availableAccountViewModel) =>
+    @selectedAvailableAccount()?.selected(false)
+    availableAccountViewModel?.selected(true)
+    @selectedAvailableAccount(availableAccountViewModel)
+
+  selectAvailableAccount: (availableAccountViewModel) =>
+    # If it's already selected, don't select it again. May be in another payment.
+    return if availableAccountViewModel?.selected()
+    @setAvailableAccount(availableAccountViewModel)
+    $(window).trigger('paymentUpdated.vtex') if @paidValue() > 0 and availableAccountViewModel
+
+  removeAvailableAccount: (availableAccountViewModel) =>
+    window.vtexjs.checkout.removeAccountId(availableAccountViewModel.accountId())
+    # removes from the global availableAccounts array
+    @availableAccountsObservableArray.remove availableAccountViewModel
+
   updatePayment: (payment) =>
+    # Caso seja um pagamento salvo, selecione por accountId
+    if payment.accountId
+      availableAccount = _.find @availableAccounts(), (aa) -> aa.accountId() is payment.accountId
+      @setAvailableAccount(availableAccount)
+    # Selecione o paymentSystem, se houver
+    else if payment.paymentSystem
+      ps = _.find(@paymentSystems(), (ps) -> parseInt(ps.id()) is parseInt(payment.paymentSystem))
+      if ps isnt @paymentSystem()
+        @paymentSystem(ps)
+    # Caso contrário, selecione o primeiro disponível
+    else
+      @paymentSystem(@paymentSystems()[0])
+
     @paidValue(payment.referenceValue)
     @updateInstallments(payment.installments)
 
