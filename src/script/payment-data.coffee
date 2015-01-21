@@ -28,11 +28,6 @@ class PaymentDataViewModel extends Module
     @selectedPaymentFormViewModel = ko.observable()
     @giftCardMessages = ko.observableArray([])
     @validationError = ko.observable(false)
-    # todo add in payment form
-    @isEditingSensitiveField = ko.computed
-      read: =>
-        false
-      deferEvaluation: true
 
     @totalToPay = ko.computed =>
       window.checkout.total?() ? window.summary.total()
