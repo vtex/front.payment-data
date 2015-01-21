@@ -37,7 +37,6 @@ class CreditCardViewModel
     # Ao acontecer mudanças no número do cartão, tentamos sugerir a bandeira e aplicar mascara.
     @cardFlagSuggested = ko.observable(false)
     @oldFlag = ko.observable()
-    @isSavedCreditCardsVisible = ko.observable(false)
     @isUsingNewCard = ko.observable(@paymentGroup.availableAccounts().length is 0)
     @oldSelectedAvailableAccountId = ko.observable()
     @cardSafetyCodeHasFocus = ko.observable()
