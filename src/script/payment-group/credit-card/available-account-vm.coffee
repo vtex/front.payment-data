@@ -11,14 +11,11 @@ class AvailableAccountViewModel
     @cardSafetyCode = ko.observable ''
     @cardSafetyCodeHasFocus = ko.observable()
     @groupName = "creditCardPaymentGroup"
-
     @cardSafetyCodeRequired = ko.observable if paymentSystem then paymentSystem.useCvv() else false
-
     @cardCodeMask = ko.observable("9999")
-    if paymentSystem and paymentSystem.useCvv()
-      @cardCodeMask paymentSystem.cardCodeMask()
 
-    # TODO mover para template
+    @update json, paymentSystem
+
     @cardNumberLabel = ko.computed =>
       checkout.locale()
       lastNumbers = @cardRemoveAsterisks()
@@ -32,7 +29,14 @@ class AvailableAccountViewModel
       $(".orderform-template.active .step.active #cardCode"+@id).focus()
     return true
 
-  update: (availableAccountJSON) =>
-    # TODO
+  update: (json, paymentSystem) =>
+    @accountId json.accountId
+    @cardNumber json.cardNumber
+    @paymentSystem json.paymentSystem
+    @paymentSystemName json.paymentSystemName
+    @availableAddresses json.availableAddresses
+
+    if paymentSystem and paymentSystem.useCvv()
+      @cardCodeMask paymentSystem.cardCodeMask()
 
 module.exports = AvailableAccountViewModel

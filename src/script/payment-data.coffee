@@ -242,10 +242,11 @@ class PaymentDataViewModel extends Module
       availableAccount = _(@availableAccounts()).find (account) =>
         return account.accountId() is availableAccountJSON.accountId
 
+      paymentSystem = _.find @paymentSystems(), (ps) -> parseInt(ps.id()) is parseInt(availableAccountJSON.paymentSystem)
+
       if availableAccount
-        availableAccount.update availableAccountJSON
+        availableAccount.update availableAccountJSON, paymentSystem
       else
-        paymentSystem = _.find @paymentSystems(), (ps) -> parseInt(ps.id()) is parseInt(availableAccountJSON.paymentSystem)
         availableAccount = new AvailableAccountViewModel(availableAccountJSON, paymentSystem)
         @availableAccounts.push(availableAccount)
 
