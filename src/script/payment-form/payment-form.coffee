@@ -80,7 +80,7 @@ class PaymentFormViewModel
     @selectedPaymentGroupViewModel()?.getPayment(masked)
 
   requiresAuthentication: =>
-    # TODO check if payment's paymentSystem.requiresAuthentication
+    @selectedPaymentGroupViewModel()?.paymentSystem()?.requiresAuthentication()
 
   update: (paymentJSON) =>
     # Only add payment groups on first run
