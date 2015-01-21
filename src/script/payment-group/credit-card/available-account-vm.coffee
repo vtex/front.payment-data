@@ -27,11 +27,6 @@ class AvailableAccountViewModel
   cardRemoveAsterisks: =>
     @cardNumber().toString().replace(/\*/g, "")
 
-  remove: =>
-    # TODO receive API parameter
-    window.vtexjs.checkout.removeAccountId(@accountId())
-    # radio('paymentData.paymentGroup.creditCard.availableAccounts.remove').broadcast(@)
-
   focusOnCCV: (data) =>
     if @cardSafetyCodeRequired()
       $(".orderform-template.active .step.active #cardCode"+@id).focus()

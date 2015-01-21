@@ -14,7 +14,7 @@
         <i class="icon-ok-circle" data-bind="visible: $parent.selectedAvailableAccountId() == accountId()"></i>
         <i class="icon-circle-blank" data-bind="visible: $parent.selectedAvailableAccountId() != accountId()"></i>
 
-        <a class="link-delete btn" href="javascript:void(0);" data-bind="click: remove, visible: checkout.loggedIn() == true" data-i18n="[title]paymentData.paymentGroup.creditCard.removeCard"><i class="icon-remove"></i> <span class="text hide" data-i18n="paymentData.paymentGroup.creditCard.removeCard">Excluir cartão</span></a>
+        <a class="link-delete btn" href="javascript:void(0);" data-bind="click: $parent.paymentGroup.removeAvailableAccount, visible: checkout.loggedIn() == true" data-i18n="[title]paymentData.paymentGroup.creditCard.removeCard"><i class="icon-remove"></i> <span class="text hide" data-i18n="paymentData.paymentGroup.creditCard.removeCard">Excluir cartão</span></a>
       </label>
       <!-- /ko -->
       <label class="btn label-vertical-group link-use-another-card"

@@ -32,7 +32,7 @@ class CreditCardPaymentGroupViewModel extends PaymentGroupViewModel
     card = @card
     # Caso seja um cartão salvo, selecione o com accountId relativo
     if payment.accountId
-      card.selectedAvailableAccountId(p.accountId)
+      card.selectedAvailableAccountId(payment.accountId)
       card.showSavedCreditCards()
     # Caso seja um cartão novo, selecione a bandeira
     else if payment.paymentSystem
@@ -66,7 +66,7 @@ class CreditCardPaymentGroupViewModel extends PaymentGroupViewModel
     validationResults.length > 0 and _.all validationResults, (val) -> val.result is true
 
   removeAvailableAccount: (ac) =>
-    # TODO send attachment e loading
+    window.vtexjs.checkout.removeAccountId(ac.accountId())
     @availableAccounts.remove ac
 
   afterSelected: =>
