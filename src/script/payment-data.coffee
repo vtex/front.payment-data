@@ -77,7 +77,7 @@ class PaymentDataViewModel extends Module
     @isValid({giveFocus: true, showErrorMessage: false, applyErrorClass: false})
     if window.Mobile
       Mobile.SwipeCardReaderIsConnected()
-    $(window).trigger('checkout.fixCart') # TODO
+    $(window).trigger('checkout.fixCart')
 
   addPaymentForm: =>
     # Don't add a payment unless all existing payments are valid
