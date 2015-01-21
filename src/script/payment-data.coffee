@@ -329,11 +329,22 @@ class PaymentDataViewModel extends Module
     adjustmentsMade = false
     payments = paymentData.payments
     totalToPay = @totalToPay.peek()
-    if payments.length is 1 and payments[0].referenceValue != totalToPay
+
+    if paymentData.giftCards and paymentData.giftCards.length > 0
+      totalPayedByGifts = _.reduce(paymentData.giftCards, (total, gc) ->
+        if gc.inUse
+          return total + gc.value
+        return total
+      , 0)
+    else
+      totalPayedByGifts = 0
+
+    if payments.length is 1 and ((payments[0].referenceValue + totalPayedByGifts) != totalToPay)
       payments[0].referenceValue = totalToPay
       adjustmentsMade = true
 
-    if payments.length is 0 # No payment exists, let's create a default
+    # No payment exists, let's create a default
+    if payments.length is 0 and totalPayedByGifts isnt totalToPay
       firstNonGiftPaymentSystem = _.find @paymentSystems(), (ps) -> ps.groupName() isnt 'giftCardPaymentGroup'
       payments.push(
         paymentSystem: parseInt(firstNonGiftPaymentSystem.id())
