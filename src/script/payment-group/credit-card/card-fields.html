@@ -86,7 +86,7 @@
     </div>
 </div>
 
-<div data-bind="template: { name: 'installments', afterRender: vtex.i18n.translateHtml, if: !$parent.isDebitCard() }"></div>
+<div data-bind="template: { name: 'installments', afterRender: vtex.i18n.translateHtml, if: !$parent.isDebitCard() && paymentGroup.paidValue() > 0 }"></div>
 
 <div class="card-scanner-resume clearfix" data-bind="if: labelCardFields">
     <div class="card-scanner-resume-info">
