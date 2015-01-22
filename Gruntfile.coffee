@@ -12,7 +12,8 @@ module.exports = (grunt) ->
     replaceMap: replaceMap
     livereload: !grunt.option('no-lr')
     open: false
-    copyIgnore: ['!**/*.coffee', '!**/*.less', '!script/**/*.html', '!script/**/*.js']
+    copyIgnore: ['!**/*.coffee', '!**/*.less', '!script/**/*.html', '!script/**/*.js',
+      '!script/{common,payment*,shipping,shipping/*,payment-group/*}']
 
   delete defaultConfig.watch.coffee
 
