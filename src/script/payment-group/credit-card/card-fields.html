@@ -119,17 +119,6 @@
                    value: cardOwnerName, valueUpdate:'afterkeydown',
                    validate: 'alpha', required: cardOwnerNameRequired, disable: checkout.disableInputs()">
     </p>
-
-    <div class="box-installments box-default">
-        <p class="select required">
-            <label data-bind="attr: {'for': $parent.identifier()+'payment-card' + id + 'Brand', htmlFor: $parent.identifier()+'payment-card' + id + 'Brand'}">Parcelamento</label>
-            <select class="input-xlarge"
-                    data-bind="attr: {id: $parent.identifier()+'payment-card' + id + 'Brand'},
-                    options: $parent.installments, value: $parent.selectedInstallmentNumber, required: true,
-                    optionsText: 'text', optionsValue: 'number', optionsCaption: $parent.installmentsCaption, optionsAfterRender: setOptionDisable">
-            </select>
-        </p>
-    </div>
 </div> <!-- labelCardFields -->
 
 

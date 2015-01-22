@@ -52,7 +52,7 @@ class PaymentGroupViewModel
       paymentSystemIdArray = _.map(paymentSystemsArray, (ps) -> parseInt(ps.id()))
       # Whenever the global availableAccounts change, this will be updated
       _.filter availableAccountsObservableArray(), (aa) ->
-        paymentSystemId = parseInt(aa.paymentSystem())
+        paymentSystemId = parseInt(aa.paymentSystem.id.peek())
         paymentSystemId in paymentSystemIdArray
 
     @selectedAvailableAccount = ko.observable()
@@ -122,7 +122,9 @@ class PaymentGroupViewModel
 
   setAvailableAccount: (availableAccountViewModel) =>
     @selectedAvailableAccount()?.selected(false)
-    availableAccountViewModel?.selected(true)
+    if availableAccountViewModel
+      availableAccountViewModel.selected(true)
+      @paymentSystem availableAccountViewModel.paymentSystem
     @selectedAvailableAccount(availableAccountViewModel)
 
   selectAvailableAccount: (availableAccountViewModel) =>

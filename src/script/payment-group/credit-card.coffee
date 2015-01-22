@@ -30,7 +30,8 @@ class CreditCardPaymentGroupViewModel extends PaymentGroupViewModel
   updatePayment: (payment) =>
     super
     unusedAvailableAccounts = @unusedAvailableAccounts.peek()
-    if payment?.accountId or unusedAvailableAccounts.length > 0
+    # If payment from API has accountId OR it's a new payment and there's unused available accounts
+    if payment?.accountId or (unusedAvailableAccounts.length > 0 and not payment?.paymentSystem)
       @card.showSavedCreditCards()
     else
       @card.showNewCard()

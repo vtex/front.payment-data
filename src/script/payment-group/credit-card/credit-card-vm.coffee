@@ -190,7 +190,7 @@ class CreditCardViewModel
     else if account? and not @isUsingNewCard.peek()
       fields =
         accountId: account.accountId()
-        validationCode: account.cardSafetyCode()
+        validationCode: @cardSafetyCode()
       # Caso seja um novo cartão
     else
       fields =
@@ -314,12 +314,9 @@ class CreditCardViewModel
     fields = []
     if @paymentGroup.selectedAvailableAccount()?
       if @paymentGroup.selectedAvailableAccount().cardSafetyCodeRequired()
-        fields.push @paymentGroup.selectedAvailableAccount().cardSafetyCode
+        fields.push @cardSafetyCode
     else
-      properties = @requiredProperties
-      fields = fields.concat(_.map(properties, (f) =>
-        this[f]
-      ))
+      fields = fields.concat _.map @requiredProperties, (f) => this[f]
 
       # Caso seja necessário validar o endereço
       if @billingAddressRequired() and not @sameBillingAddress()
