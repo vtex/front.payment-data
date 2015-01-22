@@ -29,7 +29,8 @@ class CreditCardPaymentGroupViewModel extends PaymentGroupViewModel
 
   updatePayment: (payment) =>
     super
-    if payment.accountId
+    unusedAvailableAccounts = @unusedAvailableAccounts.peek()
+    if payment?.accountId or unusedAvailableAccounts.length > 0
       @card.showSavedCreditCards()
     else
       @card.showNewCard()
@@ -46,12 +47,5 @@ class CreditCardPaymentGroupViewModel extends PaymentGroupViewModel
 
   validate: (options) =>
     @card.validate(options)
-
-  isValid: (options) =>
-    validationResults = @validate(options or giveFocus: true)
-    validationResults.length > 0 and _.all validationResults, (val) -> val.result is true
-
-  afterSelected: =>
-    @validate(giveFocus:true, showErrorMessage: false, applyErrorClass: false)
 
 module.exports = CreditCardPaymentGroupViewModel

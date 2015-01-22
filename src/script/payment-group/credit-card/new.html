@@ -1,6 +1,6 @@
 <div class="clearfix card-data" data-bind="css: { 'active': isUsingNewCard }">
   <div class="clearfix">
-    <p class="link link-box-new" data-bind="visible: unusedAvailableAccounts().length > 0">
+    <p class="link link-box-new" data-bind="visible: paymentGroup.unusedAvailableAccounts().length > 0">
       <a href="javascript:void(0);"
          data-bind="click: showSavedCreditCards, text: i18n.t('paymentData.backCreditCardList')"></a>
     </p>

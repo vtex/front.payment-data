@@ -1,7 +1,7 @@
-<div class="saved-cards" data-bind="if: unusedAvailableAccounts().length, css: { active: unusedAvailableAccounts().length > 0 }">
+<div class="saved-cards" data-bind="if: paymentGroup.unusedAvailableAccounts().length, css: { active: paymentGroup.unusedAvailableAccounts().length > 0 }">
   <fieldset class="clearfix">
     <div class="btn-group btn-group-vertical card-list-saved">
-      <!-- ko foreach: unusedAvailableAccounts -->
+      <!-- ko foreach: paymentGroup.unusedAvailableAccounts -->
       <label class="input btn label-vertical-group card-list-saved-item"
              data-bind="css: { 'active':  $parent.paymentGroup.selectedAvailableAccount() == $data }, click: $parent.paymentGroup.selectAvailableAccount">
         <span class="card-flags">

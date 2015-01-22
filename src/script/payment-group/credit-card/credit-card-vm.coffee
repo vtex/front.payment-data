@@ -83,10 +83,6 @@ class CreditCardViewModel
     if vtexjs.checkout.orderForm?.shippingData?.address
       @updateShippingAddress(vtexjs.checkout.orderForm.shippingData.address)
 
-    @unusedAvailableAccounts = ko.computed =>
-      _.reject @paymentGroup.availableAccounts(), (aa) =>
-        aa.selected() and aa isnt @paymentGroup.selectedAvailableAccount()
-
     $(window).on 'orderFormUpdated.vtex', (e, orderForm) =>
       return unless orderForm.shippingData?.address
       @updateShippingAddress(orderForm.shippingData.address)

@@ -57,6 +57,10 @@ class PaymentGroupViewModel
 
     @selectedAvailableAccount = ko.observable()
 
+    @unusedAvailableAccounts = ko.computed =>
+      _.reject @availableAccounts(), (aa) =>
+        aa.selected() and aa isnt @selectedAvailableAccount()
+
     @template = ko.observable switch @name
       when 'PayPal' then payPalTemplateId
       when 'Safetypay' then safetyPayTemplateId
@@ -182,8 +186,11 @@ class PaymentGroupViewModel
       installmentsValue: selectedInstallment?.value
     return payment
 
-  validate: -> [result: true]
+  validate: ->
+    [result: true] if @paidValue() > 0
 
-  isValid: -> true
+  isValid: ->
+    validationResults = @validate(options or giveFocus: true)
+    validationResults.length > 0 and _.all validationResults, (val) -> val.result is true
 
 module.exports = PaymentGroupViewModel

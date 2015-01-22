@@ -11,15 +11,7 @@ class CreditCardCustomPaymentGroupViewModel extends CreditCardPaymentGroupViewMo
 
     @localizedLabel = ko.computed => @name
 
+    # TODO converter para @paymentSystem()
     @selectedPaymentSystemId = ko.observable(@paymentSystems()[0].id())
-
-  afterSelected: (wasSelectedBefore) =>
-    return if wasSelectedBefore
-    @card.setupCustomCard(@paymentSystem())
-    $('.payment-card-number input').focus()
-
-  afterRenderGroup: =>
-    $('.orderform-template-holder').i18n()
-    @card.cardNumber.validate(silent: true) if @card.cardNumber.validate
 
 module.exports = CreditCardCustomPaymentGroupViewModel
