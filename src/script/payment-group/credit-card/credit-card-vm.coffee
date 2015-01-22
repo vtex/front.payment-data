@@ -38,7 +38,10 @@ class CreditCardViewModel
     @oldFlag = ko.observable()
     @isUsingNewCard = ko.observable()
     @cardSafetyCodeHasFocus = ko.observable()
-    @sameBillingAddress = ko.observable(not (vtexjs.checkout.orderForm.giftRegistryData?.addressId is vtexjs.checkout.orderForm.shippingData?.address?.addressId))
+    giftRegistryAddressId = vtexjs.checkout.orderForm.giftRegistryData?.addressId
+    shippingAddressId = vtexjs.checkout.orderForm.shippingData?.address?.addressId
+    shippingToGift = giftRegistryAddressId? and giftRegistryAddressId is shippingAddressId
+    @sameBillingAddress = ko.observable(not shippingToGift)
     @isCreditCardCustom = ko.observable(@paymentGroup.isCustom())
     @requiredProperties = [
       "cardNumber"
