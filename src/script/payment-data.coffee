@@ -97,7 +97,7 @@ class PaymentDataViewModel extends Module
     if paymentForm is @selectedPaymentFormViewModel()
       indexOfPaymentForm = _.indexOf(@paymentForms(), paymentForm)
       newPaymentFormIndex = Math.abs(indexOfPaymentForm - 1) # if 0, select 1
-      @selectPaymentForm(@paymentForms()[newPaymentFormIndex])
+      @selectedPaymentFormViewModel(@paymentForms()[newPaymentFormIndex])
     @paymentForms.remove(paymentForm)
     paymentForm.selectedPaymentGroupViewModel()?.removeGiftCard?()
     paymentForm.selectedPaymentGroupViewModel()?.selectedAvailableAccount()?.selected(false)
