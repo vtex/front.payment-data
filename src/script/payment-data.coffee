@@ -268,18 +268,25 @@ class PaymentDataViewModel extends Module
 
     # If we have less payments now then before, we must delete all payments and re-create them from scratch.
     # As we don't have ID's, we can't be sure which payment was deleted.
-    if payments.length < paymentForms.length
+    if payments.length isnt paymentForms.length
       @paymentForms.remove pf for pf in paymentForms
+      @selectedPaymentFormViewModel(undefined)
+      paymentForms = []
 
-    updatePayments = (payment, paymentsArray) =>
-      # Finds by index. If a payment exists in this position, update id. Else, create a new one.
+    if giftPayments.length isnt giftPaymentForms.length
+      @paymentForms.remove pf for pf in giftPaymentForms
+      @selectedPaymentFormViewModel(undefined)
+      giftPaymentForms = []
+
+    # Finds by index. If a payment exists in this position, update it. Else, create a new one.
+    updatePayments = (payment, paymentsArray, i) =>
       try
         paymentsArray[i].update payment
       catch e
         @paymentForms.push new PaymentFormViewModel(payment, @paymentSystems, @availableAccounts, @giftCards)
 
-    updatePayments(payment, paymentForms) for payment, i in payments
-    updatePayments(payment, giftPaymentForms) for payment, i in giftPayments
+    updatePayments(payment, paymentForms, i) for payment, i in payments
+    updatePayments(payment, giftPaymentForms, i) for payment, i in giftPayments
 
     if not @selectedPaymentFormViewModel()?
       @selectedPaymentFormViewModel(@paymentForms()[0])
