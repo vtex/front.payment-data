@@ -4,8 +4,6 @@
        data-i18n="paymentData.paymentGroup.creditCard.scanner.scanCard">Usar leitor de cartão</a>
 </p>
 <div class="skeuocard skeuocard-frontside" data-bind="css: { 'skeuocard-bigger': cardCodeMask().length > 3 }">
-    <div class="payment-card-cvv-container" data-bind="template: 'cvv', css: { 'payment-card-cvv-backside': cardCodeMask().length <= 3, 'payment-card-cvv-frontside': cardCodeMask().length > 3 }"></div>
-
     <div class="payment-card-number input text required clearLeft">
         <label class="hide" data-bind="attr: {'for': $parent.identifier()+'payment-card' + id + 'Number', htmlFor: $parent.identifier()+'payment-card' + id + 'Number'}">
             <span data-i18n="paymentData.paymentGroup.creditCard.number">Número</span>
@@ -77,6 +75,7 @@
                 data-i18n="[placeholder]paymentData.paymentGroup.creditCard.holderName">
         </p>
     </div>
+    <div class="payment-card-cvv-container" data-bind="template: 'cvv', css: { 'payment-card-cvv-backside': cardCodeMask().length <= 3, 'payment-card-cvv-frontside': cardCodeMask().length > 3 }"></div>
     <!-- ko foreach: paymentGroup.paymentSystems -->
          <span class="card-flag" data-bind="visible: $parent.paymentGroup.paymentSystem() == $data && $parent.cardNumber.lastValidationResult,
             attr: {'class': 'skeuocard-flag card-flag card-selected ' + name()}"></span>
