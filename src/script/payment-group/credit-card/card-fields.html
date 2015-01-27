@@ -32,21 +32,26 @@
         </span>
     </div>
 
-    <div class="card-flags-container card-flags-container-top clearfix form-inline" data-bind="css: {'hide': isCreditCardCustom}">
-        <p class="card-flags" data-bind="css: { 'active': $parent.paymentSystem() }">
-            <!-- ko foreach: paymentGroup.paymentSystems -->
-            <label class="radio card-flag-label"
-                   data-bind="attr:{'for': $parents[1].identifier()+'selectedCard' + $index() + 'cc' +  $parent.id, 'htmlFor': $parents[1].identifier()+'selectedCard' + $index() + 'cc' +  $parent.id, title: name}">
-                <input class="card-flag-radio" type="radio" tabindex="-1"
-                       data-bind="attr: { name: $parents[1].identifier()+'selectedCardFlag' + $parent.id, id: $parents[1].identifier()+'selectedCard' + $index() + 'cc' +  $parent.id },
-                        value: $data, checked: $parent.paymentGroup.paymentSystem, disable: checkout.disableInputs()">
-                 <span class="card-flag" data-bind="text: name,
-                    attr: {'class': 'card-flag ' + name()},
-                    css: {'card-selected': $parent.paymentGroup.paymentSystem() == $data}"></span>
-            </label>
-            <!-- /ko -->
-        </p>
+    <div class="card-payment-complementary-fields clearfix">
+        <div class="card-scanner-label-all-fields card-flags-container clearfix form-inline" data-bind="css: {'hide': isCreditCardCustom}, if: !labelCardFields()">
+            <p class="card-flags" data-bind="css: { 'active': $parent.paymentSystem() }">
+                <!-- ko foreach: paymentGroup.paymentSystems -->
+                <label class="radio card-flag-label"
+                       data-bind="attr:{'for': $parents[1].identifier()+'selectedCard' + $index() + 'cc' +  $parent.id, 'htmlFor': $parents[1].identifier()+'selectedCard' + $index() + 'cc' +  $parent.id, title: name}">
+                    <input class="card-flag-radio" type="radio" tabindex="-1"
+                           data-bind="attr: { name: $parents[1].identifier()+'selectedCardFlag' + $parent.id, id: $parents[1].identifier()+'selectedCard' + $index() + 'cc' +  $parent.id },
+                            value: $data, checked: $parent.paymentGroup.paymentSystem, disable: checkout.disableInputs()">
+                     <span class="card-flag" data-bind="text: name,
+                        attr: {'class': 'card-flag ' + name()},
+                        css: {'card-selected': $parent.paymentGroup.paymentSystem() == $data}"></span>
+                </label>
+                <!-- /ko -->
+            </p>
+        </div>
+
+        <div data-bind="template: { name: 'installments', afterRender: vtex.i18n.translateHtml, if: !$parent.isDebitCard() && paymentGroup.paidValue() > 0 }"></div>
     </div>
+    
 
     <div class="payment-card-due text" data-bind="css: {'hide': !cardExpirationDateRequired()}">
         <label class="payment-card-due-label pull-left" data-bind="attr: {'for': $parent.identifier()+'payment-card' + id + 'Month'}">
@@ -85,26 +90,6 @@
 <div class="skeuocard skeuocard-backside" data-bind="css: {'transparent': !cardSafetyCodeRequired() || cardCodeMask().length > 3 }">
     <div class="skeuocard-stripe"></div>
 </div>
-
-<div class="card-scanner-label-all-fields" data-bind="if: !labelCardFields()">
-    <div class="card-flags-container card-flags-container-bottom clearfix form-inline" data-bind="css: {'hide': isCreditCardCustom}">
-        <p class="card-flags" data-bind="css: { 'active': $parent.paymentSystem() }">
-            <!-- ko foreach: paymentGroup.paymentSystems -->
-            <label class="radio card-flag-label"
-                   data-bind="attr:{'for': $parents[1].identifier()+'selectedCard' + $index() + 'cc' +  $parent.id, 'htmlFor': $parents[1].identifier()+'selectedCard' + $index() + 'cc' +  $parent.id, title: name}">
-                <input class="card-flag-radio" type="radio" tabindex="-1"
-                       data-bind="attr: { name: $parents[1].identifier()+'selectedCardFlag' + $parent.id, id: $parents[1].identifier()+'selectedCard' + $index() + 'cc' +  $parent.id },
-                        value: $data, checked: $parent.paymentGroup.paymentSystem, disable: checkout.disableInputs()">
-                 <span class="card-flag" data-bind="text: name,
-                    attr: {'class': 'card-flag ' + name()},
-                    css: {'card-selected': $parent.paymentGroup.paymentSystem() == $data}"></span>
-            </label>
-            <!-- /ko -->
-        </p>
-    </div>
-</div>
-
-<div data-bind="template: { name: 'installments', afterRender: vtex.i18n.translateHtml, if: !$parent.isDebitCard() && paymentGroup.paidValue() > 0 }"></div>
 
 <div class="card-scanner-resume clearfix" data-bind="if: labelCardFields">
     <div class="card-scanner-resume-info">
