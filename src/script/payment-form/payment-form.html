@@ -34,7 +34,7 @@
             <fieldset class="payment-group-condensed" data-bind="css: { 'payment-group-wrapped': $parent.paymentForms().length > 1 }">
                 <p>
                     <label class="payment-group-condensed-label hide" data-i18n="paymentData.paymentMethod" data-bind="attr: { 'for': 'select-payment-group-' + id }"></label>
-                    <select class="payment-group-condensed-selector input-xlarge" data-bind="attr: { 'id': 'select-payment-group-' + id }, options: paymentGroups, optionsText: 'localizedLabel', value: selectedPaymentGroup, optionsValue: 'id', optionsCaption: paymentMethodsCaption"></select>
+                    <select class="payment-group-condensed-selector input-xlarge" data-bind="attr: { 'id': 'select-payment-group-' + id }, options: paymentGroups, optionsText: 'localizedLabel', value: selectedPaymentGroupViewModel, optionsCaption: paymentMethodsCaption"></select>
                 </p>
             </fieldset>
             <!-- /ko -->

@@ -27,23 +27,18 @@ class PaymentFormViewModel
     # UI State
     @validationError = ko.observable(false)
     @active = ko.observable(false)
-    @selectedPaymentGroupViewModel = ko.observable()
+
+    @_selectedPaymentGroupViewModel = ko.observable()
+    @selectedPaymentGroupViewModel = ko.computed
+      read: =>
+        @_selectedPaymentGroupViewModel()
+      write: (paymentGroupViewModel) =>
+        @selectPaymentGroup(paymentGroupViewModel)
 
     @update(paymentJSON)
 
     @paymentMethodsCaption = ko.computed =>
       i18n.t("paymentData.paymentMethod")
-
-    @selectedPaymentGroup = ko.computed
-      read: =>
-        @selectedPaymentGroupViewModel().id
-      write: (id) =>
-        return unless id
-
-        currentPaymentGroupId = @selectedPaymentGroupViewModel().id
-        currentPaymentGroup = _.find @paymentGroups(), (pg) -> pg.id is currentPaymentGroupId
-
-        @selectPaymentGroup(currentPaymentGroup)
 
   selectPaymentGroup: (paymentGroupViewModel) =>
     debug @id, 'selected payment group', paymentGroupViewModel
@@ -54,7 +49,7 @@ class PaymentFormViewModel
     paymentGroupViewModel?.updatePayment({
       referenceValue: paidValue
     })
-    @selectedPaymentGroupViewModel(paymentGroupViewModel)
+    @_selectedPaymentGroupViewModel(paymentGroupViewModel)
     # User changed selected payment group, let API know of this change
     $(window).trigger('paymentUpdated.vtex') if paidValue > 0 and paymentGroupViewModel
 
@@ -108,7 +103,7 @@ class PaymentFormViewModel
     if paymentJSON.paymentSystem? and not @selectedPaymentGroupViewModel()? # No paymentGroup, select according to paymentSystem
       paymentSystem = _.find @paymentSystems(), (ps) => ps.id().toString() is paymentJSON.paymentSystem.toString()
       pg = _.find @paymentGroups(), (pg) -> pg.groupName() is paymentSystem.groupName()
-      @selectedPaymentGroupViewModel(pg)
+      @_selectedPaymentGroupViewModel(pg)
 
     @selectedPaymentGroupViewModel()?.updatePayment(paymentJSON)
 
