@@ -1,4 +1,5 @@
 GruntVTEX = require 'grunt-vtex'
+webpack = require 'webpack'
 
 module.exports = (grunt) ->
   pkg = grunt.file.readJSON 'package.json'
@@ -24,9 +25,12 @@ module.exports = (grunt) ->
         module:
           loaders: [
             { test: /\.coffee$/, loader: "coffee-loader" }
-            { test: /\.html$/, loader: "html-loader" }
+            { test: /\.html$/, loader: "html-loader", query: {minimize: false} }
           ]
         devtool: "source-map"
+        plugins: [
+          new webpack.optimize.UglifyJsPlugin()
+        ]
       main:
         entry: "./src/script/payment-data.coffee"
         output:
