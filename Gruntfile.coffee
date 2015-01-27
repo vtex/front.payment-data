@@ -26,6 +26,7 @@ module.exports = (grunt) ->
             { test: /\.coffee$/, loader: "coffee-loader" }
             { test: /\.html$/, loader: "html-loader" }
           ]
+        devtool: "source-map"
       main:
         entry: "./src/script/payment-data.coffee"
         output:
