@@ -18,7 +18,7 @@
 
     <form action="" data-event="finishPayment" class="form-step box-new" data-bind="submit: $parent.submit, if: $parent.selectedPaymentFormViewModel() == $data">
         <!-- ko if: $parent.showPaymentGroupSelector -->
-        <fieldset class="payment-group" data-bind="css: { 'payment-group-wrapped': $parent.paymentForms().length > 1 }">
+        <fieldset class="payment-group" data-bind="css: { 'payment-group-wrapped': $parent.paymentForms().length > 1, 'payment-group-alone': $parent.paymentForms().length == 1 }">
             <div class="required payment-group-list-btn" data-bind="foreach: paymentGroups">
                 <a href="javascript:void(0);" data-bind="click: $parent.selectPaymentGroup, attr:{ 'id':'payment-group-' + groupName(), 'class': className + ' payment-group-item' }, css: { active: $parent.selectedPaymentGroupViewModel() && $parent.selectedPaymentGroupViewModel().id == id }">
                     <span class="payment-group-item-flag"></span>
@@ -29,9 +29,9 @@
         <!-- /ko -->
 
         <!-- ko if: selectedPaymentGroupViewModel -->
-        <div class="payment-form-wrapper">
+        <div class="payment-form-wrapper" data-bind="css: { 'payment-form-wrapper-alone': $parent.paymentForms().length == 1 }">
             <!-- ko if: $parent.showPaymentGroupSelector -->
-            <fieldset class="payment-group-condensed" data-bind="css: { 'payment-group-wrapped': $parent.paymentForms().length > 1 }">
+            <fieldset class="payment-group-condensed" data-bind="css: { 'hide': $parent.paymentForms().length > 1 }">
                 <p>
                     <label class="payment-group-condensed-label hide" data-i18n="paymentData.paymentMethod" data-bind="attr: { 'for': 'select-payment-group-' + id }"></label>
                     <select class="payment-group-condensed-selector input-xlarge" data-bind="attr: { 'id': 'select-payment-group-' + id }, options: paymentGroups, optionsText: 'localizedLabel', value: selectedPaymentGroupViewModel, optionsCaption: paymentMethodsCaption"></select>
