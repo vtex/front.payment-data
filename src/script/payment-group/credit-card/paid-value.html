@@ -1,7 +1,7 @@
 <p class="paid-value-change-wrapper" data-bind="visible: !paymentData.wannaChangePaymentValue() && paymentData.paymentForms().length == 1">
-  <button class="paid-value-change btn btn-link" data-bind="click: function() { paymentData.wannaChangePaymentValue(true); }">Deseja pagar com mais de uma forma?</button>
+  <a href="javascript:void(0);" class="paid-value-change-btn btn btn-link" data-bind="click: function() { paymentData.wannaChangePaymentValue(true); }">Deseja pagar com mais de uma forma?</a>
 </p>
 <p class="paid-value form-inline text" data-bind="visible: paymentData.wannaChangePaymentValue() || paymentData.paymentForms().length > 1">
-  <label class="label-text"><span data-i18n="global.values">Valor</span> com <span data-bind="text: localizedLabel"></span></label>
-  <input class="input-mini align-right" type="text" data-bind="value: paidValueInput"/>
+  <label class="label-text" data-bind="attr: { 'for': 'paid-value' + id }"><span data-i18n="global.values">Valor</span> com <span data-bind="text: localizedLabel"></span></label>
+  <input class="input-mini align-right" type="text" data-bind="attr: { 'id': 'paid-value' + id }, value: paidValueInput"/>
 </p>

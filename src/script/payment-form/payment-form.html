@@ -26,16 +26,22 @@
                 </a>
             </div>
         </fieldset>
-
-        <fieldset class="payment-group" data-bind="css: { 'payment-group-wrapped': $parent.paymentForms().length > 1 }">
-            <select data-bind="options: paymentGroups, optionsText: 'localizedLabel', value: selectedPaymentGroup, optionsValue: 'id', optionsCaption: paymentMethodsCaption"></select>
-        </fieldset>
         <!-- /ko -->
 
         <!-- ko if: selectedPaymentGroupViewModel -->
+        <div class="payment-form-wrapper">
+            <!-- ko if: $parent.showPaymentGroupSelector -->
+            <fieldset class="payment-group-condensed" data-bind="css: { 'payment-group-wrapped': $parent.paymentForms().length > 1 }">
+                <p>
+                    <label class="payment-group-condensed-label hide" data-i18n="paymentData.paymentMethod" data-bind="attr: { 'for': 'select-payment-group-' + id }"></label>
+                    <select class="payment-group-condensed-selector input-xlarge" data-bind="attr: { 'id': 'select-payment-group-' + id }, options: paymentGroups, optionsText: 'localizedLabel', value: selectedPaymentGroup, optionsValue: 'id', optionsCaption: paymentMethodsCaption"></select>
+                </p>
+            </fieldset>
+            <!-- /ko -->
         <!-- ko with: selectedPaymentGroupViewModel -->
-        <div class="payment-form" data-bind="template: template"></div>
+            <div class="payment-form" data-bind="template: template"></div>
         <!-- /ko -->
+        </div>
         <!-- /ko -->
     </form>
 </div>
