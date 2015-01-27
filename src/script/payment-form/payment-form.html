@@ -26,6 +26,10 @@
                 </a>
             </div>
         </fieldset>
+
+        <fieldset class="payment-group" data-bind="css: { 'payment-group-wrapped': $parent.paymentForms().length > 1 }">
+            <select data-bind="options: paymentGroups, optionsText: 'localizedLabel', value: selectedPaymentGroup, optionsValue: 'id', optionsCaption: paymentMethodsCaption"></select>
+        </fieldset>
         <!-- /ko -->
 
         <!-- ko if: selectedPaymentGroupViewModel -->

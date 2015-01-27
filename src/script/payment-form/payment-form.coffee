@@ -31,6 +31,20 @@ class PaymentFormViewModel
 
     @update(paymentJSON)
 
+    @paymentMethodsCaption = ko.computed =>
+      i18n.t("paymentData.paymentMethod")
+
+    @selectedPaymentGroup = ko.computed
+      read: =>
+        @selectedPaymentGroupViewModel().id
+      write: (id) =>
+        return unless id
+
+        currentPaymentGroupId = @selectedPaymentGroupViewModel().id
+        currentPaymentGroup = _.find @paymentGroups(), (pg) -> pg.id is currentPaymentGroupId
+
+        @selectPaymentGroup(currentPaymentGroup)
+
   selectPaymentGroup: (paymentGroupViewModel) =>
     debug @id, 'selected payment group', paymentGroupViewModel
     currentPaymentGroup = @selectedPaymentGroupViewModel()
