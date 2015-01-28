@@ -51,6 +51,11 @@ module.exports = (grunt) ->
       coffee:
         files: ['src/script/**/*.coffee']
         tasks: ['webpack']
+      less:
+        options:
+          livereload: false
+        files: ['src/style/**/*.less']
+        tasks: ['less']
       kotemplates:
         files: ['src/script/**/*.html']
         tasks: ['webpack']
@@ -66,9 +71,9 @@ module.exports = (grunt) ->
 
   tasks =
     # Building block tasks
-    build: ['clean', 'jshint', 'webpack:demo', 'webpack:main', 'copy:main', 'copy:pkg', 'recess', 'less']
+    build: ['clean', 'jshint', 'webpack:demo', 'webpack:main', 'copy:main', 'copy:pkg', 'less']
     # Deploy tasks
-    dist: ['clean', 'jshint', 'webpack:dist', 'copy:main', 'copy:pkg', 'recess', 'less', 'copy:deploy'] # Dist - minifies files
+    dist: ['clean', 'jshint', 'webpack:dist', 'copy:main', 'copy:pkg', 'less', 'copy:deploy'] # Dist - minifies files
     test: []
     vtex_deploy: ['shell:cp', 'shell:cp_br']
     # Development tasks
