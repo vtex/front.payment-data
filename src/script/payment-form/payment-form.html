@@ -1,4 +1,8 @@
 ﻿<div class="payment-content">
+    <span class="security payment-security">
+        <i class="icon-lock"></i>
+        <span class="payment-security-text" data-i18n="paymentData.secureEnvironment">Ambiente Seguro</span>
+    </span>
     <div class="payment-summary" data-bind="click: $parent.selectPaymentForm, visible: $parent.paymentForms().length > 1">
     <!-- ko if: selectedPaymentGroupViewModel -->
         <strong class="payment-summary-name" data-bind="text: selectedPaymentGroupViewModel().localizedLabel"></strong>

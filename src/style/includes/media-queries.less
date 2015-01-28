@@ -138,7 +138,10 @@
 		}
 		
 		.payment-card-cvv-label,
-		.payment-card-due-label { margin-top: 2px; }
+		.payment-card-due-label {
+			float: left;
+			margin-top: 2px;
+		}
 
 		.payment-card-cvv-label { width: 60px; }
 
@@ -278,13 +281,8 @@
 		visibility: visible;
 	}
 	.payment-card-number,
-	.payment-card-due,
-	.payment-card-name,
-	.payment-card-cvv {
-		label {
-			display: block;
-			float: none;
-		}
+	.payment-card-name {
+		label { display: block; }
 	}
 	.payment-card-number,
 	.text.saved-cc-ccv {
@@ -294,7 +292,8 @@
 			line-height: 34px;
 		}
 	}
-	.payment-card-number {
+	.payment-card-number,
+	.payment-card-name-input {
 		::-webkit-input-placeholder { color: transparent; }
 		:-moz-placeholder { color: transparent; }
 		::-moz-placeholder { color: transparent; }
