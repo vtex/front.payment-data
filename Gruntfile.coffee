@@ -28,10 +28,15 @@ module.exports = (grunt) ->
             { test: /\.html$/, loader: "html-loader", query: {minimize: false} }
           ]
         devtool: "source-map"
-        plugins: [
-          new webpack.optimize.UglifyJsPlugin()
-        ]
       main:
+        entry: "./src/script/payment-data.coffee"
+        output:
+          path: "build/<%= relativePath %>/script/"
+          filename: "payment-data-bundle.js"
+      dist:
+        plugins: [
+          new webpack.optimize.UglifyJsPlugin(mangle: false)
+        ]
         entry: "./src/script/payment-data.coffee"
         output:
           path: "build/<%= relativePath %>/script/"
@@ -61,16 +66,15 @@ module.exports = (grunt) ->
 
   tasks =
     # Building block tasks
-    build: ['clean', 'jshint', 'copy:main', 'copy:pkg', 'recess', 'less', 'webpack']
-    min: [] # minifies files
+    build: ['clean', 'jshint', 'webpack:demo', 'webpack:main', 'copy:main', 'copy:pkg', 'recess', 'less']
     # Deploy tasks
-    dist: ['build', 'min', 'copy:deploy'] # Dist - minifies files
+    dist: ['clean', 'jshint', 'webpack:dist', 'copy:main', 'copy:pkg', 'recess', 'less', 'copy:deploy'] # Dist - minifies files
     test: []
     vtex_deploy: ['shell:cp', 'shell:cp_br']
     # Development tasks
     dev: ['nolr', 'build', 'watch']
     default: ['build', 'connect', 'watch']
-    devmin: ['build', 'min', 'connect:http:keepalive'] # Minifies files and serve
+    devmin: ['dist', 'connect:http:keepalive'] # Minifies files and serve
 
   # Project configuration.
   grunt.config.init defaultConfig
