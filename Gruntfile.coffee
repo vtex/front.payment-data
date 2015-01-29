@@ -5,18 +5,40 @@ module.exports = (grunt) ->
   pkg = grunt.file.readJSON 'package.json'
 
   replaceMap = {}
+  devReplaceMap = {}
   replaceMap["/front.payment-data/"] = "//io.vtex.com.br/#{pkg.name}/#{pkg.version}/"
   replaceMap["\<\!\-\-remove\-\-\>(.|\n)*\<\!\-\-endremove\-\-\>"] = ""
+
+  linkReplace = (features, symlink, tags) -> (match, path, app, major) ->
+    env = if grunt.option('stable') then 'stable' else 'beta'
+    if symlink[app]
+      console.log "link".blue, app, "->".blue, "local"
+      return "/#{app}/#{path.replace('.min', '')}"
+    else
+      version = tags[app][env][major]
+      console.log "link".blue, app, "->".blue, version
+      return "//io.vtex.com.br/#{app}/#{version}/#{path}"
+
+  devReplaceMap["\\{\\{ \\'(.*)\\' \\| vtex_io: \\'(.*)\\', (\\d) \\}\\}"] = linkReplace
 
   defaultConfig = GruntVTEX.generateConfig grunt, pkg,
     followHttps: true
     replaceMap: replaceMap
+    devReplaceMap: devReplaceMap
     livereload: !grunt.option('no-lr')
     open: false
     copyIgnore: ['!**/*.coffee', '!**/*.less', '!script/**/*.html', '!script/**/*.js',
       '!script/{common,payment*,shipping,shipping/*,payment-group/*}']
 
   delete defaultConfig.watch.coffee
+
+  externals =
+    'appendTemplate': 'vtex.common.appendTemplate'
+    'Module': 'vtex.common.Module'
+    'Routable': 'vtex.common.Routable'
+    'debug': 'vtex.common.debug'
+    'Step': 'vtex.knockout.Step'
+    'Translatable': 'vtex.i18n.Translatable'
 
   # Add custom configuration here as needed
   customConfig =
@@ -30,6 +52,7 @@ module.exports = (grunt) ->
         devtool: "source-map"
       main:
         entry: "./src/script/payment-data.coffee"
+        externals: externals
         output:
           path: "build/<%= relativePath %>/script/"
           filename: "payment-data-bundle.js"
@@ -38,6 +61,7 @@ module.exports = (grunt) ->
           new webpack.optimize.UglifyJsPlugin(mangle: false)
         ]
         entry: "./src/script/payment-data.coffee"
+        externals: externals
         output:
           path: "build/<%= relativePath %>/script/"
           filename: "payment-data-bundle.js"

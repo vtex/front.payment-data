@@ -1,13 +1,13 @@
 template = require './generic.html'
-templateId = require('../common/append-template.coffee')('payment-group', template)
+templateId = require('appendTemplate')('payment-group', template)
 payPalTemplate = require './paypal.html'
-payPalTemplateId = require('../common/append-template.coffee')('paypal', payPalTemplate)
+payPalTemplateId = require('appendTemplate')('paypal', payPalTemplate)
 safetyPayTemplate = require './safetypay.html'
-safetyPayTemplateId = require('../common/append-template.coffee')('safetypay', safetyPayTemplate)
+safetyPayTemplateId = require('appendTemplate')('safetypay', safetyPayTemplate)
 
 Payment = require '../payment-system/payment.coffee'
 
-debug = require('../common/debug.coffee')('paym-group')
+debug = require('debug')('paym-group')
 class PaymentGroupViewModel
   constructor: (paymentSystemsArray, availableAccountsObservableArray) ->
     @id = (new Date().getTime() * -1).toString() + Math.random().toString(36).substr(2)

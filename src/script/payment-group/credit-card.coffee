@@ -1,4 +1,4 @@
-append = require('../common/append-template.coffee')
+append = require('appendTemplate')
 # Add partial templates to page
 templates = ['available-accounts', 'card-fields', 'card-scanner', 'cvv', 'installments', 'new', 'paid-value']
 _.each templates, (id) ->
@@ -12,7 +12,7 @@ PaymentGroupViewModel = require './payment-group.coffee'
 CreditCardViewModel = require './credit-card/credit-card-vm.coffee'
 CreditCardTotemViewModel = require './credit-card/credit-card-totem-vm.coffee'
 
-debug = require('../common/debug.coffee')('pg-credit')
+debug = require('debug')('pg-credit')
 class CreditCardPaymentGroupViewModel extends PaymentGroupViewModel
   constructor: ->
     super

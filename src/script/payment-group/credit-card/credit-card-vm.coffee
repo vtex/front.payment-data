@@ -2,7 +2,7 @@ BillingAddressViewModel = require '../../shipping/address/billing-address.coffee
 ShippingAddressViewModel = require '../../shipping/address/shipping-address.coffee'
 Payment = require '../../payment-system/payment.coffee'
 
-debug = require('../../common/debug.coffee')('creditcard')
+debug = require('debug')('creditcard')
 class CreditCardViewModel
   constructor: (paymentGroup) ->
     @id = (new Date().getTime() * -1).toString()

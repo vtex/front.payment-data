@@ -1,6 +1,5 @@
 /* global $, ko, window, vtex */
 'use strict';
-require('./common/vtex-validation.coffee');
 vtex.i18n = {
   translateHtml: function(){}
 };

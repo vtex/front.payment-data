@@ -1,5 +1,5 @@
 template = require './payment-form.html'
-templateId = require('../common/append-template.coffee')('payment-form', template)
+templateId = require('appendTemplate')('payment-form', template)
 
 CreditCardPaymentGroupViewModel = require '../payment-group/credit-card.coffee'
 CreditCardCustomPaymentGroupViewModel = require '../payment-group/credit-card-custom.coffee'
@@ -7,7 +7,7 @@ GiftCardPaymentGroupViewModel = require '../payment-group/gift-card.coffee'
 DebitPaymentGroupViewModel = require '../payment-group/debit.coffee'
 PaymentGroupViewModel = require '../payment-group/payment-group.coffee'
 
-debug = require('../common/debug.coffee')('payform')
+debug = require('debug')('payform')
 
 idCounter = 1
 class PaymentFormViewModel

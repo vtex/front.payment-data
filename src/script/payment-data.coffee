@@ -1,13 +1,14 @@
 template = require './payment-data.html'
-Module = require './common/module.coffee'
-Translatable = require './common/translatable.coffee'
-Step = require './common/step.coffee'
-Routable = require './common/routable.coffee'
+Module = require 'Module'
+Translatable = require 'Translatable'
+Step = require 'Step'
+Routable = require 'Routable'
 PaymentFormViewModel = require './payment-form/payment-form.coffee'
 PaymentSystem = require './payment-system/payment-system.coffee'
 AvailableAccountViewModel = require './payment-group/credit-card/available-account-vm.coffee'
 GiftCardViewModel = require './payment-group/gift-card-vm.coffee'
-debug = require('./common/debug.coffee')('payment')
+
+debug = require('debug')('payment')
 
 class PaymentDataViewModel extends Module
   @include Translatable

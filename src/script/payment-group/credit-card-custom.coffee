@@ -1,5 +1,5 @@
 template = require './credit-card.html'
-templateId = require('../common/append-template.coffee')('credit-card', template)
+templateId = require('appendTemplate')('credit-card', template)
 
 CreditCardPaymentGroupViewModel = require './credit-card.coffee'
 class CreditCardCustomPaymentGroupViewModel extends CreditCardPaymentGroupViewModel

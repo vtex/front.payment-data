@@ -1,5 +1,5 @@
 template = require './gift-card.html'
-templateId = require('../common/append-template.coffee')('gift-card', template)
+templateId = require('appendTemplate')('gift-card', template)
 
 PaymentGroupViewModel = require './payment-group.coffee'
 Payment = require '../payment-system/payment.coffee'

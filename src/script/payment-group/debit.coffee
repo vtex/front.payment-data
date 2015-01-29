@@ -1,5 +1,5 @@
 template = require './debit.html'
-templateId = require('../common/append-template.coffee')('debit', template)
+templateId = require('appendTemplate')('debit', template)
 
 PaymentGroupViewModel = require './payment-group.coffee'
 class DebitPaymentGroupViewModel extends PaymentGroupViewModel

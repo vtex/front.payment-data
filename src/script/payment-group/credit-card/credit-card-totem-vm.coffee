@@ -1,5 +1,5 @@
 CreditCardViewModel = require './credit-card-vm.coffee'
-debug = require('../../common/debug.coffee')('creditcardtotem')
+debug = require('debug')('creditcardtotem')
 
 class CreditCardTotemViewModel extends CreditCardViewModel
   constructor: ->

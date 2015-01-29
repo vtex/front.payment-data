@@ -34,7 +34,11 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/hasher/1.2.0/hasher.js"></script>
 <script src="/front.payment-data/bower_components/front.utils/dist/vtex-utils.js"></script>
 <!--/LIBS-->
-<script>vtex = { debug: function(){ return function() { console.log.apply(arguments) } } }</script>
+<script src="{{ 'common/module.js' | vtex_io: 'front.utils', 3 }}"></script>
+<script src="{{ 'common/routable.js' | vtex_io: 'front.utils', 3 }}"></script>
+<script src="{{ 'common/debug.js' | vtex_io: 'front.utils', 3 }}"></script>
+<script src="{{ 'knockout/step.js' | vtex_io: 'front.utils', 3 }}"></script>
+<script src="{{ 'i18n/translatable.js' | vtex_io: 'front.utils', 3 }}"></script>
 <script src="/front.payment-data/script/payment-data-bundle.js"></script>
 <script src="/front.payment-data/script/demo.js"></script>
 </body>

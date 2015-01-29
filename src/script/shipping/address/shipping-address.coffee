@@ -1,9 +1,9 @@
 localeUtils = vtex.localeUtils
 templateBRA = require './bra.html'
 templates = {}
-templates['BRA'] = require('../../common/append-template.coffee')('shipping-address-bra', templateBRA)
+templates['BRA'] = require('appendTemplate')('shipping-address-bra', templateBRA)
 
-Module = require '../../common/module.coffee'
+Module = require 'Module'
 
 # Representa um endereço
 class ShippingAddressViewModel extends Module
