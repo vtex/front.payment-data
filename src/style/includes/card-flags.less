@@ -1,0 +1,66 @@
+// card flags
+// -----------------------------------------------
+.card-flags .radio .card-flag-radio[type="radio"] {
+	float: none;
+	margin-bottom: 5px;
+	margin-left: 2px;
+}
+.card-flag-radio {
+	max-width: 40px;
+	position: static;
+	&.Visa,
+	&.Mastercard,
+	&.Diners,
+	&.Amex,
+	&.American,
+	&.Hipercard,
+	&.Discover,
+	&.Aura,
+	&.Banricompras,
+	&.Elo,
+	&.JCB{ width: 40px; }
+}
+
+.card-flag-label {
+	width: 40px;
+	text-align: center;
+}
+
+.card-flag {
+	display: block;
+	float: left;
+	font-size: .8em;
+	height:25px;
+	line-height: 1.2em;
+	margin-right: 2px;
+	min-width: 36px;
+	opacity:.6;
+	&.Visa,
+	&.Mastercard,
+	&.Diners,
+	&.Amex,
+	&.American,
+	&.Hipercard,
+	&.Discover,
+	&.Aura,
+	&.Banricompras,
+	&.Elo,
+	&.JCB,
+	&.Cabal { background-image: url('../img/card-flags.png');text-indent:-999em;width:40px; }
+	&.Visa { background-position:0 0; }
+	&.Mastercard { background-position:-40px 0; }
+	&.Diners { background-position:-80px 0; }
+	&.Amex,
+	&.American { background-position:-120px 0; }
+	&.Hipercard { background-position:-160px 0; }
+	&.Discover { background-position:-200px 0; }
+	&.Aura { background-position:-280px 0; }
+	&.Banricompras { background-position:-240px 0; }
+	&.Elo { background-position:-320px 0; }
+	&.JCB { background-position:-360px 0; }
+	&.Cabal { background-position:-400px 0; }
+}
+
+.card-selected { opacity: 1; }
+
+.saved-card-flag { margin-top: -2px; }

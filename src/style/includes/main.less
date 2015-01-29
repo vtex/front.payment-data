@@ -1,3 +1,5 @@
+.btn-icon:hover { text-decoration: none; }
+
 .payment-border { border-top: 1px solid @muted; }
 .payment-border-first { border: none; }
 
@@ -20,10 +22,6 @@
 .payment-content { margin-bottom: 2px; }
 
 .payment-form-wrapper {
-	overflow: hidden;
-	padding: 15px;
-	position: relative;
-	z-index: 99;
 	.is-custom h3 { display: block; }
 }
 
@@ -55,64 +53,10 @@
 // payment groups
 // -----------------------------------------------
 
-.payment-group-item {
-	border: 2px solid @smooth;
-	border-bottom: none;
-	display: block;
-	float: left;
-	margin-right: -2px;
-	margin-top: 5px;
-	min-height: 68px;
-	opacity: .7;
-	width: 68px;
-	padding: 0 4px;
-	text-align: center;
-	.border-radius(5px 5px 0 0);
-	.transition(0.2s, all, ease-in-out);
-	&:hover {
-		text-decoration: none;
-		opacity: 1;
-	}
-	&.active {
-		background-color: @smooth;
-		margin-top: 0;
-		padding-bottom: 5px;
-		opacity: 1;
-	}
-}
 
-.payment-group-item-text {
-	background-position: center 5px;
-	background-repeat: no-repeat;
-	display: block;
-	font-size: 11px;
-	line-height: 1.2;
-	padding-bottom: 5px;
-}
-.payment-group-item-flag {
-	background-image: url('../img/ico-payments.png');
-	display: inline-block;
-	margin: 5px auto 0;
-	height: 25px;
-	width: 40px;
-	#payment-group-creditCardPaymentGroup &			{ background-position: -40px 0; }
-	#payment-group-debitCardPaymentGroup & 			{ background-position: -80px 0; }
-	#payment-group-bankInvoicePaymentGroup & 		{ background-position: -120px 0; }
-	#payment-group-payPalPaymentGroup & 			{ background-position: -160px 0; }
-	#payment-group-pagSeguroPaymentGroup & 			{ background-position: -200px 0; }
-	#payment-group-MercadoPagoPaymentGroup & 		{ background-position: -240px 0; }
-	#payment-group-pagamentoDigitalPaymentGroup & 	{ background-position: -280px 0; }
-	#payment-group-BcashPaymentGroup & 				{ background-position: -320px 0; }
-	#payment-group-evolucardPaymentGroup & 			{ background-position: -360px 0; }
-	#payment-group-alignetPaymentGroup & 			{ background-position: -400px 0; }
-	#payment-group-peelaPaymentGroup &  			{ background-position: -440px 0; }
-	#payment-group-safetypayPaymentGroup &  		{ background-position: -480px 0; }
-}
-
-// Payments summary
-.payment-form-summary { margin: 0; }
-
-.payment-group-wrapped,
+// wrapped boxed: payment method selector, payment summary
+// -----------------------------------------------
+.payment-methods-expanded-many-payments,
 .payment-summary {
 	background: @smooth;
 	line-height: 2.3;
@@ -120,7 +64,14 @@
 	padding: 5px 0 5px 10px;
 }
 
-.payment-group-wrapped { padding-bottom: 15px; }
+// payment methods
+// -----------------------------------------------
+.payment-methods-expanded-many-payments { padding-bottom: 15px; }
+
+// payment summary
+// -----------------------------------------------
+.payment-summary-data { float: right; }
+
 
 
 .add-payment-wrapper { text-align: center; }
@@ -182,13 +133,12 @@
 	text-align: right;
 	z-index: 999;
 	.border-radius;
-	.icon-lock { 
-		font-size: 32px;
-		float: right;
-		margin-left: 6px;
-	}
 }
-
+.payment-security-icon { 
+	font-size: 32px;
+	float: right;
+	margin-left: 6px;
+}
 .payment-security-text {
 	display: inline-block;
 	font-size: 11px;
@@ -197,61 +147,6 @@
 	width: 60px;
 }
 
-.holder-document-required { display: block; }
-
-.card-scanner-input-options { margin-bottom: 10px; }
-
-.payment-card-number,
-.text.saved-cc-ccv {
-	input {
-		font-size: 18px;
-		height: 27px;
-		line-height: 1.2;
-	}
-}
-
-.payment-card-installments-label { .hide; }
-
-.payment-card-number-input {
-	display: block;
-	width: 260px;
-}
-
-.payment-card-due-date-month-input-wrapper,
-.payment-card-due-date-year-input-wrapper,
-.payment-card-due-date-lash { .pull-left; }
-
-
-.payment-card-due-date-month-input,
-.payment-card-due-date-year-input { margin-right: 5px; }
-.payment-card-due-date-lash {
-	color: @disabled;
-	margin: 5px 3px 0 0;
-	font-size: 25px;
-}
-
-.payment-card-value {
-	margin-bottom: 10px;
-	label {
-		color: @disabled;
-		display: block !important;
-		float: left;
-		padding: 4px 0;
-		position: relative;
-		width: 70px;			
-	}
-	input { text-align: right; }
-	input.success { padding-right: 20px; }
-    span.help.error {
-      font-size: 10pt;
-    }
-}
-
-.up-to-installments { display: none; }
-
-.same-address { margin-bottom: 5px; }
-
-.link-two-cards { clear: both; }
 
 // .step .box-installments label { display: block; }
 
@@ -267,84 +162,9 @@
 	label { padding-left: 0; }
 }
 
-.cvv-help {
-	background: #1472ba url('../img/card-cvv.png') center 5px no-repeat;
-	font-size: 10px;
-	line-height: 12px;
-	height: 23px;
-	margin: -75px 0 0 165px;
-	padding: 5px;
-	padding-top: 75px;
-	width: 105px;
-}
 
 
-// card flags
-// -----------------------------------------------
-.card-flags .radio .card-flag-radio[type="radio"] {
-	float: none;
-	margin-bottom: 5px;
-	margin-left: 2px;
-}
-.card-flag-radio {
-	max-width: 40px;
-	position: static;
-	&.Visa,
-	&.Mastercard,
-	&.Diners,
-	&.Amex,
-	&.American,
-	&.Hipercard,
-	&.Discover,
-	&.Aura,
-	&.Banricompras,
-	&.Elo,
-	&.JCB{ width: 40px; }
-}
 
-.card-flag-label {
-	width: 40px;
-	text-align: center;
-}
-
-.card-flag {
-	display: block;
-	float: left;
-	font-size: .8em;
-	height:25px;
-	line-height: 1.2em;
-	margin-right: 2px;
-	min-width: 36px;
-	opacity:.6;
-	&.Visa,
-	&.Mastercard,
-	&.Diners,
-	&.Amex,
-	&.American,
-	&.Hipercard,
-	&.Discover,
-	&.Aura,
-	&.Banricompras,
-	&.Elo,
-	&.JCB,
-	&.Cabal { background-image: url('../img/card-flags.png');text-indent:-999em;width:40px; }
-	&.Visa { background-position:0 0; }
-	&.Mastercard { background-position:-40px 0; }
-	&.Diners { background-position:-80px 0; }
-	&.Amex,
-	&.American { background-position:-120px 0; }
-	&.Hipercard { background-position:-160px 0; }
-	&.Discover { background-position:-200px 0; }
-	&.Aura { background-position:-280px 0; }
-	&.Banricompras { background-position:-240px 0; }
-	&.Elo { background-position:-320px 0; }
-	&.JCB { background-position:-360px 0; }
-	&.Cabal { background-position:-400px 0; }
-}
-
-.card-selected { opacity: 1; }
-
-.saved-card-flag { margin-top: -2px; }
 
 // saved cards
 // -----------------------------------------------
@@ -365,70 +185,6 @@
 
 .card-list-saved-label { margin-left: 5px; }
 
-// debit banks
-// -----------------------------------------------
-.debit-options { margin-bottom: 20px; }
-
-.debit-list {
-	margin-bottom: 10px;
-	width: 100%;
-	white-space: normal;	
-
-	.label-vertical-group.debit-list-item {
-		.border-radius;
-		margin-bottom: 12px;
-		width: 112px;
-		height: 78px;
-		display: inline-block;
-			*display: inline;
-		margin-right: 10px;
-		vertical-align: top;
-		padding: 5px;
-    	zoom: 1;
-	}
-	.label-vertical-group.active {background: #fff;}
-	
-	.label-vertical-group,
-	.debit-list-item {.transition;}
-
-
-	.icon-ok-circle, 
-	.icon-circle-blank {
-		top: auto;
-		bottom: -6px;
-		right: -4px;
-		font-size: 22px;
-	}
-}
-.debit-icon {
-	display: block;
-	font-size: 12px;
-	height: 100%;
-	overflow: hidden;
-	text-align: center;
-	width: 100%;
-}
-
-.debit-itau,
-.debit-bradesco,
-.debit-bancodobrasil,
-.debit-banrisul,
-.debit-hsbc {
-	background-image: url('../img/sprite-debit-banks.png'); 
-	background-repeat: no-repeat;
-	text-indent: -9999em;
-}
-
-.debit-itau				{ background-position: 20px 50%; }
-.debit-bradesco			{ background-position: -90px 50%; }
-.debit-bancodobrasil	{ background-position: -200px 50%; }
-.debit-banrisul 		{ background-position: -310px 50%; }
-.debit-hsbc 			{ background-position: -420px 50%; }
-
-.payment-select-bank {
-	font-weight: bold;
-	margin-top: 20px;
-}
 
 /* Card Scanner */
 .card-scanner-resume-header {
@@ -447,137 +203,4 @@
 		color: #dd4b39;
 		opacity: 1;
 	}
-}
-
-// paypal
-// -----------------------------------------------
-@payPalBlue: #159bd7;
-@payPalGrey: #6d6e71;
-
-.box-payment-paypal { color: @payPalGrey; }
-
-.payment-paypal-title {
-	line-height: 1.9;
-	margin-bottom: 20px;
-	text-align: center;
-}
-.payment-paypal-title-logo {
-	display: inline-block;
-	height: 34px;
-	width: 83px;
-	background: url('../img/payment-paypal-title.png');
-	text-indent: -999em;
-}
-.payment-paypal-title-installments {
-	display: inline-block;
-	height: 34px;
-	background: url('../img/payment-paypal-title.png') top right no-repeat;
-	min-width: 30px;
-	padding-left: 5px;
-	padding-right: 10px;
-	position: relative;
-}
-.payment-paypal-title-installments-before,
-.payment-paypal-title-installments-after {
-	font-size: 8px;
-	left: 0;
-	line-height: 1.1;
-	position: absolute;
-	width: 40px;
-}
-.payment-paypal-title-installments-before { top: 1px; }
-.payment-paypal-title-installments-after { bottom: 3px; }
-.payment-paypal-title-logo,
-.payment-paypal-title-installments-value {
-	color: #0069b7;
-	font-size: 17px;
-	font-weight: 700;
-}
-.payment-paypal-subtitle {
-	border-bottom: 2px dotted @payPalBlue;
-	color: @payPalBlue;
-	font-size: 16px;
-	margin-bottom: 15px;
-	padding-bottom: 10px;
-	text-align: center;
-}
-
-.payment-paypal-benefit {
-	line-height: 1.2;
-	padding-left: 40px;
-}
-
-.payment-paypal-benefit-title {
-	color: @payPalGrey;
-	font-weight: 700;
-	font-size: 12px;
-}
-
-.payment-paypal-benefit-description { font-size: 11px; }
-
-.payment-paypal-help {
-	border-bottom: 1px dotted @payPalGrey;
-	font-size: 13px;
-	margin-bottom: 8px;
-	padding-bottom: 10px;
-	text-align: center;
-}
-.payment-paypal-help-text {
-	color: @payPalBlue;
-	font-weight: 700;
-}
-.payment-paypal-postscript {
-	background: url('../img/payment-paypal-landscape.png') top right no-repeat;
-	font-size: 11px;
-	line-height: 1.2;
-	margin: 0;
-}
-.payment-paypal-benefit {
-	background-repeat: no-repeat; 
-}
-.payment-paypal-benefit-protection {
-	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAYAAABX5MJvAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NjI0N0VEQjAzNkQ1MTFFNDhBOEI5NERBMjc2QUJDRjUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NjI0N0VEQjEzNkQ1MTFFNDhBOEI5NERBMjc2QUJDRjUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo2MjQ3RURBRTM2RDUxMUU0OEE4Qjk0REEyNzZBQkNGNSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo2MjQ3RURBRjM2RDUxMUU0OEE4Qjk0REEyNzZBQkNGNSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pm79jRgAAAJgSURBVHjaxFhRRARRFG0rS0QsEREREdFXxBIRffUV+1Wi1YoiIvVTSqmfUkoUKaXSV0QsEZFiiYiIiIhVRAyxLJ3LmbymnZk3u7PT4Uj13uyZ++65974NhY7eSv4b5XnsqQQ7wTqwSfn7K3kOvnh5YMhDJHr44fJBKfAZfFT+X0Nh7fyZBldBw49IRMFh8BRMOKxLkyn+3gxugDfgFpjNNxITYBhcBDN5HnkH2AuOgR+5FpTabCzjW9yBswUIEFyA0+AaWO9FxAK4CyZ9MoAkahycA6t0RAwxAimfnfgFjoMrjLStiAawETwsUkkQZ+2DA07umKJaHbSCg7RgliFf1cyRGOuNYRUhEXiizdzQSevGLaIk1KMa+9f5AsvW4xAbbWtGoZeuUSE59MlC5YZ7vvSfnIjwzHSTLFfxuWJEdPDAHPwREeGDdZF1EBfWfIYIblNFNNKWQeKRpf1XJD4CFmGY9aJcac/vGhuvmVSCTYd1MTatM5fnhVURnxTihktwUrPzVmmsy6jH8aJpLT9RY6aAKeJJ9W1AaKFNf0RkPFjLL0R5vL+KVcr0bQAQV1Rbj0NwzDEuCIh7TnJ1UYP2i7Ka5UKFizWtTcrOlh1q87POmLLgAOzzWMa9YIr149ZuqMlwHlwqkoBu9p1bt/HugeP9TBHcICLmdQfdJBvaHvOgUPQzGRNepu0SZq9MPjtMpHwQ4bQluTZiNwLoXAPLOIq10sbnTrcp5fYV495lt+bo5S4qDa6LNPtNmgUnwrdtVmaFY91JLVTAVwPSgGqVWcSwXJCL+tWA9QJcML4FGABqnoj6SWr8RQAAAABJRU5ErkJggg==);
-}
-.payment-paypal-benefit-easy {
-	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAYAAABX5MJvAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RjQyQ0QxRDUzNkRGMTFFNDhBOEI5NERBMjc2QUJDRjUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RjQyQ0QxRDYzNkRGMTFFNDhBOEI5NERBMjc2QUJDRjUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo2MjQ3RURCMjM2RDUxMUU0OEE4Qjk0REEyNzZBQkNGNSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpGNDJDRDFENDM2REYxMUU0OEE4Qjk0REEyNzZBQkNGNSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmJJjBsAAAKMSURBVHjazJhRRENhFMfvVsaIiOg1InoaUUqJKCVKRBSJGKVEvRTpIUVKMVKkSCylmCJFjIgUqaeIniIiRowYs/5f/pe7dbd77u1OHX601Xfu/57vnPOdL08qldK8++/aX1qhgzVNoA2U8HPS8LsCEAPn4NJtET4wCqpBFKyCbOErBR1gEDyCNfCZy7lHsB2doBeEwK3NqNVQ/Ak4yvZHXgsnU3yzfgcCNK4ZAEVg1omIde7rtgu5t8M8WWfeiERMceG1i0WgonJgFhEzEd3M8Ns8VKOK7CtzLKsIVQU9YDOPbWGTJV6UTcQ4qyDfFmLV/BChEqbS5jaohtUHgizlMuG6B1ChJ6lRhArRqdCJWrwE9kExeAbl4JjRlFiE3TdNRAu7ocTC4AW0gg2uUyFupOOgwEeUnTVNhEqUD8HiXmb4GtfMg3tww8oaARMCP5+MYpqIhDAKw2CRDtSD30At36yMn2PC/EiaJaaV+dnG37n3V4xIgofbncG534kIaTXE+HMDW7H+fQNPTR+j8CJ16s1UZWExRkLjQ5pZFSvcBh/b8o7Q348S9QmTST0sAOZY60usjGlwyOResFHqaUNNnMlmVSHqYVugC7RnNKADG1vr159lFHHB8EYsFquTdQacMSee+X01j31px23Wm6NxO8715iEw9bf1hsTUOPLZafnd+hxamJGYTxzJJM7i7A1Rzb4FGEHTEg3Z6P2/sXH2F9OjPMGBNJhHAUHmXzzXZBUxNB+3TSVjFdiTzJiLPKjcFFLDqW3SzrQ9BurAkAsCBjmvjJh1UquzY5mHVZhv4uTtd7n/c7+5gWVeAy/YZKyugU1uXgNzXYiThhEg6fRC7PkP/xr4FvHX9iXAAHwqqHRxz1NTAAAAAElFTkSuQmCC);
-}
-.payment-paypal-benefit-safe {
-	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAYAAABX5MJvAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RjQyQ0QxRDkzNkRGMTFFNDhBOEI5NERBMjc2QUJDRjUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RjQyQ0QxREEzNkRGMTFFNDhBOEI5NERBMjc2QUJDRjUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpGNDJDRDFENzM2REYxMUU0OEE4Qjk0REEyNzZBQkNGNSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpGNDJDRDFEODM2REYxMUU0OEE4Qjk0REEyNzZBQkNGNSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pnm55yUAAAKlSURBVHjazFgxSxxBFHZNPEkCnihcGkljyiA5Gxs7bSSc4FViUgRRTKegoIIgNqKFoI0aEyRFDpIiKkK4RiH/IGCtjQhJrghRNMIpnt+T72BvnNmdvb1FH3ys3Oy8983se2++0SkUClV3bQ+DvOx8PHyMRwroAOKArCDP4Zi8AhwDu8A2cO7nszDwzI4EgifwGAOagQ1gApP/ckx9vQHoAj4D+8ACkAu1EwgyiMcrYAaBf1pwFnIZIgmsAd+BD6YJ1R7BY8A6/nwC9FgSUE3m9NDHOj+Z3U4IAa7kPYLvhMw7yZtFoJM+X7vyyPNzrFaIgNt2XL77PT8Hc2CvwgTcRPaAQSMJVoEk4VKEbWGJMRKmnRhjFUTZwcT3DGOV5gQbUbOuCjAmZJu8qslgV8ARn2rVTAES8787MVNsRDqbAy7VrLYwqbIHwLhmbIMxv7pXJq04a3CWYNf7FxAy56nBZ5YxS0o0XmzFBvtRZg689OiscZXElY+zkYiStITEhc9p99bQXf0CffIYy1eVke2R64kaixN1mWUltoXd2QoZP6aScCwmrbDkiqQk6U6pG4rWBswDv4HeoDtxAqcNPhXSDtQqvx0pJA6Ab8Avn9gifk5UErtURBnNhD8gOGtoVvXAC83vjUCrzDWQ6GLMEhLblGQ6EpMh27bO0sCbm8/qVttYrXzLL0FUlEWJ6izJfBkXoauuTETpNBw7EVak+J5mrNtHOVjlKEqHIyQxzBg5o7ICEVHFLdiNzggIiM8WVXmbEu0dMFRhIuJriL79JT92I09V3AciIyFzxOHh16dT2p5nhxABRBWfAZsgkiyzCjbpo98kihybCzEF8CjwnIooa3ENTNtcA6VEnSC3cgR8hEc3FVGd+zgOcyF27sO/Bu6FnrgWYACnoeOin77/NgAAAABJRU5ErkJggg==);
-}
-
-// safetypay
-// -----------------------------------------------
-h3.payment-safetypay-title {
-	background: #00a3db url('../img/payment-safetypay-title.png') center center no-repeat;
-	display: block;
-	height: 29px;
-	margin: -15px 0 15px -15px;
-	padding: 0 15px;
-	text-indent: -999em;
-	width: 100%;
-}
-.payment-safetypay-description-banks {
-	background: url('../img/payment-safetypay-banks.png') 0 0 no-repeat;
-	height: 30px;
-	margin: 15px 0 30px;
-	text-indent: -999em;
-}
-.payment-safetypay-benefit {
-	background: #fff;
-	padding: 10px;
-	padding-bottom: 0;
-	text-align: center;
-}
-.payment-safetypay-benefit-title {
-	background: url('../img/payment-safetypay-icons.png') top center no-repeat;
-	font-size: 16px;
-	padding-top: 85px;
-	text-transform: uppercase;
-	.payment-safetypay-benefit-fast & { background-position: center -150px; }
-	.payment-safetypay-benefit-safe & { background-position: center -300px; }
-}
-.payment-safetypay-benefit-description { line-height: 1.4; }
-.payment-safetypay-help {
-	margin-top: 20px;
-	text-align: center;
 }

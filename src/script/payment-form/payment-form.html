@@ -1,49 +1,51 @@
 ﻿<div class="payment-content">
-    <span class="security payment-security">
-        <i class="icon-lock"></i>
-        <span class="payment-security-text" data-i18n="paymentData.secureEnvironment">Ambiente Seguro</span>
-    </span>
     <div class="payment-summary" data-bind="click: $parent.selectPaymentForm, visible: $parent.paymentForms().length > 1">
     <!-- ko if: selectedPaymentGroupViewModel -->
         <strong class="payment-summary-name" data-bind="text: selectedPaymentGroupViewModel().localizedLabel"></strong>
         <button class="btn btn-link" data-bind="click: unselectPaymentGroup, clickBubble: false, visible: !$parent.showPaymentGroupSelector() && $parent.selectedPaymentFormViewModel() == $data">Change payment group</button>
-        <span class="payment-summary-data pull-right">
+        <span class="payment-summary-data">
             <span class="payment-summary-value" data-bind="text: selectedPaymentGroupViewModel().paidValueInput"></span>
-            <button class="payment-summary-remove btn btn-link" data-bind="click: $parent.removePaymentForm, clickBubble: false"><i class="icon-remove"></i></button>
+            <button class="payment-summary-remove btn btn-link btn-icon" data-bind="click: $parent.removePaymentForm, clickBubble: false"><i class="icon-remove"></i></button>
         </span>
     <!-- /ko -->
     <!-- ko if: !selectedPaymentGroupViewModel() -->
         <strong class="payment-summary-name">Novo pagamento</strong>
-        <span class="payment-summary-data pull-right">
-            <button class="payment-summary-remove btn btn-link" data-bind="click: $parent.removePaymentForm, clickBubble: false"><i class="icon-remove"></i></button>
+        <span class="payment-summary-data">
+            <button class="payment-summary-remove btn btn-link btn-icon" data-bind="click: $parent.removePaymentForm, clickBubble: false"><i class="icon-remove"></i></button>
         </span>
     <!-- /ko -->
     </div>
 
-    <form action="" data-event="finishPayment" class="form-step box-new" data-bind="submit: $parent.submit, if: $parent.selectedPaymentFormViewModel() == $data">
+    <form action="" data-event="finishPayment" class="step-form payment-form" data-bind="submit: $parent.submit, if: $parent.selectedPaymentFormViewModel() == $data">
         <!-- ko if: $parent.showPaymentGroupSelector -->
-        <fieldset class="payment-group" data-bind="css: { 'payment-group-wrapped': $parent.paymentForms().length > 1, 'payment-group-alone': $parent.paymentForms().length == 1 }">
-            <div class="required payment-group-list-btn" data-bind="foreach: paymentGroups">
-                <a href="javascript:void(0);" data-bind="click: $parent.selectPaymentGroup, attr:{ 'id':'payment-group-' + groupName(), 'class': className + ' payment-group-item' }, css: { active: $parent.selectedPaymentGroupViewModel() && $parent.selectedPaymentGroupViewModel().id == id }">
-                    <span class="payment-group-item-flag"></span>
-                    <span class="payment-group-item-text" data-bind="text: localizedLabel"></span>
+        <fieldset class="payment-methods payment-methods-expanded" data-bind="css: { 'payment-methods-expanded-many-payments': $parent.paymentForms().length > 1, 'payment-methods-expanded-one-payment': $parent.paymentForms().length == 1 }">
+            <div class="required payment-methods-list" data-bind="foreach: paymentGroups">
+                <a href="javascript:void(0);" data-bind="click: $parent.selectPaymentGroup, attr:{ 'id':'payment-methods-' + groupName(), 'class': className + ' payment-methods-item' }, css: { active: $parent.selectedPaymentGroupViewModel() && $parent.selectedPaymentGroupViewModel().id == id }">
+                    <span class="payment-methods-item-flag"></span>
+                    <span class="payment-methods-item-text" data-bind="text: localizedLabel"></span>
                 </a>
             </div>
         </fieldset>
         <!-- /ko -->
 
         <!-- ko if: selectedPaymentGroupViewModel -->
-        <div class="payment-form-wrapper" data-bind="css: { 'payment-form-wrapper-alone': $parent.paymentForms().length == 1 }">
+        <div class="payment-form-wrapper" data-bind="css: { 'payment-form-wrapper-one-payment': $parent.paymentForms().length == 1 }">
+            <span class="payment-security security" data-bind="visible: $parent.selectedPaymentFormViewModel() == $data">
+                <i class="payment-security-icon icon-lock"></i>
+                <span class="payment-security-text" data-i18n="paymentData.secureEnvironment">Ambiente Seguro</span>
+            </span>
             <!-- ko if: $parent.showPaymentGroupSelector -->
-            <fieldset class="payment-group-condensed" data-bind="css: { 'hide': $parent.paymentForms().length > 1 }">
-                <p>
-                    <label class="payment-group-condensed-label hide" data-i18n="paymentData.paymentMethod" data-bind="attr: { 'for': 'select-payment-group-' + id }"></label>
-                    <select class="payment-group-condensed-selector input-xlarge" data-bind="attr: { 'id': 'select-payment-group-' + id }, options: paymentGroups, optionsText: 'localizedLabel', value: selectedPaymentGroupViewModel, optionsCaption: paymentMethodsCaption"></select>
+            <div class="payment-methods payment-methods-condensed" data-bind="css: { 'hide': $parent.paymentForms().length > 1 }">
+                <label class="payment-methods-condensed-label" data-bind="attr: { 'for': 'select-payment-methods-' + id }">
+                    <span data-i18n="paymentData.paymentMethod">Forma de pagamento</span>
+                </label>
+                <p class="payment-methods-condensed-input-wrapper">
+                    <select class="payment-methods-condensed-input input-xlarge" data-bind="attr: { 'id': 'select-payment-methods-' + id }, options: paymentGroups, optionsText: 'localizedLabel', value: selectedPaymentGroupViewModel, optionsCaption: paymentMethodsCaption"></select>
                 </p>
-            </fieldset>
+            </div>
             <!-- /ko -->
         <!-- ko with: selectedPaymentGroupViewModel -->
-            <div class="payment-form" data-bind="template: template"></div>
+            <div class="payment-method-form" data-bind="template: template"></div>
         <!-- /ko -->
         </div>
         <!-- /ko -->

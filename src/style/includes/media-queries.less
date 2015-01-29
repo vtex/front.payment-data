@@ -1,7 +1,22 @@
+// mobile
+// -----------------------------------------------
+@media (max-width: 490px) {
+	// security badge
+	// -----------------------------------------------
+	.payment-security {
+		padding: 1px 3px 1px 0;
+		position: absolute;
+		right: 5px;
+		top: -30px;
+		.border-radius(0 0 0 5px);
+	}
+	.payment-security-text { display: none; }
+}
+
 // mobile and tablet
 // -----------------------------------------------
 @media (max-width: 767px) {
-	.payment-data .payment-group { float: none; }
+	.payment-data .payment-methods { float: none; }
 	.payment-paypal-benefit { padding-bottom: 10px; }
 	.payment-paypal-benefit-title { margin-bottom: 2px; }
 	.payment-paypal-postscript {
@@ -51,13 +66,13 @@
 	// 	.uneditable-input {
 	// 		max-width: 185px;
 	// 	}
-	// 	.payment-group,
+	// 	.payment-methods,
 	// 	.link-gift-card {
 	// 		margin: 0 auto 10px;
 	// 		// max-width: 240px;
 	// 		position: relative;
 	// 	}
-	// 	.payment-group {
+	// 	.payment-methods {
 	// 		a {
 	// 			border: 2px solid @smooth;
 	// 			margin-left: 0;
@@ -94,54 +109,4 @@
 	// }
 }
 
-
-@media (max-width: 619px) {
-	.payment-form-wrapper { padding: 10px; }
-	// .payment-data .accordion-inner { padding: 4px; }
-	.payment-group-alone { display: none; }
-	.payment-form-wrapper-alone {
-		background: transparent;
-		padding: 0;
-	}
-
-	.payment-security { display: none; }
-
-	.payment-card-due-date { overflow: hidden; }
-
-	.skeuocard-backside {
-		opacity: 1;
-		visibility: visible;
-	}
-	.payment-card-number,
-	.payment-card-name {
-		label { display: block; }
-	}
-	.payment-card-number,
-	.text.saved-cc-ccv {
-		input {
-			font-size: 26px;
-			height: 36px;
-			line-height: 34px;
-		}
-	}
-	.payment-card-number,
-	.payment-card-name {
-		::-webkit-input-placeholder { color: transparent; }
-		:-moz-placeholder { color: transparent; }
-		::-moz-placeholder { color: transparent; }
-		:-ms-input-placeholder { color: transparent; }
-	}
-
-	.card-list-saved { width: 100%; }
-
-	.cvv-help { margin-left: 95px; }
-	.payment-card-cvv,
-	.saved-cc-ccv span.error { margin-left: 0; }
-
-	.payment-paypal-help-text { display: block; }
-	.payment-safetypay-benefit-title {
-		background: none;
-		padding-top: 0;
-	}
-}
 

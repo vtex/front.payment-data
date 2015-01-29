@@ -11,7 +11,7 @@
 
     <!-- block number -->
     <div class="payment-card-number input text required clearLeft">
-        <label class="payment-card-number-label hide" data-bind="attr: {'for': $parent.identifier()+'payment-card' + id + 'Number', htmlFor: $parent.identifier()+'payment-card' + id + 'Number'}">
+        <label class="payment-card-number-label" data-bind="attr: {'for': $parent.identifier()+'payment-card' + id + 'Number', htmlFor: $parent.identifier()+'payment-card' + id + 'Number'}">
             <span data-i18n="paymentData.paymentGroup.creditCard.number">Número</span>
         </label>
         <p class="payment-card-number-input-wrapper">
@@ -85,7 +85,7 @@
 
     <!-- block name -->
     <div class="payment-card-name input text" data-bind="css: {'required': cardOwnerNameRequired, 'hide': !cardOwnerNameRequired()}">
-        <label class="payment-card-name-label hide" data-bind="attr: {'for': $parent.identifier()+'payment-card' + id + 'Name', htmlFor: $parent.identifier()+'payment-card' + id + 'Name'}">
+        <label class="payment-card-name-label" data-bind="attr: {'for': $parent.identifier()+'payment-card' + id + 'Name', htmlFor: $parent.identifier()+'payment-card' + id + 'Name'}">
             <span data-i18n="paymentData.paymentGroup.creditCard.holderName">Nome impresso no cartão</span>
         </label>
         <p class="payment-card-name-input-wrapper">

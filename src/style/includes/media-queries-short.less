@@ -1,0 +1,75 @@
+@media (max-width: 619px) {
+
+// hidden elements
+// -----------------------------------------------
+.payment-methods-expanded-one-payment,
+.payment-methods-condensed-label { display: none; }
+
+.payment-form-wrapper { padding: 10px; }
+.payment-form-wrapper-one-payment {
+	background: transparent;
+	padding: 0;
+}
+
+// due date
+// -----------------------------------------------
+.payment-card-due-date { overflow: hidden; }
+
+// cvv (skeuocard backside)
+// -----------------------------------------------
+.skeuocard-backside {
+	opacity: 1;
+	visibility: visible;
+}
+
+// bigger elements
+// -----------------------------------------------
+.payment-card-number,
+.text.saved-cc-ccv {
+	input {
+		font-size: 26px;
+		height: 36px;
+		line-height: 34px;
+	}
+}
+
+// hiding elements placeholders
+// -----------------------------------------------
+.payment-card-number,
+.payment-card-name {
+	::-webkit-input-placeholder { color: transparent; }
+	:-moz-placeholder { color: transparent; }
+	::-moz-placeholder { color: transparent; }
+	:-ms-input-placeholder { color: transparent; }
+}
+
+// saved cards list
+// -----------------------------------------------
+.card-list-saved { width: 100%; }
+
+// cvv help
+// -----------------------------------------------
+.cvv-help {
+	background: #1472ba url('../img/card-cvv.png') center 5px no-repeat;
+	font-size: 10px;
+	line-height: 12px;
+	height: 23px;
+	margin: -75px 0 0 95px;
+	padding: 5px;
+	padding-top: 75px;
+	width: 105px;
+}
+
+// paypal
+// -----------------------------------------------
+.payment-paypal-help-text { display: block; }
+
+// safetypay
+// -----------------------------------------------
+.payment-safetypay-benefit-title {
+	background: none;
+	padding-top: 0;
+}
+
+}
+

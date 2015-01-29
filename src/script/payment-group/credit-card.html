@@ -1,8 +1,8 @@
-﻿<fieldset data-bind="attr: {'class': className + ' box-payment-option'}, css: { 'is-custom': isCustom() }">
+﻿<fieldset data-bind="attr: {'class': className + ' payment-method-fieldset'}, css: { 'is-custom': isCustom() }">
   <h3 data-bind="attr: { 'data-i18n': pgTitle }" class="hide"></h3>
-  <div class="card-fields-container" data-bind="with: card, attr: { id: 'payment-card' + id }">
-    <div data-bind="template: { name: 'paid-value', afterRender: vtex.i18n.translateHtml, data: $parent }" class="paid-value"></div>
-    <div data-bind="template: { name: 'available-accounts', afterRender: vtex.i18n.translateHtml, if: !isUsingNewCard() }"></div>
-    <div data-bind="template: { name: 'new', afterRender: vtex.i18n.translateHtml, if: isUsingNewCard }"></div>
+  <div class="payment-card-wrapper" data-bind="with: card, attr: { id: 'payment-card' + id }">
+    <div data-bind="template: { name: 'paid-value', afterRender: vtex.i18n.translateHtml, data: $parent }" class="payment-card-paid-value"></div>
+    <div data-bind="template: { name: 'available-accounts', afterRender: vtex.i18n.translateHtml, if: !isUsingNewCard() }" class="payment-card-available-cards"></div>
+    <div data-bind="template: { name: 'new', afterRender: vtex.i18n.translateHtml, if: isUsingNewCard }" class="payment-card-new"></div>
   </div>
 </fieldset>

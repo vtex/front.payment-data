@@ -1,0 +1,64 @@
+// debit banks
+// -----------------------------------------------
+.debit-options { margin-bottom: 20px; }
+
+.debit-list {
+	margin-bottom: 10px;
+	width: 100%;
+	white-space: normal;	
+
+	.label-vertical-group.debit-list-item {
+		.border-radius;
+		margin-bottom: 12px;
+		width: 112px;
+		height: 78px;
+		display: inline-block;
+			*display: inline;
+		margin-right: 10px;
+		vertical-align: top;
+		padding: 5px;
+    	zoom: 1;
+	}
+	.label-vertical-group.active {background: #fff;}
+	
+	.label-vertical-group,
+	.debit-list-item {.transition;}
+
+
+	.icon-ok-circle, 
+	.icon-circle-blank {
+		top: auto;
+		bottom: -6px;
+		right: -4px;
+		font-size: 22px;
+	}
+}
+.debit-icon {
+	display: block;
+	font-size: 12px;
+	height: 100%;
+	overflow: hidden;
+	text-align: center;
+	width: 100%;
+}
+
+.debit-itau,
+.debit-bradesco,
+.debit-bancodobrasil,
+.debit-banrisul,
+.debit-hsbc {
+	background-image: url('../img/sprite-debit-banks.png'); 
+	background-repeat: no-repeat;
+	text-indent: -9999em;
+}
+
+.debit-itau				{ background-position: 20px 50%; }
+.debit-bradesco			{ background-position: -90px 50%; }
+.debit-bancodobrasil	{ background-position: -200px 50%; }
+.debit-banrisul 		{ background-position: -310px 50%; }
+.debit-hsbc 			{ background-position: -420px 50%; }
+
+.payment-select-bank {
+	font-weight: bold;
+	margin-top: 20px;
+}
