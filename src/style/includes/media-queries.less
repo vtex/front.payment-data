@@ -10,18 +10,6 @@
 	}
 }
 
-// tablet landscape
-// -----------------------------------------------
-// @media (min-width: 768px) and (max-width: 979px) {
-// 	.row-fluid [class*="span"]{
-// 		.payment-data.pull-right { clear: right; }
-// 	}
-// 	.payment-group-item.active {
-// 		position: relative;
-// 		z-index: 9999;
-// 	}
-// }
-
 // less than desktop
 // -----------------------------------------------
 @media (max-width: 979px) {
@@ -106,164 +94,6 @@
 	// }
 }
 
-// size for skeuocard
-// -----------------------------------------------
-@media (min-width: 620px) {
-	.skeuocard {
-		background: #e8e8e8 url('../img/skeuocard.jpg');
-		border-radius: 10px;
-		box-sizing: border-box;
-		.box-shadow;
-		span.error { font-size: 11px; }
-		.payment-card-number,
-		.payment-card-due,
-		.payment-card-name { position: absolute; }
-		.payment-card-number { top: 40px; }
-		.payment-card-name { top: 125px; }
-		.payment-card-due {
-			left: 130px;
-			top: 85px;
-			height: 70px;
-			label { width: 40px; }
-			input { width: 28px; }
-		}
-		.payment-card-due,
-		.payment-card-cvv {
-			label {
-				font-size: 11px;
-				line-height: 1.2;
-				margin-right: 6px;
-				text-align: right;
-			}
-		}
-		
-		.payment-card-cvv-label,
-		.payment-card-due-label {
-			float: left;
-			margin-top: 2px;
-		}
-
-		.payment-card-cvv-label { width: 60px; }
-
-		.payment-card-cvv-container {
-			position: absolute;
-			width: 140px;
-			z-index: 9;
-		}
-
-		.payment-card-cvv-frontside {
-			top: 35px;
-			right: 10px;
-		}
-
-		.payment-card-cvv-backside {
-			top: 68px;
-			right: -180px;
-			label { margin-top: 4px; }
-		}
-
-		.payment-card-due-month {
-			span.error {
-				margin-top: 3px;
-				margin-left: -33px;
-				position: absolute;
-				text-align: right;			
-			}
-		}
-
-		.payment-card-due-month,
-		.payment-card-cvv-frontside {
-			span.error {
-				background: #e8e8e8;
-				padding: 2px;
-				z-index: 7;
-			}
-		}
-		.card-payment-complementary-fields,
-		.payment-card-name,
-		.payment-card-due,
-		.payment-card-number,
-		.payment-card-cvv-container,
-		.payment-card-cvv-container input { .transition; }
-
-		.payment-card-name,
-		.payment-card-due,
-		.payment-card-number {
-			::-webkit-input-placeholder { color: #cbcbcb; }
-			:-moz-placeholder { color: #e8e8e8; }
-			::-moz-placeholder { color: #e8e8e8; }
-			:-ms-input-placeholder { color: #e8e8e8; }
-			input {
-				font-family: "ocraregular", "OCR A Std", "OCR A", Courier, "Courier New", monospace;
-				text-transform: uppercase;
-			}
-		}
-	}
-
-	.skeuocard-backside {
-		height: 105px;
-		top: 85px;
-		margin-left: 320px;
-		position: absolute;
-		width: 195px;
-		.transition;
-		.payment-card-cvv input { font-style: italic; }
-	}
-	.skeuocard-stripe {
-		background: #ccc;
-		height: 20px;
-		position: absolute;
-		width: 100%;
-		top: 8px;
-	}
-
-	.skeuocard-frontside {
-		height: 180px;
-		padding: 10px 20px;
-		margin-bottom: 125px;
-		position: relative;
-		width: 330px;
-		z-index: 2;
-		.transition;
-	}
-
-	.skeuocard-flag {
-		bottom: 27px;
-		display: none;
-		position: absolute;
-		right: 34px;
-	}
-
-	.skeuocard-bigger {
-		height: 210px;
-		width: 360px;
-		.payment-card-number { top: 70px; }
-		.payment-card-name { top: 155px; }
-		.payment-card-due { top: 115px; }
-		.skeuocard-flag { right: 28px; }
-	}
-	.payment-group-condensed { display: none; }
-
-	.payment-card-cvv-backside input {
-		font-size: 18px;
-		height: 27px;
-		line-height: 1.2;
-	}
-
-	.card-payment-complementary-fields {
-		top: 190px;
-		left: 0;
-		position: absolute;
-		.skeuocard-bigger & { top: 220px; }
-	}
-
-	// form error messages
-	// -----------------------------------------------
-	span.error {
-		.payment-card-cvv &,
-		.saved-cc-ccv & { margin-left: 66px; }
-	}
-}
 
 @media (max-width: 619px) {
 	.payment-form-wrapper { padding: 10px; }
@@ -275,6 +105,8 @@
 	}
 
 	.payment-security { display: none; }
+
+	.payment-card-due-date { overflow: hidden; }
 
 	.skeuocard-backside {
 		opacity: 1;
@@ -293,16 +125,13 @@
 		}
 	}
 	.payment-card-number,
-	.payment-card-name-input {
+	.payment-card-name {
 		::-webkit-input-placeholder { color: transparent; }
 		:-moz-placeholder { color: transparent; }
 		::-moz-placeholder { color: transparent; }
 		:-ms-input-placeholder { color: transparent; }
 	}
 
-	// .card-data h5 { margin-top:-20px; }
-	// .cart-fixed { width: 100% }
-	// .steps-view { padding: 15px; }
 	.card-list-saved { width: 100%; }
 
 	.cvv-help { margin-left: 95px; }

@@ -1,0 +1,182 @@
+@media (min-width: 620px) {
+
+// elements to hide
+// -----------------------------------------------
+.payment-group-condensed { .hide; }
+
+// skeuocard
+// -----------------------------------------------
+.skeuocard {
+	background: #e8e8e8 url('../img/skeuocard.jpg');
+	border-radius: 10px;
+	box-sizing: border-box;
+	.box-shadow;
+
+	span.error { font-size: 11px; }
+}
+
+// skeuocard frontside
+// -----------------------------------------------
+.skeuocard-frontside {
+	height: 180px;
+	padding: 10px 20px;
+	margin-bottom: 125px;
+	position: relative;
+	width: 330px;
+	z-index: 2;
+}
+
+// skeuocard backside
+// -----------------------------------------------
+.skeuocard-backside {
+	height: 105px;
+	top: 85px;
+	margin-left: 320px;
+	position: absolute;
+	width: 195px;
+	.payment-card-cvv-input { font-style: italic; }
+	&:after {
+		content: '';
+		background: #ccc;
+		display: block;
+		height: 20px;
+		position: absolute;
+		width: 100%;
+		top: 8px;
+	}
+}
+
+// skeuocard flag
+// -----------------------------------------------
+.skeuocard-flag {
+	bottom: 27px;
+	display: none;
+	position: absolute;
+	right: 34px;
+}
+
+// skeuocard bigger (amex)
+// -----------------------------------------------
+.skeuocard-bigger {
+	height: 210px;
+	width: 360px;
+	.payment-card-number { top: 70px; }
+	.payment-card-name { top: 155px; }
+	.payment-card-due-date { top: 115px; }
+	.skeuocard-flag { right: 28px; }
+}
+
+// fields absolute positioning
+// -----------------------------------------------
+.payment-card-number,
+.payment-card-due-date,
+.payment-card-name,
+.payment-card-cvv { position: absolute; }
+
+// transitions
+// -----------------------------------------------
+.skeuocard-frontside,
+.skeuocard-backside,
+.payment-card-complementary-fields,
+.payment-card-name,
+.payment-card-due-date,
+.payment-card-number,
+.payment-card-cvv,
+.payment-card-cvv-label,
+.payment-card-cvv-input { .transition; }
+
+// number
+// -----------------------------------------------
+.payment-card-number { top: 40px; }
+
+// name
+// -----------------------------------------------
+.payment-card-name { top: 125px; }
+
+// due date
+// -----------------------------------------------
+.payment-card-due-date {
+	left: 130px;
+	top: 85px;
+	label { width: 40px; }
+	input { width: 28px; }
+}
+.payment-card-due-date-month-input-wrapper {
+	span.error {
+		margin-top: 3px;
+		margin-left: -33px;
+		position: absolute;
+		text-align: right;
+	}
+}
+
+// cvv
+// -----------------------------------------------
+.payment-card-cvv {
+	width: 140px;
+	z-index: 9;
+}
+.payment-card-cvv-frontside {
+	top: 35px;
+	right: 10px;
+}
+.payment-card-cvv-backside {
+	top: 68px;
+	right: -180px;
+	.payment-card-cvv-label { margin-top: 6px; }
+	.payment-card-cvv-input {
+		font-size: 18px;
+		height: 27px;
+		line-height: 1.2;
+	}
+}
+.payment-card-cvv-label { width: 60px; }
+
+// error special style
+// -----------------------------------------------
+.payment-card-due-date-month-input-wrapper,
+.payment-card-cvv-frontside {
+	span.error {
+		background: #e8e8e8;
+		padding: 2px;
+		z-index: 7;
+	}
+}
+
+// due date and cvv special style
+// -----------------------------------------------
+.payment-card-due-date-label,
+.payment-card-cvv-label {
+	float: left;
+	font-size: 11px;
+	line-height: 1.2;
+	margin-right: 6px;
+	margin-top: 2px;
+	text-align: right;
+}
+
+// placeholder special style
+// -----------------------------------------------
+.payment-card-number,
+.payment-card-due-date,
+.payment-card-name {
+	::-webkit-input-placeholder { color: #cbcbcb; }
+	:-moz-placeholder { color: #e8e8e8; }
+	::-moz-placeholder { color: #e8e8e8; }
+	:-ms-input-placeholder { color: #e8e8e8; }
+	input {
+		font-family: "ocraregular", "OCR A Std", "OCR A", Courier, "Courier New", monospace;
+		text-transform: uppercase;
+	}
+}
+
+// card brand selector and installments selector
+// -----------------------------------------------
+.payment-card-complementary-fields {
+	top: 190px;
+	left: 0;
+	position: absolute;
+	.skeuocard-bigger & { top: 220px; }
+}
+
+}

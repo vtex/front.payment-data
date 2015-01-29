@@ -1,9 +1,9 @@
-<p class="payment-card-cvv input text" data-bind="css: {'required': cardSafetyCodeRequired }">
-  <label class="payment-card-cvv-label"
-         data-bind="attr: {'for': $parent.identifier()+'payment-card' + id + 'Code', htmlFor: $parent.identifier()+'payment-card' + id + 'Code'}">
-    <span data-i18n="paymentData.paymentGroup.creditCard.ccv"></span>
-  </label>
-  <input type="tel" class="card-cvv input-micro dont-track-input"
+<label class="payment-card-cvv-label"
+       data-bind="attr: {'for': $parent.identifier()+'payment-card' + id + 'Code', htmlFor: $parent.identifier()+'payment-card' + id + 'Code'}">
+  <span data-i18n="paymentData.paymentGroup.creditCard.ccv"></span>
+</label>
+<p class="payment-card-cvv-input-wrapper">
+  <input type="tel" class="payment-card-cvv-input input-micro dont-track-input"
          data-bind="attr: {
                       id: $parent.identifier()+'payment-card' + id + 'Code',
                       'maxlength': cardCodeMask().length,
