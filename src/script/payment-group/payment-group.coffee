@@ -21,18 +21,25 @@ class PaymentGroupViewModel
     @description = ps.description()
     @groupName = ko.observable(ps.groupName())
     @paidValue = ko.observable()
+    updatePaidValueDebounce = _.debounce ((paidValue) =>
+      @paidValue(paidValue)
+    ), 600
+
+    @_paidValueInput = ko.observable()
     @paidValueInput = ko.computed
       read: =>
-        _.formatCurrency(@paidValue() / 100)
+        _.formatCurrency(@_paidValueInput() / 100)
       write: (newValue) =>
         newValue += "" # to String
         intValue = parseInt(newValue.replace(/[\.,]/g, ""), 10) # to Int
+        @_paidValueInput(intValue)
         return if @paidValue.peek() is intValue
-        @paidValue(intValue)
+        updatePaidValueDebounce(intValue)
 
     previousPaidValue = 0
     @paidValue.subscribe (value) =>
       if value > 0 and value isnt previousPaidValue
+        @_paidValueInput(value)
         $(window).trigger('paidValueUpdated.vtex', [{paidValue: value, paymentGroupId: @id}]) # Request installments
         installments = @paymentSystem().getInstallmentsForValue(value)
         if not installments?
