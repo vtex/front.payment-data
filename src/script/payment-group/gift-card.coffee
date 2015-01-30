@@ -66,7 +66,10 @@ class GiftCardPaymentGroupViewModel extends PaymentGroupViewModel
         forceProviders: _.map data, (p) -> p.oauth
 
   updatePayment: (giftPayment) =>
-    @paidValue giftPayment.referenceValue
+    if giftPayment.id
+      @paidValue giftPayment.referenceValue
+    else
+      @paidValue 0
     @loadingGiftCard false
     cardVM = _.find(@giftCards(), (gc) -> gc.id is giftPayment.id)
     if cardVM
