@@ -1,7 +1,7 @@
 ﻿<div class="payment-content">
-    <div class="payment-summary" data-bind="click: $parent.selectPaymentForm, visible: $parent.paymentForms().length > 1">
+    <div class="payment-summary" data-bind="visible: $parent.paymentForms().length > 1">
     <!-- ko if: selectedPaymentGroupViewModel -->
-        <strong class="payment-summary-name" data-bind="text: selectedPaymentGroupViewModel().localizedLabel"></strong>
+        <a href="javascript:void(0);" class="payment-summary-name" data-bind="text: selectedPaymentGroupViewModel().localizedLabel, click: $parent.selectPaymentForm">Nome do pagamento</a>
         <button class="btn btn-link" data-bind="click: unselectPaymentGroup, clickBubble: false, visible: !$parent.showPaymentGroupSelector() && $parent.selectedPaymentFormViewModel() == $data">Change payment group</button>
         <span class="payment-summary-data">
             <span class="payment-summary-value" data-bind="text: selectedPaymentGroupViewModel().paidValueInput"></span>
