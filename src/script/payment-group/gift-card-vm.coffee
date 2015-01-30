@@ -28,7 +28,7 @@ class GiftCardViewModel
     @isSpecialCard(json.isSpecialCard ? false)
     @caption json.caption
     @captionClass _.spacesToHyphens(json.caption+'').toLowerCase() if json.caption
-    @provider json.provider
+    @provider json.provider ? window.checkoutConfig.giftCardsProviders()[0].id
 
   toJSON: =>
     id: @id
