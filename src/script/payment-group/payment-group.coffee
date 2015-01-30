@@ -23,7 +23,7 @@ class PaymentGroupViewModel
     @paidValue = ko.observable()
     updatePaidValueDebounce = _.debounce ((paidValue) =>
       @paidValue(paidValue)
-    ), 600
+    ), 1000
 
     @_paidValueInput = ko.observable()
     @paidValueInput = ko.computed
@@ -203,3 +203,4 @@ class PaymentGroupViewModel
     validationResults.length > 0 and _.all validationResults, (val) -> val.result is true
 
 module.exports = PaymentGroupViewModel
+
