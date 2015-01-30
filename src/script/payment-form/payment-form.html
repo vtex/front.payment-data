@@ -1,8 +1,15 @@
 ﻿<div class="payment-content">
     <div class="payment-summary" data-bind="visible: $parent.paymentForms().length > 1">
     <!-- ko if: selectedPaymentGroupViewModel -->
+        <!-- ko if: $parent.showPaymentGroupSelector() || (!$parent.showPaymentGroupSelector() && $parent.selectedPaymentFormViewModel() != $data) -->
         <a href="javascript:void(0);" class="payment-summary-name" data-bind="text: selectedPaymentGroupViewModel().localizedLabel, click: $parent.selectPaymentForm">Nome do pagamento</a>
-        <button class="btn btn-link" data-bind="click: unselectPaymentGroup, clickBubble: false, visible: !$parent.showPaymentGroupSelector() && $parent.selectedPaymentFormViewModel() == $data">Change payment group</button>
+        <!-- /ko -->
+        <!-- ko if: !$parent.showPaymentGroupSelector() && $parent.selectedPaymentFormViewModel() == $data -->
+        <a href="javascript:void(0);" class="payment-summary-name" data-bind="click: unselectPaymentGroup, clickBubble: false">
+            <span data-bind="text: selectedPaymentGroupViewModel().localizedLabel">Nome do pagamento</span>
+            <i class="icon-caret-down"></i>
+        </a>
+        <!-- /ko -->
         <span class="payment-summary-data">
             <span class="payment-summary-value" data-bind="text: selectedPaymentGroupViewModel().paidValueInput"></span>
             <button class="payment-summary-remove btn btn-link btn-icon" data-bind="click: $parent.removePaymentForm, clickBubble: false"><i class="icon-remove"></i></button>
@@ -29,7 +36,7 @@
         <!-- /ko -->
 
         <!-- ko if: selectedPaymentGroupViewModel -->
-        <div class="payment-form-wrapper" data-bind="css: { 'payment-form-wrapper-one-payment': $parent.paymentForms().length == 1 }">
+        <div class="payment-form-wrapper" data-bind="css: { 'payment-form-wrapper-one-payment': $parent.paymentForms().length == 1, 'payment-form-wrapper-many-payments': $parent.paymentForms().length > 1 }">
             <span class="payment-security security" data-bind="visible: $parent.selectedPaymentFormViewModel() == $data">
                 <i class="payment-security-icon icon-lock"></i>
                 <span class="payment-security-text" data-i18n="paymentData.secureEnvironment">Ambiente Seguro</span>
