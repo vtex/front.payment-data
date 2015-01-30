@@ -253,6 +253,9 @@ class PaymentDataViewModel extends Module
         @availableAccounts.push(availableAccount)
 
   updateGiftCards: (paymentData) =>
+    if paymentData.giftCards.length != @giftCards().length
+      @giftCards.removeAll()
+
     for giftCardJSON, i in paymentData.giftCards
       giftCard = _(@giftCards()).find (gc) =>
         return gc.id.toString() is giftCardJSON.id.toString()
