@@ -361,7 +361,7 @@ class PaymentDataViewModel extends Module
       firstNonGiftPaymentSystem = _.find @paymentSystems(), (ps) -> ps.groupName() isnt 'giftCardPaymentGroup'
       payments.push(
         paymentSystem: parseInt(firstNonGiftPaymentSystem.id())
-        referenceValue: totalToPay
+        referenceValue: totalToPay - totalPayedByGifts
       )
       adjustmentsMade = true
 
