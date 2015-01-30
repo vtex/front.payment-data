@@ -25,7 +25,7 @@ class PaymentGroupViewModel
       @paidValue(paidValue)
     ), 1000
 
-    @_paidValueInput = ko.observable()
+    @_paidValueInput = ko.observable(0)
     @paidValueInput = ko.computed
       read: =>
         _.formatCurrency(@_paidValueInput() / 100)
