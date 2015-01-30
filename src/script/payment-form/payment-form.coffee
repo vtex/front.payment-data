@@ -45,13 +45,14 @@ class PaymentFormViewModel
     currentPaymentGroup = @selectedPaymentGroupViewModel()
     if currentPaymentGroup?.card
       currentPaymentGroup.card?()?.inUse(false)
-    paidValue = currentPaymentGroup?.paidValue() ? 0
     paymentGroupViewModel?.updatePayment({
       referenceValue: paidValue
     })
     @_selectedPaymentGroupViewModel(paymentGroupViewModel)
     # User changed selected payment group, let API know of this change
-    $(window).trigger('paymentUpdated.vtex') if paidValue > 0 and paymentGroupViewModel
+    paidValue = paymentGroupViewModel?.paidValue() ? 0
+    if paidValue > 0 and paymentGroupViewModel
+      $(window).trigger('paymentUpdated.vtex') 
 
   unselectPaymentGroup: =>
     @selectPaymentGroup(undefined)

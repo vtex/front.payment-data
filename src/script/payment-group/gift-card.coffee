@@ -87,6 +87,6 @@ class GiftCardPaymentGroupViewModel extends PaymentGroupViewModel
       @loadingGiftCard false
 
   removeGiftCard: =>
-    @card().inUse(false)
+    @card()?.inUse(false)
 
 module.exports = GiftCardPaymentGroupViewModel
