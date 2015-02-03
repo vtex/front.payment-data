@@ -16,7 +16,7 @@
         </span>
     <!-- /ko -->
     <!-- ko if: !selectedPaymentGroupViewModel() -->
-        <strong class="payment-summary-name">Novo pagamento</strong>
+        <strong class="payment-summary-name" data-i18n="paymentData.newPayment">Novo pagamento</strong>
         <span class="payment-summary-data">
             <button class="payment-summary-remove btn btn-link btn-icon" data-bind="click: $parent.removePaymentForm, clickBubble: false"><i class="icon-remove"></i></button>
         </span>
@@ -51,9 +51,9 @@
                 </p>
             </div>
             <!-- /ko -->
-        <!-- ko with: selectedPaymentGroupViewModel -->
+            <!-- ko with: selectedPaymentGroupViewModel -->
             <div class="payment-method-form" data-bind="template: template"></div>
-        <!-- /ko -->
+            <!-- /ko -->
         </div>
         <!-- /ko -->
     </form>

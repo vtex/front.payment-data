@@ -1,35 +1,35 @@
-﻿<fieldset class="box-payment-group2 box-payment-option">
-    <h3 data-bind="text: localizedLabel" class="hide"></h3>
+﻿<fieldset class="payment-method-fieldset">
+    <h3 class="payment-method-title payment-debit-title hide" data-bind="text: localizedLabel"></h3>
 
-    <p class="payment-description" data-bind="text: localizedDescription"></p>
+    <div data-bind="template: { name: 'paid-value', afterRender: vtex.i18n.translateHtml }" class="payment-debit-paid-value"></div>
 
-    <p class="payment-select-bank" data-i18n="paymentData.paymentGroup.debit.chooseBank"></p>
+    <p class="payment-method-description payment-debit-description" data-bind="text: localizedDescription"></p>
 
-    <fieldset class="clearfix">
-        <div class="btn-group btn-group-vertical debit-options debit-long-list" data-bind="if: paymentSystems().length >= 8">
-            <select class="btn debit-list-selector" data-bind="
-            attr: { id: 'debit-option-item' + $index() },
+    <p class="payment-debit-select-bank" data-i18n="paymentData.paymentGroup.debit.chooseBank">Escolha seu banco:</p>
+
+    <div class="payment-debit-list payment-debit-long-list btn-group btn-group-vertical clearfix" data-bind="if: paymentSystems().length >= 8">
+        <label class="payment-debit-list-label hide" for="payment-debit-list-input">Banco:</label>
+        <p class="payment-debit-list-input-wrapper">
+            <select class="payment-debit-list-input btn" data-bind="
+            attr: { id: 'payment-debit-list-input' + $index() },
             options: paymentSystems,
             optionsText: function(item) { return item.name() },
             value: paymentSystem">
             </select>
-        </div>
-        <div class="btn-group btn-group-vertical debit-options debit-list" data-bind="if: paymentSystems().length < 8">
-            <!-- ko foreach: paymentSystems -->
-            <label class="input btn label-vertical-group debit-list-item"
-                   data-bind="attr: { htmlFor: 'debit'+$index() }, css: { 'active':  $parent.paymentSystem().id() == $data.id() }">
-                <input type="radio" tabindex="-1"
-                       data-bind="attr: { id: 'debit'+$index(), name: 'debit'+$index() }, value: $data, checked: $parent.paymentSystem, disable: checkout.disableInputs">
-                <span class="debit-icons">
-                    <span class="debit-icon" data-bind="text: name(),
-                            attr: {'class': 'debit-icon debit-' + _.sanitize(_.spacesToHyphens(name())).toLowerCase() }"></span>
-                </span>
-                <i class="icon-ok-circle" data-bind="visible: $parent.paymentSystem() == $data"></i>
-                <i class="icon-circle-blank" data-bind="visible: $parent.paymentSystem() != $data"></i>
-            </label>
-            <!-- /ko -->
-         </div>
-    </fieldset>
-
-    <div data-bind="template: { name: 'paid-value', afterRender: vtex.i18n.translateHtml }" class="paid-value"></div>
+        </p>
+    </div>
+    <div class="payment-debit-list payment-debit-short-list btn-group btn-group-vertical clearfix" data-bind="if: paymentSystems().length < 8">
+        <!-- ko foreach: paymentSystems -->
+        <label class="payment-debit-list-item input btn label-vertical-group"
+               data-bind="attr: { htmlFor: 'debit'+$index() }, css: { 'active':  $parent.paymentSystem().id() == $data.id() }">
+            <input class="payment-debit-list-item-input" type="radio" tabindex="-1"
+                   data-bind="attr: { id: 'debit'+$index(), name: 'debit'+$index() }, value: $data, checked: $parent.paymentSystem, disable: checkout.disableInputs">
+            <span class="payment-debit-list-item-icon" data-bind="text: name(),
+                    attr: {'class': 'payment-debit-list-item-icon debit-icon-' + _.sanitize(_.spacesToHyphens(name())).toLowerCase() }"></span>
+            </span>
+            <i class="payment-debit-list-item-icon-active icon-ok-circle" data-bind="visible: $parent.paymentSystem() == $data"></i>
+            <i class="payment-debit-list-item-icon-inactive icon-circle-blank" data-bind="visible: $parent.paymentSystem() != $data"></i>
+        </label>
+        <!-- /ko -->
+    </div>
 </fieldset>
