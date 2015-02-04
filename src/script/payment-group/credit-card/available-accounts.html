@@ -1,26 +1,24 @@
-<div class="saved-cards" data-bind="if: paymentGroup.unusedAvailableAccounts().length, css: { active: paymentGroup.unusedAvailableAccounts().length > 0 }">
-  <fieldset class="clearfix">
-    <div class="btn-group btn-group-vertical card-list-saved">
-      <!-- ko foreach: paymentGroup.unusedAvailableAccounts -->
-      <label class="input btn label-vertical-group card-list-saved-item"
-             data-bind="css: { 'active':  $parent.paymentGroup.selectedAvailableAccount() == $data }, click: $parent.paymentGroup.selectAvailableAccount">
-        <span class="card-flags">
-            <span class="card-flag card-selected saved-card-flag" data-bind="text: $data.paymentSystemName(),
-                    attr: {'class': 'card-flag saved-card-flag ' + $data.paymentSystemName()}"></span>
-        </span>
-        <span class="card-label card-list-saved-label" data-bind="text: cardNumberLabel"></span>
-        <i class="icon-ok-circle" data-bind="visible: selected"></i>
-        <i class="icon-circle-blank" data-bind="visible: !selected()"></i>
+<div class="payment-card-saved-wrapper" data-bind="if: paymentGroup.unusedAvailableAccounts().length, css: { active: paymentGroup.unusedAvailableAccounts().length > 0 }">
+  <div class="btn-group btn-group-vertical payment-card-saved clearfix">
+    <!-- ko foreach: paymentGroup.unusedAvailableAccounts -->
+    <label class="input btn label-vertical-group payment-card-saved-item"
+           data-bind="css: { 'active':  $parent.paymentGroup.selectedAvailableAccount() == $data }, click: $parent.paymentGroup.selectAvailableAccount">
+      <span class="card-flags">
+          <span class="card-flag card-selected saved-card-flag" data-bind="text: $data.paymentSystemName(),
+                  attr: {'class': 'card-flag saved-card-flag ' + $data.paymentSystemName()}"></span>
+      </span>
+      <span class="payment-card-saved-name" data-bind="text: cardNumberLabel"></span>
+      <i class="icon-ok-circle" data-bind="visible: selected"></i>
+      <i class="icon-circle-blank" data-bind="visible: !selected()"></i>
 
-        <a class="link-delete btn" href="javascript:void(0);" data-bind="click: $parent.paymentGroup.removeAvailableAccount, visible: checkout.loggedIn() == true" data-i18n="[title]paymentData.paymentGroup.creditCard.removeCard"><i class="icon-remove"></i> <span class="text hide" data-i18n="paymentData.paymentGroup.creditCard.removeCard">Excluir cartão</span></a>
-      </label>
-      <!-- /ko -->
-      <label class="btn label-vertical-group link-use-another-card"
-             data-bind="click: showNewCard">
-        <a href="javascript:void(0);" id="use-another-card" data-bind="visible: $data.isUsingNewCard() == false" data-i18n="paymentData.paymentGroup.creditCard.useAnotherCard"></a>
-      </label>
-    </div>
-  </fieldset>
+      <a class="link-delete btn" href="javascript:void(0);" data-bind="click: $parent.paymentGroup.removeAvailableAccount, visible: checkout.loggedIn() == true" data-i18n="[title]paymentData.paymentGroup.creditCard.removeCard"><i class="icon-remove"></i> <span class="text hide" data-i18n="paymentData.paymentGroup.creditCard.removeCard">Excluir cartão</span></a>
+    </label>
+    <!-- /ko -->
+    <label class="btn label-vertical-group payment-card-saved-link-add-card"
+           data-bind="click: showNewCard">
+      <a href="javascript:void(0);" id="use-another-card" data-bind="visible: $data.isUsingNewCard() == false" data-i18n="paymentData.paymentGroup.creditCard.useAnotherCard"></a>
+    </label>
+  </div>
   <div data-bind="template: { name: 'installments', afterRender: vtex.i18n.translateHtml, if: paymentGroup.paidValue() > 0}"></div>
   <div data-bind="template: 'cvv'"></div>
 </div>
