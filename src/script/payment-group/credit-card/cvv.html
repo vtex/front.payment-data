@@ -16,4 +16,9 @@
                     maskOnBlur: cardCodeMask,
                     hasfocus: cardSafetyCodeHasFocus,
                     disable: checkout.disableInputs()">
+  <span class="cvv-help not-saved-cvv-help field-help cvv-four-digits" data-bind="css: { 'cvv-four-digits': cardCodeMask().length > 3 }, fadeVisible: cardSafetyCodeHasFocus() && !cardSafetyCode.lastValidationResult()">
+    <span class="cvv-help-arrow help-arrow left-arrow"></span>
+    <span class="cvv-help-message cvv-help-message-3-numbers help-message" data-i18n="paymentData.paymentGroup.creditCard.help" data-bind="visible: cardCodeMask().length == 3">Três últimos números atrás do seu cartão.</span>
+    <span class="cvv-help-message cvv-help-message-4-numbers help-message" data-i18n="paymentData.paymentGroup.creditCard.helpAmex" data-bind="visible: cardCodeMask().length > 3">Quatro dígitos na frente do cartão.</span>
+  </span>
 </p>
