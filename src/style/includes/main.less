@@ -162,9 +162,6 @@
 }
 
 
-
-
-
 // saved cards
 // -----------------------------------------------
 .payment-card-saved-wrapper {
@@ -173,15 +170,35 @@
 }
 
 .payment-card-saved {
-	margin: 10px 0 20px 0;
-	width: 290px;
+	margin: 10px 0;
+	width: 275px;
 }
 
-.payment-card-saved-item { text-align: left; }
+.payment-card-saved-item {
+	padding: 10px;
+	text-align: left;
+	i { top: 10px; }
+}
 .payment-card-saved-link-add-card { text-align: center; }
 
 .payment-card-saved-name { margin-left: 5px; }
 
+.payment-card-saved-installments .payment-card-installments-label { display: block; }
+
+.payment-card-saved-cvv {
+	.payment-card-cvv-label {
+		float: left;
+		line-height: 1.3;
+		margin-top: 5px;
+		width: 75px;
+	}
+	.payment-card-cvv-input {
+		font-size: 24px;
+		height: 35px;
+		line-height: 1.4;
+		width: 65px;
+	}
+}
 
 /* Card Scanner */
 .card-scanner-resume-header {

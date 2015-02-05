@@ -11,6 +11,35 @@
 	padding: 0;
 }
 
+// inline card fields
+// -----------------------------------------------
+.payment-card-due-date,
+.payment-card-name,
+.payment-card-cvv {
+	padding-top: 4px;
+	span.error { margin-left: 75px; }
+}
+
+.payment-card-due-date-label,
+.payment-card-name-label,
+.payment-card-cvv-label {
+	float: left;
+	line-height: 1.3;
+	width: 75px;
+}
+
+.payment-card-due-date-label { margin-top: 7px; }
+.payment-card-cvv-label { margin-top: 5px; }
+
+.payment-card-empty-cvv {
+	.payment-card-cvv-input {
+		font-size: 24px;
+		height: 35px;
+		line-height: 1.4;
+		width: 65px;
+	}
+}
+
 // due date
 // -----------------------------------------------
 .payment-card-due-date { overflow: hidden; }

@@ -19,6 +19,8 @@
       <a href="javascript:void(0);" id="use-another-card" data-bind="visible: $data.isUsingNewCard() == false" data-i18n="paymentData.paymentGroup.creditCard.useAnotherCard"></a>
     </label>
   </div>
-  <div data-bind="template: { name: 'installments', afterRender: vtex.i18n.translateHtml, if: paymentGroup.paidValue() > 0}"></div>
-  <div data-bind="template: 'cvv'"></div>
+    <div class="payment-card-installments payment-card-saved-installments input text" data-bind="template: { name: 'installments', afterRender: vtex.i18n.translateHtml, if: paymentGroup.paidValue() > 0 }"></div>
+  <!-- block cvv -->
+  <div class="payment-card-cvv payment-card-saved-cvv input text" data-bind="template: 'cvv'"></div>
+  <!-- block /cvv -->
 </div>
