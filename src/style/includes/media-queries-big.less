@@ -102,7 +102,7 @@
 .payment-card-number,
 .payment-card-cvv,
 .payment-card-cvv-label,
-.payment-card-cvv-input { .transition; }
+input.payment-card-cvv-input { .transition; }
 
 // number
 // -----------------------------------------------
@@ -129,11 +129,24 @@
 	}
 }
 
+// due date and cvv special style
+// -----------------------------------------------
+.payment-card-due-date-label,
+.payment-card-empty-cvv .payment-card-cvv-label {
+	float: left;
+	font-size: 11px;
+	line-height: 1.2;
+	margin-right: 6px;
+	margin-top: 2px;
+	text-align: right;
+}
+
 // cvv
 // -----------------------------------------------
 .payment-card-empty-cvv {
 	width: 140px;
 	z-index: 9;
+	span.error { margin-left: 67px; }
 }
 .payment-card-cvv-frontside {
 	top: 35px;
@@ -160,18 +173,6 @@
 		padding: 2px;
 		z-index: 7;
 	}
-}
-
-// due date and cvv special style
-// -----------------------------------------------
-.payment-card-due-date-label,
-.payment-card-empty-cvv .payment-card-cvv-label {
-	float: left;
-	font-size: 11px;
-	line-height: 1.2;
-	margin-right: 6px;
-	margin-top: 2px;
-	text-align: right;
 }
 
 // placeholder special style
