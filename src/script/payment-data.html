@@ -40,12 +40,12 @@
             </div>
 
             <!-- Botões de adicionar pagamento ou vale -->
-            <div class="add-payment-wrapper" data-bind="visible: active">
-                <p class="total-paid-difference" data-bind="visible: totalPaidDifference() != 0">
+            <div class="payment-difference" data-bind="visible: active">
+                <p class="payment-difference-text" data-bind="visible: totalPaidDifference() != 0">
                     <span data-i18n="paymentData.totalPaidDifferenceExists"></span>
                     <span data-bind="text: totalPaidDifference"></span>
                 </p>
-                <a href="javascript:void(0);" data-bind="click: addPaymentForm" class="add-payment btn btn-link" data-i18n="paymentData.addPayment">Add payment or gift card</a>
+                <a class="payment-difference-add btn btn-link" href="javascript:void(0);" data-bind="click: addPaymentForm" data-i18n="paymentData.addPayment">Add payment or gift card</a>
             </div>
 
             <!-- Form para envio de pagamentos, preenchido e enviado programaticamente -->
