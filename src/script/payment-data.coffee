@@ -13,7 +13,7 @@ debug = require('debug')('payment')
 class PaymentDataViewModel extends Module
   @include Translatable
   @include Routable
-  @include Step
+  @include new Step()
 
   constructor: (params) ->
     @id = 'paymentData'
