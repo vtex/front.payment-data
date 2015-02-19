@@ -1,6 +1,6 @@
 {
   "name": "front.payment-data",
-  "version": "0.1.0-beta.5",
+  "version": "0.1.0-beta.6",
   "readmeFilename": "README.md",
   "description": "Payment front end components for VTEX Smart Checkout",
   "main": "index.html",
