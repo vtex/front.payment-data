@@ -1,0 +1,37 @@
+<fieldset class="box-payment-group2 box-payment-option">
+    <h3 data-bind="text: localizedLabel"></h3>
+    <p class="payment-description" data-bind="text: localizedDescription"></p>
+
+    <div data-bind="template: { name: 'paid-value', afterRender: vtex.i18n.translateHtml }" class="payment-debit-paid-value"></div>
+
+    <!-- ko if: paymentSystems().length > 1 -->
+    <p class="payment-select-bank" data-i18n="paymentData.paymentGroup.bankInvoice.chooseBank"></p>
+
+    <fieldset class="clearfix">
+        <div class="btn-group btn-group-vertical bank-invoice-options bank-invoice-long-list" data-bind="if: paymentSystems().length >= 8">
+            <select class="btn bank-invoice-list-selector" data-bind="
+            attr: { id: 'bank-invoice-option-item' + $index() },
+            options: paymentSystems,
+            optionsText: function(item) { return item.name() },
+            value: paymentSystem">
+            </select>
+        </div>
+        <div class="btn-group btn-group-vertical bank-invoice-options bank-invoice-list" data-bind="if: paymentSystems().length < 8">
+            <!-- ko foreach: paymentSystems -->
+            <label data-bind="attr: { htmlFor: 'bank-invoice'+$index(),
+                   'class': 'input btn label-vertical-group bank-invoice-list-item bank-invoice-item-' + _.sanitize(_.spacesToHyphens(name())).toLowerCase() }, css: { 'active':  $parent.paymentSystem().id() == id() }">
+                <input type="radio" tabindex="-1"
+                       data-bind="attr: { id: 'bank-invoice'+$index(), name: 'bank-invoice'+$index() }, value: $data, checked: $parent.paymentSystem, disable: checkout.disableInputs">
+                <span class="bank-invoice-icons">
+                    <span class="bank-invoice-icon" data-bind="text: name(),
+                            attr: {'class': 'bank-invoice-icon bank-invoice-' + _.sanitize(_.spacesToHyphens(name())).toLowerCase() }"></span>
+                </span>
+                <i class="icon-ok-circle" data-bind="visible: $parent.paymentSystem() == $data"></i>
+                <i class="icon-circle-blank" data-bind="visible: $parent.paymentSystem() != $data"></i>
+            </label>
+            <!-- /ko -->
+         </div>
+    </fieldset>
+    <!-- /ko -->
+
+</fieldset>

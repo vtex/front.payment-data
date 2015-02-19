@@ -5,6 +5,7 @@ CreditCardPaymentGroupViewModel = require '../payment-group/credit-card.coffee'
 CreditCardCustomPaymentGroupViewModel = require '../payment-group/credit-card-custom.coffee'
 GiftCardPaymentGroupViewModel = require '../payment-group/gift-card.coffee'
 DebitPaymentGroupViewModel = require '../payment-group/debit.coffee'
+BankInvoicePaymentGroupViewModel = require '../payment-group/bank-invoice.coffee'
 PaymentGroupViewModel = require '../payment-group/payment-group.coffee'
 
 debug = require('debug')('payform')
@@ -81,6 +82,8 @@ class PaymentFormViewModel
         return GiftCardPaymentGroupViewModel
       when 'debitPaymentGroup'
         return DebitPaymentGroupViewModel
+      when 'bankInvoicePaymentGroup'
+        return BankInvoicePaymentGroupViewModel
       else
         if groupName.indexOf('customPrivate') isnt -1
           return CreditCardCustomPaymentGroupViewModel

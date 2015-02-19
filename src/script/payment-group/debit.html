@@ -1,14 +1,12 @@
 ﻿<fieldset class="payment-method-fieldset">
     <h3 class="payment-method-title payment-debit-title" data-bind="text: localizedLabel"></h3>
+    <p class="payment-method-description payment-debit-description" data-bind="text: localizedDescription"></p>
 
     <div data-bind="template: { name: 'paid-value', afterRender: vtex.i18n.translateHtml }" class="payment-debit-paid-value"></div>
 
-    <p class="payment-method-description payment-debit-description" data-bind="text: localizedDescription"></p>
-
-    <p class="payment-debit-select-bank" data-i18n="paymentData.paymentGroup.debit.chooseBank">Escolha seu banco:</p>
+    <p class="payment-debit-select-bank" data-i18n="paymentData.paymentGroup.debit.chooseBank"></p>
 
     <div class="payment-debit-list payment-debit-long-list btn-group btn-group-vertical clearfix" data-bind="if: paymentSystems().length >= 8">
-        <label class="payment-debit-list-label hide" for="payment-debit-list-input">Banco:</label>
         <p class="payment-debit-list-input-wrapper">
             <select class="payment-debit-list-input btn" data-bind="
             attr: { id: 'payment-debit-list-input' + $index() },
@@ -21,7 +19,7 @@
     <div class="payment-debit-list payment-debit-short-list btn-group btn-group-vertical clearfix" data-bind="if: paymentSystems().length < 8">
         <!-- ko foreach: paymentSystems -->
         <label class="payment-debit-list-item input btn label-vertical-group"
-               data-bind="attr: { htmlFor: 'debit'+$index() }, css: { 'active':  $parent.paymentSystem().id() == $data.id() }">
+               data-bind="attr: { htmlFor: 'debit'+$index() }, css: { 'active':  $parent.paymentSystem().id() == id() }">
             <input class="payment-debit-list-item-input" type="radio" tabindex="-1"
                    data-bind="attr: { id: 'debit'+$index(), name: 'debit'+$index() }, value: $data, checked: $parent.paymentSystem, disable: checkout.disableInputs">
             <span class="payment-debit-list-item-icon" data-bind="text: name(),
