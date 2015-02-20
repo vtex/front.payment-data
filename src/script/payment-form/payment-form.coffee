@@ -46,6 +46,7 @@ class PaymentFormViewModel
     currentPaymentGroup = @selectedPaymentGroupViewModel()
     if currentPaymentGroup?.card
       currentPaymentGroup.card?()?.inUse(false)
+      currentPaymentGroup.card?(null)
     currentPaidValue = currentPaymentGroup?.paidValue() ? 0
     paymentGroupViewModel?.updatePayment({
       referenceValue: currentPaidValue
@@ -53,7 +54,9 @@ class PaymentFormViewModel
     @_selectedPaymentGroupViewModel(paymentGroupViewModel)
     # User changed selected payment group, let API know of this change
     paidValue = paymentGroupViewModel?.paidValue() ? 0
-    if paidValue > 0 and paymentGroupViewModel
+    # Don't send gifts on selection - only when redemption code is inputed
+    isGift = paymentGroupViewModel.groupName() is 'giftCardPaymentGroup'
+    if paidValue > 0 and paymentGroupViewModel and not isGift
       $(window).trigger('paymentUpdated.vtex')
 
   unselectPaymentGroup: =>

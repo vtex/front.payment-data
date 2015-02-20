@@ -258,7 +258,7 @@ class PaymentDataViewModel extends Module
 
     for giftCardJSON, i in paymentData.giftCards
       giftCard = _(@giftCards()).find (gc) =>
-        return gc.id.toString() is giftCardJSON.id.toString()
+        return gc.redemptionCode() is giftCardJSON.redemptionCode
 
       if giftCard
         giftCard.update giftCardJSON

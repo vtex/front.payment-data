@@ -1,6 +1,6 @@
 class GiftCardViewModel
   constructor: (json = {}) ->
-    @id = json.id ? (new Date().getTime() * -1).toString() + Math.random().toString(36).substr(2)
+    @id = ko.observable(null)
     @redemptionCode = ko.observable(null)
     @value = ko.observable(null)
     @balance = ko.observable(null)
@@ -20,6 +20,7 @@ class GiftCardViewModel
       i18n.t('global.'+ @name())
 
   update: (json) =>
+    @id json.id
     @redemptionCode json.redemptionCode
     @value json.value
     @balance json.balance

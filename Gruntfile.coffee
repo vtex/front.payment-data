@@ -74,7 +74,7 @@ module.exports = (grunt) ->
     watch:
       coffee:
         files: ['src/script/**/*.coffee']
-        tasks: ['webpack']
+        tasks: ['webpack:demo', 'webpack:main']
       less:
         options:
           livereload: false
@@ -82,10 +82,10 @@ module.exports = (grunt) ->
         tasks: ['less']
       kotemplates:
         files: ['src/script/**/*.html']
-        tasks: ['webpack']
+        tasks: ['webpack:demo', 'webpack:main']
       script:
         files: ['src/script/**/*.js']
-        tasks: ['jshint', 'webpack']
+        tasks: ['webpack:demo', 'webpack:main']
       main:
         files: ['src/i18n/**/*.json',
                 'src/img/**/*',

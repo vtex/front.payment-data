@@ -33,7 +33,7 @@ class GiftCardPaymentGroupViewModel extends PaymentGroupViewModel
     validation.applyErrorClass = validation.showErrorMessage = not validation.result
     validation
 
-  cleanValidation: =>  @giftCardCode.validate silent: true  if @giftCardCode.validate
+  cleanValidation: => @giftCardCode.validate silent: true  if @giftCardCode.validate
 
   getPayment: =>
     ps = @paymentSystem()
@@ -66,21 +66,20 @@ class GiftCardPaymentGroupViewModel extends PaymentGroupViewModel
         forceProviders: _.map data, (p) -> p.oauth
 
   updatePayment: (giftPayment) =>
-    if giftPayment.id
-      @paidValue giftPayment.referenceValue
-    else
-      @paidValue 0
+    @paidValue giftPayment.referenceValue
     @loadingGiftCard false
-    cardVM = _.find(@giftCards(), (gc) -> gc.id is giftPayment.id)
+    cardVM = _.find(@giftCards(), (gc) -> gc.redemptionCode() is giftPayment.redemptionCode)
     if cardVM
       @card cardVM
       @giftCardCode null
 
   submitGiftCard: (card) =>
     @loadingGiftCard true
-    if card
-      @card card
-      card.inUse(true)
+    # Receive via parameter or try to find matching existing card on card list
+    cardVM = card or _.find(@giftCards(), (gc) => gc.redemptionCode() is @giftCardCode())
+    if cardVM
+      @card cardVM
+      cardVM.inUse(true)
     else
       @card new GiftCardViewModel(redemptionCode: @giftCardCode(), id: @id, inUse: true, value: @paidValue())
       @giftCards.push @card()
