@@ -31,7 +31,7 @@ class PaymentGroupViewModel
         _.formatCurrency(@_paidValueInput() / 100)
       write: (newValue) =>
         newValue += "" # to String
-        intValue = parseInt(newValue.replace(/[\.,]/g, ""), 10) # to Int
+        intValue = parseInt(newValue.replace(/[\.,]/g, ""), 10) or 0 # to Int
         @_paidValueInput(intValue)
         return if @paidValue.peek() is intValue
         updatePaidValueDebounce(intValue)
