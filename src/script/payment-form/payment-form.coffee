@@ -55,7 +55,7 @@ class PaymentFormViewModel
     # User changed selected payment group, let API know of this change
     paidValue = paymentGroupViewModel?.paidValue() ? 0
     # Don't send gifts on selection - only when redemption code is inputed
-    isGift = paymentGroupViewModel.groupName() is 'giftCardPaymentGroup'
+    isGift = paymentGroupViewModel?.groupName() is 'giftCardPaymentGroup'
     if paidValue > 0 and paymentGroupViewModel and not isGift
       $(window).trigger('paymentUpdated.vtex')
 
