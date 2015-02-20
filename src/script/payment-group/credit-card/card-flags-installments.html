@@ -1,0 +1,15 @@
+<div class="payment-card-flags-wrapper clearfix form-inline" data-bind="css: { 'hide': isCreditCardCustom }, if: !labelCardFields()">
+    <p class="payment-card-flags card-flags" data-bind="css: { 'active': $parent.paymentSystem() }">
+        <!-- ko foreach: paymentGroup.paymentSystems -->
+        <label class="radio card-flag-label">
+                     <span class="card-flag" data-bind="text: name,
+                        attr: {'class': 'card-flag ' + name()},
+                        click: $parent.paymentGroup.paymentSystem,
+                        disable: checkout.disableInputs,
+                        css: {'card-selected': $parent.paymentGroup.paymentSystem() == $data}"></span>
+        </label>
+        <!-- /ko -->
+    </p>
+</div>
+
+<div class="payment-card-installments input text" data-bind="template: { name: 'installments', afterRender: vtex.i18n.translateHtml, if: !$parent.isDebitCard() && paymentGroup.paidValue() > 0 }"></div>

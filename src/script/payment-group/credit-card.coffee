@@ -1,6 +1,6 @@
 append = require('appendTemplate')
 # Add partial templates to page
-templates = ['available-accounts', 'card-fields', 'card-scanner', 'cvv', 'installments', 'new', 'paid-value']
+templates = ['available-accounts', 'card-fields', 'card-scanner', 'cvv', 'installments', 'new', 'paid-value', 'card-flags-installments']
 _.each templates, (id) ->
   t = require "./credit-card/#{id}.html"
   append(id, t)

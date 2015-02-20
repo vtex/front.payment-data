@@ -45,26 +45,8 @@
         </div>
 
         <!-- block complementary fields: flag selector / installments -->
-        <div class="payment-card-complementary-fields clearfix">
-            <div class="payment-card-flags-wrapper clearfix form-inline" data-bind="css: { 'hide': isCreditCardCustom }, if: !labelCardFields()">
-                <p class="payment-card-flags card-flags" data-bind="css: { 'active': $parent.paymentSystem() }">
-                    <!-- ko foreach: paymentGroup.paymentSystems -->
-                    <label class="radio card-flag-label"
-                           data-bind="attr:{'for': $parents[1].identifier()+'selectedCard' + $index() + 'cc' +  $parent.id, 'htmlFor': $parents[1].identifier()+'selectedCard' + $index() + 'cc' +  $parent.id, title: name}">
-                        <input class="card-flag-radio" type="radio" tabindex="-1"
-                               data-bind="attr: { name: $parents[1].identifier()+'selectedCardFlag' + $parent.id, id: $parents[1].identifier()+'selectedCard' + $index() + 'cc' +  $parent.id },
-                                value: $data, checked: $parent.paymentGroup.paymentSystem, disable: checkout.disableInputs()">
-                         <span class="card-flag" data-bind="text: name,
-                            attr: {'class': 'card-flag ' + name()},
-                            css: {'card-selected': $parent.paymentGroup.paymentSystem() == $data}"></span>
-                    </label>
-                    <!-- /ko -->
-                </p>
-            </div>
-
-            <div class="payment-card-installments input text" data-bind="template: { name: 'installments', afterRender: vtex.i18n.translateHtml, if: !$parent.isDebitCard() && paymentGroup.paidValue() > 0 }"></div>
-        </div>
-        <!-- block /complementary fields: flag selector / installments -->    
+        <div class="payment-card-complementary-fields payment-card-complementary-fields-small clearfix " data-bind="template: 'card-flags-installments'"></div>
+        <!-- block /complementary fields: flag selector / installments -->
 
         <!-- block due date -->
         <div class="payment-card-due-date text" data-bind="css: {'hide': !cardExpirationDateRequired()}">
@@ -98,11 +80,9 @@
             </p>
         </div>
         <!-- block /name -->
-        
         <!-- block cvv -->
         <div class="payment-card-cvv payment-card-empty-cvv input text" data-bind="template: 'cvv', css: { 'payment-card-cvv-backside': cardCodeMask().length <= 3, 'payment-card-cvv-frontside': cardCodeMask().length > 3, 'required': cardSafetyCodeRequired }"></div>
         <!-- block /cvv -->
-
         <!-- block card flag -->
         <!-- ko foreach: paymentGroup.paymentSystems -->
         <span class="skeuocard-flag" data-bind="visible: $parent.paymentGroup.paymentSystem() == $data && $parent.cardNumber.lastValidationResult,
@@ -111,6 +91,9 @@
         <!-- block /card flag -->
     </div>
     <!-- block desktop/tablet: skeuocard frontside -->
+    <!-- block complementary fields: flag selector / installments -->
+    <div class="payment-card-complementary-fields payment-card-complementary-fields-large clearfix" data-bind="template: 'card-flags-installments'"></div>
+    <!-- block /complementary fields: flag selector / installments -->
 
 
     <!-- block desktop/tablet: skeuocard backside -->
