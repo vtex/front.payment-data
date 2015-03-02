@@ -6,7 +6,7 @@ Routable = require 'Routable'
 PaymentFormViewModel = require './payment-form/payment-form.coffee'
 PaymentSystem = require './payment-system/payment-system.coffee'
 AvailableAccountViewModel = require './payment-group/credit-card/available-account-vm.coffee'
-GiftCardViewModel = require './payment-group/gift-card-vm.coffee'
+GiftCardListViewModel = require './gift-card/gift-card-list.coffee'
 
 debug = require('debug')('payment')
 
@@ -21,9 +21,10 @@ class PaymentDataViewModel extends Module
 
     @setupRouter()
 
-    @wannaChangePaymentValue = ko.observable(false)
     @paymentSystems = ko.observableArray([])
     @availableAccounts = ko.observableArray([])
+    # Created if there is a gift card payment system available on first update
+    @giftCardList = ko.observable()
     @giftCards = ko.observableArray([])
     @paymentForms = ko.observableArray([])
     @selectedPaymentFormViewModel = ko.observable()
@@ -34,7 +35,7 @@ class PaymentDataViewModel extends Module
       window.checkout.total?() ? window.summary.total()
 
     @totalPaid = ko.computed =>
-      payments = @getAllPayments(true)
+      payments = @getPayments(true)
       _.reduce(payments, ((v, p) -> v + p.referenceValue), 0)
 
     @totalPaidDifference = ko.computed =>
@@ -89,7 +90,7 @@ class PaymentDataViewModel extends Module
       referenceValue: if diff > 0 then diff else 0
       installment: 1
 
-    paymentForm = new PaymentFormViewModel(newPayment, @paymentSystems, @availableAccounts, @giftCards)
+    paymentForm = new PaymentFormViewModel(newPayment, @paymentSystems, @availableAccounts)
     @paymentForms.push paymentForm
     @selectPaymentForm paymentForm
 
@@ -100,7 +101,6 @@ class PaymentDataViewModel extends Module
       newPaymentFormIndex = Math.abs(indexOfPaymentForm - 1) # if 0, select 1
       @selectedPaymentFormViewModel(@paymentForms()[newPaymentFormIndex])
     @paymentForms.remove(paymentForm)
-    paymentForm.selectedPaymentGroupViewModel()?.removeGiftCard?()
     paymentForm.selectedPaymentGroupViewModel()?.selectedAvailableAccount()?.selected(false)
     @sendAttachment()
     return false
@@ -114,21 +114,27 @@ class PaymentDataViewModel extends Module
 
   clearValidationError: => @validationError false
 
-  getAllPayments: (masked) =>
+  getPaymentFormPayments: (masked) =>
     _.chain(@paymentForms()).map((pf) -> pf.getPayment(masked)).compact().value()
+
+  getPayments: (masked) =>
+    payments = @getPaymentFormPayments(masked)
+    if @giftCardList()
+      payments = payments.concat @giftCardList().getPayments()
+
+    return payments
 
   # Sends payments to checkout API to decide if there are installments or benefits available
   sendAttachment: =>
-    payments = @getAllPayments(true)
     paymentAttachment =
-      payments: _.filter payments, (p) -> p.group isnt 'giftCardPaymentGroup'
+      payments: @getPaymentFormPayments(true)
       giftCards: _.map @giftCards(), (g) -> g.toJSON()
 
     window.vtexjs.checkout.sendAttachment('paymentData', paymentAttachment)
 
   paidValueUpdatedHandler: (e, data) =>
     totalToPay = @totalToPay()
-    paymentForms = _.filter @paymentForms(), (p) -> p.selectedPaymentGroupViewModel()?.groupName() isnt 'giftCardPaymentGroup'
+    paymentForms = @paymentForms()
     if data.paidValue and data.paymentGroupId and paymentForms.length is 2
       otherPaymentForm = _.find(paymentForms, (pf) -> pf.selectedPaymentGroupViewModel()?.id isnt data.paymentGroupId)
       remainingValue = totalToPay - data.paidValue
@@ -146,7 +152,7 @@ class PaymentDataViewModel extends Module
     @sendAttachment()
 
   updateInterestTotalizer: =>
-    payments = @getAllPayments(true)
+    payments = @getPayments(true)
 
     interest = 0
     for payment in payments
@@ -156,13 +162,13 @@ class PaymentDataViewModel extends Module
     $(window).trigger('checkout.totalizers.interest', [interest])
 
   # @return {string} O array de Payments serializados como JSON
-  paymentsArrayJSON: => return JSON.stringify @getAllPayments()
+  paymentsArrayJSON: => return JSON.stringify @getPayments()
 
   validatePaymentForms: (options) =>
     _.chain(@paymentForms()).map((pf) -> pf.validate(options)).flatten().value()
 
   validatePaidValue: =>
-    totalPaidByPaymentForms = _.reduce(@getAllPayments(true), ((memo, p)-> memo + p.referenceValue), 0)
+    totalPaidByPaymentForms = _.reduce(@getPayments(true), ((memo, p)-> memo + p.referenceValue), 0)
     if totalPaidByPaymentForms < @totalToPay()
       totalPaidValidationResult = { result: false, message: i18n.t('paymentData.paymentsValueInsufficient') }
     else if totalPaidByPaymentForms > @totalToPay()
@@ -197,7 +203,7 @@ class PaymentDataViewModel extends Module
     if paymentSystemRequiresAuthentication and not authenticated
       return @authenticateBeforePaying(@submit)
 
-    payments = @getAllPayments()
+    payments = @getPayments()
     value = _.reduce(payments, ((memo, p)-> memo + p.value), 0)
     referenceValue = _.reduce(payments, ((memo, p)-> memo + p.referenceValue), 0)
     @loading true
@@ -253,44 +259,42 @@ class PaymentDataViewModel extends Module
         @availableAccounts.push(availableAccount)
 
   updateGiftCards: (paymentData) =>
+    giftCardPaymentSystems = _.filter @paymentSystems(), (ps) -> ps.groupName() is 'giftCardPaymentGroup'
+    # There is a gift card payment system and the list has not been initialized
+    if giftCardPaymentSystems?.length > 0 and not @giftCardList()
+      @giftCardList new GiftCardListViewModel(giftCardPaymentSystems[0], @giftCards)
+
     if paymentData.giftCards.length != @giftCards().length
       @giftCards.removeAll()
 
     for giftCardJSON, i in paymentData.giftCards
       giftCard = _(@giftCards()).find (gc) =>
-        return gc.redemptionCode() is giftCardJSON.redemptionCode
+        return gc.id() is giftCardJSON.id or
+          gc.redemptionCode() is giftCardJSON.redemptionCode
 
       if giftCard
         giftCard.update giftCardJSON
       else
-        giftCard = new GiftCardViewModel(giftCardJSON)
-        @giftCards.push(giftCard)
+        @giftCardList().addGiftCard(giftCardJSON)
 
-  updatePaymentForms: (payments, giftPayments) =>
-    paymentForms = _.filter @paymentForms(), (p) -> p.selectedPaymentGroupViewModel()?.groupName() isnt 'giftCardPaymentGroup'
-    giftPaymentForms = _.filter @paymentForms(), (p) -> p.selectedPaymentGroupViewModel()?.groupName() is 'giftCardPaymentGroup'
+  updatePaymentForms: (payments) =>
+    paymentForms = @paymentForms()
 
     # If we have less payments now then before, we must delete all payments and re-create them from scratch.
     # As we don't have ID's, we can't be sure which payment was deleted.
     if payments.length isnt paymentForms.length
-      @paymentForms.remove pf for pf in paymentForms
+      @paymentForms.removeAll()
       @selectedPaymentFormViewModel(undefined)
       paymentForms = []
-
-    if giftPayments.length isnt giftPaymentForms.length
-      @paymentForms.remove pf for pf in giftPaymentForms
-      @selectedPaymentFormViewModel(undefined)
-      giftPaymentForms = []
 
     # Finds by index. If a payment exists in this position, update it. Else, create a new one.
     updatePayments = (payment, paymentsArray, i) =>
       try
         paymentsArray[i].update payment
       catch e
-        @paymentForms.push new PaymentFormViewModel(payment, @paymentSystems, @availableAccounts, @giftCards)
+        @paymentForms.push new PaymentFormViewModel(payment, @paymentSystems, @availableAccounts)
 
     updatePayments(payment, paymentForms, i) for payment, i in payments
-    updatePayments(payment, giftPaymentForms, i) for payment, i in giftPayments
 
     if not @selectedPaymentFormViewModel()?
       @selectedPaymentFormViewModel(@paymentForms()[0])
@@ -312,7 +316,7 @@ class PaymentDataViewModel extends Module
 
     @updateGiftCards(paymentData)
 
-    @updatePaymentForms(paymentData.payments, @getGiftsAsPayments(paymentData))
+    @updatePaymentForms(paymentData.payments)
 
     @updateInterestTotalizer() if paymentData.payments?.length > 0
 
@@ -322,20 +326,6 @@ class PaymentDataViewModel extends Module
 
     validationResults = @validate(dontChangeDOM: true)
     $('#payment-data').trigger('componentValidated.vtex', [validationResults])
-
-  getGiftsAsPayments: (paymentData) =>
-    giftToPayment = (g) ->
-      g.groupName = 'giftCardPaymentGroup'
-      g.referenceValue = parseInt(g.value, 10)
-      isGift = (ps) -> ps.groupName is 'giftCardPaymentGroup'
-      giftCardPaymentSystem = _.find paymentData.paymentSystems, isGift
-      g.paymentSystem = giftCardPaymentSystem.id
-      return g
-
-    return _.chain(paymentData.giftCards)
-    .filter('inUse')
-    .map(giftToPayment)
-    .value()
 
   # Returns true if adjustments were made to payments
   adjustPayments: (paymentData) =>

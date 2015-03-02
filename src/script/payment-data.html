@@ -33,6 +33,10 @@
                     </div>
                 </div>
 
+                <!-- Vale presentes -->
+                <div data-bind="visible: active(), template: {name: 'gift-card-list', if: giftCardList, data: giftCardList, afterRender: vtex.i18n.translateHtml }">
+                </div>
+
                 <!-- Pagamentos -->
                 <div class="box-step-content" data-bind="visible: active() || visited(),
                     template: {name: 'payment-form', foreach: paymentForms, afterRender: vtex.i18n.translateHtml }">
@@ -40,12 +44,12 @@
             </div>
 
             <!-- Botões de adicionar pagamento ou vale -->
-            <div class="payment-difference" data-bind="visible: active">
+            <div class="payment-difference" data-bind="visible: active() && paymentForms().length > 2">
                 <p class="payment-difference-text" data-bind="visible: totalPaidDifference() != 0">
                     <span data-i18n="paymentData.totalPaidDifferenceExists"></span>
                     <span data-bind="text: totalPaidDifference"></span>
                 </p>
-                <a class="payment-difference-add btn btn-link" href="javascript:void(0);" data-bind="click: addPaymentForm" data-i18n="paymentData.addPayment">Add payment or gift card</a>
+                <a class="payment-difference-add btn btn-link" href="javascript:void(0);" data-bind="click: addPaymentForm" data-i18n="paymentData.addPayment"></a>
             </div>
 
             <!-- Form para envio de pagamentos, preenchido e enviado programaticamente -->

@@ -1,7 +1,4 @@
-<p class="paid-value-change-wrapper" data-bind="visible: !paymentData.wannaChangePaymentValue() && paymentData.paymentForms().length == 1">
-  <a href="javascript:void(0);" class="paid-value-change-btn" data-bind="click: function() { paymentData.wannaChangePaymentValue(true); }" data-i18n="paymentData.payUsingMoreThanOneMethod">Deseja pagar com mais de uma forma?</a>
-</p>
-<p class="paid-value form-inline text" data-bind="visible: paymentData.wannaChangePaymentValue() || paymentData.paymentForms().length > 1">
+<p class="paid-value form-inline text" data-bind="visible: paymentData.paymentForms().length > 1">
   <label class="label-text" data-bind="attr: { 'for': 'paid-value' + id }"><span data-i18n="global.valueUsing">Valor com</span> <span data-bind="text: localizedLabel"></span></label>
   <input class="input-mini align-right" type="text" data-bind="attr: { 'id': 'paid-value' + id }, calculatorCaret, textInput: paidValueInput"/>
 </p>
