@@ -1,5 +1,8 @@
+appendTemplate = require('appendTemplate')
 template = require './gift-card-list.html'
-require('appendTemplate')('gift-card-list', template)
+newGiftCardTemplate = require './new-gift-card.html'
+appendTemplate('gift-card-list', template)
+appendTemplate('new-gift-card', newGiftCardTemplate)
 
 GiftCardViewModel = require './gift-card.coffee'
 
@@ -10,6 +13,10 @@ class GiftCardListViewModel
     @giftCardCode = ko.observable()
     @loadingGiftCard = ko.observable(false)
     @giftCardInputVisible = ko.observable(false)
+    @selectedProvider = ko.observable(window.checkoutConfig.giftCardsProviders()[0])
+
+    @giftCardProviders = ko.computed =>
+      window.checkoutConfig.giftCardsProviders()
 
     @availableGiftCards = ko.computed =>
       _.filter @giftCards(), (gc) ->
@@ -22,25 +29,13 @@ class GiftCardListViewModel
     @usedGiftCards = ko.computed =>
       _.filter @giftCards(), (gc) -> gc.inUse()
 
+  giftCardOptionsText: (gc) ->
+    if gc.caption?
+      return gc.caption
+    return gc.id
+
   showGiftCardInput: =>
     @giftCardInputVisible(true)
-
-  validateGiftCardCode: (value, element) =>
-    validation =
-      result: true
-      message: ""
-
-    # Se está vazio, retorne e valide OK.
-    if value is undefined or value is ""
-      validation.applyErrorClass = validation.showErrorMessage = not validation.result
-      validation.applySuccessClass = not validation.result
-      return validation
-
-    validation.applySuccessClass = validation.result
-    validation.applyErrorClass = validation.showErrorMessage = not validation.result
-    validation
-
-  cleanValidation: => @giftCardCode.validate silent: true  if @giftCardCode.validate
 
   login: =>
     providersURL = window.location.origin + '/api/checkout/pub/gift-cards/providers'
@@ -54,25 +49,33 @@ class GiftCardListViewModel
         returnUrl: window.location.href
         userEmail: window.clientProfileData.email()
         locale: checkout.locale()
-        forceProviders: _.map data, (p) -> p.oauth
+        forceProviders: _.map @giftCardProviders(), (p) -> p.oauth
 
   addGiftCard: (card) =>
     return unless card
-    @giftCards.push new GiftCardViewModel(card, @paymentSystem)
+    cardVM = new GiftCardViewModel(card, @paymentSystem)
+    @giftCards.push cardVM
+    return cardVM
 
   submitGiftCard: (card) =>
+    giftCardCode = @giftCardCode()
     @loadingGiftCard true
     # Receive via parameter or try to find matching existing card on card list
     cardVM = card or _.find(@giftCards(), (gc) => gc.redemptionCode() is @giftCardCode())
     if cardVM
       cardVM.inUse(true)
+    else if (not giftCardCode) or giftCardCode.length is 0
+      @loadingGiftCard false
+      return
     else
-      @addGiftCard({redemptionCode: @giftCardCode(), inUse: true})
+      cardVM = @addGiftCard({redemptionCode: giftCardCode, inUse: true})
 
     jqXHR = window.paymentData.sendAttachment()
     jqXHR.always =>
       @loadingGiftCard false
-      @giftCardCode ''
+      @giftCardCode null
+    jqXHR.fail =>
+      cardVM.inUse(false)
 
     @giftCardInputVisible false
 

@@ -11,17 +11,11 @@
             <p class="notification" data-bind="visible: !active()" data-i18n="global.waiting"></p>
             <div class="box-step">
                 <p data-bind="visible: active() && totalIsFree()" data-i18n="paymentData.totalIsFree"></p>
+
+                <!-- Mensagem de erro de validação -->
                 <div data-bind="visible: active() && validationError()" class="alert alert-block payment-alert-error fade in">
                     <button type="button" class="close" data-bind="click: clearValidationError">×</button>
                     <p data-i18n="global.validationErrorInThisForm"></p>
-                </div>
-                <div data-bind="visible: active() && giftCardMessages().length > 0" class="alert alert-block gift-card-message-container fade in">
-                    <!-- ko foreach: giftCardMessages -->
-                    <p data-bind="attr: { 'class': 'gift-card-message '+providerName}">
-                        <span class="gift-card-provider-name" data-bind="text: providerName"></span><span class="gift-card-message-separator">: </span>
-                        <span class="gift-card-message-text" data-bind="text: message"></span>
-                    </p>
-                    <!-- /ko -->
                 </div>
 
                 <!-- Loading do passo -->

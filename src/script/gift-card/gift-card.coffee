@@ -16,8 +16,12 @@ class GiftCardViewModel
 
     @update json
 
-    @valueLabel = ko.computed => _.intAsCurrency @value()
-    @balanceLabel = ko.computed => _.intAsCurrency @balance()
+    @valueLabel = ko.computed =>
+      if isNaN(@value()) then null else _.intAsCurrency @value()
+
+    @balanceLabel = ko.computed =>
+      if isNaN(@balance()) then null else _.intAsCurrency @balance()
+
     @friendlyName = ko.computed =>
       if @caption()
         return @caption()

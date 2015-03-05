@@ -1,18 +1,27 @@
 <fieldset class="payment-discounts">
-  <p class="payment-discounts-alert-wrap" data-bind="visible: availableLoyaltyCards().length > 0 && !window.checkout.loggedIn()">
-    <a href="#" class="alert payment-discounts-alert" data-bind="click: login" data-i18n="paymentData.paymentGroup.giftCard.showDiscounts"></a>
-  </p>
-  <button class="btn btn-show-gift-input" data-bind="click: showGiftCardInput, visible: !giftCardInputVisible()">Adicionar vale presente TODO:I18N</button>
-  <div class="new-gift-card" data-bind="visible: giftCardInputVisible">
-    <p class="payment-discounts-options text input form-inline">
-      <label for="payment-discounts-code" data-i18n="paymentData.paymentGroup.giftCard.codeCard"></label>
-      <input type="text" id="payment-discounts-code" class="payment-discounts-code" data-bind="textInput: giftCardCode, validationTargetBind: 'textInput', validate: validateGiftCardCode, disable: loadingGiftCard">
-      <button class="btn btn-add-gift-card" type="button" data-bind="click: submitGiftCard.bind(this, false), disable: loadingGiftCard" data-i18n="global.add">
-      </button>
+  <!-- Mensagens de gift card -->
+  <div class="alert alert-block gift-card-message-container" data-bind="visible: $parent.active() && $parent.giftCardMessages().length > 0">
+    <!-- ko foreach: $parent.giftCardMessages -->
+    <p data-bind="attr: { 'class': 'gift-card-message '+providerName}">
+      <span class="gift-card-provider-name" data-bind="text: providerName"></span><span class="gift-card-message-separator">: </span>
+      <span class="gift-card-message-text" data-bind="text: message"></span>
     </p>
+    <!-- /ko -->
   </div>
-  <div class="payment-discounts-list" data-bind="visible: giftCards().length > 0">
-    <span class="loading-inline" data-bind="visible: loadingGiftCard"></span>
+  <!-- /Mensagens de gift card -->
+
+  <!-- Alerta de loyalty gift cards disponíveis-->
+  <p class="payment-discounts-alert-wrap alert alert-block" data-bind="visible: availableLoyaltyCards().length > 0 && !window.checkout.loggedIn()">
+    <a href="#" class="payment-discounts-alert" data-bind="click: login" data-i18n="paymentData.paymentGroup.giftCard.showDiscounts"></a>
+  </p>
+  <!-- / Alerta de loyalty gift cards disponíveis-->
+
+  <!-- Novo vale presente -->
+  <div data-bind="template: 'new-gift-card'" class="new-gift-card row-fluid"></div>
+  <!-- /Novo vale presente -->
+
+  <!-- Lista de vale presentes -->
+  <div class="payment-discounts-list row-fluid" data-bind="visible: giftCards().length > 0">
     <table>
       <thead class="hide">
         <tr>
@@ -27,7 +36,7 @@
           <td class="code" data-bind="text: redemptionCode"></td>
           <td class="number" data-bind="text: valueLabel, visible: !$parent.loadingGiftCard()"></td>
           <td class="remove">
-            <button class="btn-link gift-remove" data-bind="click: $parent.removeGiftCard, clickBubble: false">Remover I18N</button>
+            <button class="btn-link gift-remove" data-bind="click: $parent.removeGiftCard, clickBubble: false">Remover</button>
           </td>
         </tr>
       </tbody>
@@ -35,7 +44,7 @@
         <tr>
           <td class="code" data-bind="text: redemptionCode"></td>
           <td class="use">
-            <button class="btn-link" data-bind="click: $parent.submitGiftCard, clickBubble: false">Usar I18N</button>
+            <button class="btn-link" data-bind="click: $parent.submitGiftCard, clickBubble: false">Usar</button>
           </td>
         </tr>
       </tbody>
@@ -45,11 +54,12 @@
           <td class="friendly-name" data-bind="visible: friendlyName, text: friendlyName"></td>
           <td class="number" data-bind="text: balanceLabel"></td>
           <td class="use">
-            <button class="btn-link" data-bind="click: $parent.submitGiftCard, clickBubble: false">Usar I18N</button>
+            <button class="btn-link" data-bind="click: $parent.submitGiftCard, clickBubble: false">Usar</button>
           </td>
         </tr>
       </tbody>
       <!-- /ko -->
     </table>
   </div>
+  <!-- /Lista de vale presentes -->
 </fieldset>
