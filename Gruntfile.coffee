@@ -74,7 +74,7 @@ module.exports = (grunt) ->
     watch:
       coffee:
         files: ['src/script/**/*.coffee']
-        tasks: ['webpack:demo', 'webpack:main']
+        tasks: ['webpack:main']
       less:
         options:
           livereload: false
@@ -82,7 +82,7 @@ module.exports = (grunt) ->
         tasks: ['less']
       kotemplates:
         files: ['src/script/**/*.html']
-        tasks: ['webpack:demo', 'webpack:main']
+        tasks: ['webpack:main']
       script:
         files: ['src/script/**/*.js']
         tasks: ['webpack:demo', 'webpack:main']
@@ -101,7 +101,7 @@ module.exports = (grunt) ->
     test: []
     vtex_deploy: ['shell:cp', 'shell:cp_br']
     # Development tasks
-    dev: ['nolr', 'build', 'watch']
+    dev: ['nolr', 'webpack:main', 'copy:main', 'less', 'watch']
     default: ['build', 'connect', 'watch']
     devmin: ['dist', 'connect:http:keepalive'] # Minifies files and serve
 

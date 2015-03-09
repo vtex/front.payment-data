@@ -1,0 +1,65 @@
+<fieldset class="payment-discounts">
+  <!-- Mensagens de gift card -->
+  <div class="alert alert-block gift-card-message-container" data-bind="visible: $parent.active() && $parent.giftCardMessages().length > 0">
+    <!-- ko foreach: $parent.giftCardMessages -->
+    <p data-bind="attr: { 'class': 'gift-card-message '+providerName}">
+      <span class="gift-card-provider-name" data-bind="text: providerName"></span><span class="gift-card-message-separator">: </span>
+      <span class="gift-card-message-text" data-bind="text: message"></span>
+    </p>
+    <!-- /ko -->
+  </div>
+  <!-- /Mensagens de gift card -->
+
+  <!-- Alerta de loyalty gift cards disponíveis-->
+  <p class="payment-discounts-alert-wrap alert alert-block" data-bind="visible: availableLoyaltyCards().length > 0 && !window.checkout.loggedIn()">
+    <a href="#" class="payment-discounts-alert" data-bind="click: login" data-i18n="paymentData.paymentGroup.giftCard.showDiscounts"></a>
+  </p>
+  <!-- / Alerta de loyalty gift cards disponíveis-->
+
+  <!-- Novo vale presente -->
+  <div data-bind="template: 'new-gift-card'" class="new-gift-card row-fluid"></div>
+  <!-- /Novo vale presente -->
+
+  <!-- Lista de vale presentes -->
+  <div class="payment-discounts-list row-fluid" data-bind="visible: giftCards().length > 0">
+    <table>
+      <thead class="hide">
+        <tr>
+          <th class="friendly-name" data-i18n="paymentData.paymentGroup.giftCard.friendlyName"></th>
+          <th class="code" data-i18n="paymentData.paymentGroup.giftCard.code"></th>
+          <th class="number" data-i18n="global.value"></th>
+        </tr>
+      </thead>
+      <tbody data-bind="foreach: usedGiftCards" class="gift-card-in-use">
+        <tr>
+          <td class="friendly-name" data-bind="visible: friendlyName, text: friendlyName"></td>
+          <td class="code" data-bind="text: redemptionCode"></td>
+          <td class="number" data-bind="text: valueLabel, visible: !$parent.loadingGiftCard()"></td>
+          <td class="remove">
+            <button class="btn-link gift-remove" data-bind="click: $parent.removeGiftCard, clickBubble: false">Remover</button>
+          </td>
+        </tr>
+      </tbody>
+      <tbody data-bind="foreach: availableGiftCards" class="gift-card-available">
+        <tr>
+          <td class="code" data-bind="text: redemptionCode"></td>
+          <td class="use">
+            <button class="btn-link" data-bind="click: $parent.submitGiftCard, clickBubble: false">Usar</button>
+          </td>
+        </tr>
+      </tbody>
+      <!-- ko if: window.checkout.loggedIn -->
+      <tbody data-bind="foreach: availableLoyaltyCards" class="gift-card-loyalty">
+        <tr>
+          <td class="friendly-name" data-bind="visible: friendlyName, text: friendlyName"></td>
+          <td class="number" data-bind="text: balanceLabel"></td>
+          <td class="use">
+            <button class="btn-link" data-bind="click: $parent.submitGiftCard, clickBubble: false">Usar</button>
+          </td>
+        </tr>
+      </tbody>
+      <!-- /ko -->
+    </table>
+  </div>
+  <!-- /Lista de vale presentes -->
+</fieldset>

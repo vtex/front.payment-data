@@ -3,7 +3,6 @@ templateId = require('appendTemplate')('payment-form', template)
 
 CreditCardPaymentGroupViewModel = require '../payment-group/credit-card.coffee'
 CreditCardCustomPaymentGroupViewModel = require '../payment-group/credit-card-custom.coffee'
-GiftCardPaymentGroupViewModel = require '../payment-group/gift-card.coffee'
 DebitPaymentGroupViewModel = require '../payment-group/debit.coffee'
 BankInvoicePaymentGroupViewModel = require '../payment-group/bank-invoice.coffee'
 PaymentGroupViewModel = require '../payment-group/payment-group.coffee'
@@ -12,7 +11,7 @@ debug = require('debug')('payform')
 
 idCounter = 1
 class PaymentFormViewModel
-  constructor: (paymentJSON, paymentSystemsObservableArray, availableAccountsObservableArray, giftCardsObservableArray) ->
+  constructor: (paymentJSON, paymentSystemsObservableArray, availableAccountsObservableArray) ->
     # Assert that data is valid
     if not (ps = paymentSystemsObservableArray())? or ps.length is 0
       throw new Error('Trying to create new PaymentFormViewModel without paymentSystems')
@@ -22,7 +21,6 @@ class PaymentFormViewModel
     # The available payment systems which this payment form may choose
     @paymentSystems = paymentSystemsObservableArray
     @availableAccounts = availableAccountsObservableArray
-    @giftCards = giftCardsObservableArray
     @paymentGroups = ko.observableArray()
 
     # UI State
@@ -54,9 +52,7 @@ class PaymentFormViewModel
     @_selectedPaymentGroupViewModel(paymentGroupViewModel)
     # User changed selected payment group, let API know of this change
     paidValue = paymentGroupViewModel?.paidValue() ? 0
-    # Don't send gifts on selection - only when redemption code is inputed
-    isGift = paymentGroupViewModel?.groupName() is 'giftCardPaymentGroup'
-    if paidValue > 0 and paymentGroupViewModel and not isGift
+    if paidValue > 0 and paymentGroupViewModel
       $(window).trigger('paymentUpdated.vtex')
 
   unselectPaymentGroup: =>
@@ -81,8 +77,6 @@ class PaymentFormViewModel
         return CreditCardPaymentGroupViewModel
       when 'debitCardPaymentGroup'
         return CreditCardPaymentGroupViewModel
-      when 'giftCardPaymentGroup'
-        return GiftCardPaymentGroupViewModel
       when 'debitPaymentGroup'
         return DebitPaymentGroupViewModel
       when 'bankInvoicePaymentGroup'
@@ -105,7 +99,7 @@ class PaymentFormViewModel
       paymentSystemsGroupedByPaymentGroup = _.groupBy @paymentSystems(), (ps) -> ps.groupName()
       for groupName, paymentSystems of paymentSystemsGroupedByPaymentGroup
         PaymentGroupViewModelClass = @getPaymentGroupClass(groupName)
-        @paymentGroups.push new PaymentGroupViewModelClass(paymentSystems, @availableAccounts, @giftCards)
+        @paymentGroups.push new PaymentGroupViewModelClass(paymentSystems, @availableAccounts)
 
     # Initialization
     if paymentJSON.paymentSystem? and not @selectedPaymentGroupViewModel()? # No paymentGroup, select according to paymentSystem

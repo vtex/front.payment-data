@@ -1,0 +1,24 @@
+<!-- Add gift card button -->
+<button class="btn-link btn btn-show-gift-input" data-bind="click: showGiftCardInput, visible: !giftCardInputVisible()">Adicionar vale compras</button>
+
+<div class="gift-card-provider" data-bind="visible: giftCardInputVisible, css: { 'gift-card-multiple-providers': giftCardProviders().length > 1 }">
+  <!-- Input redemption code -->
+  <div class="payment-discounts-options text input">
+    <label for="payment-discounts-code" data-i18n="paymentData.paymentGroup.giftCard.codeCard"></label>
+    <input type="text" id="payment-discounts-code" class="payment-discounts-cod"
+           data-bind="textInput: giftCardCode, disable: loadingGiftCard">
+  </div>
+
+  <!-- Provider select -->
+  <div class="gift-card-provider-options text input span7" data-bind="visible: giftCardProviders().length > 1">
+    <label for="gift-card-provider-selector" data-i18n="paymentData.paymentGroup.giftCard.provider"></label>
+    <select class="input-medium" id="gift-card-provider-selector" data-bind="
+                options: giftCardProviders,
+                optionsText: giftCardOptionsText,
+                value: selectedProvider">
+    </select>
+  </div>
+
+  <!-- Add button -->
+  <button class="btn-add-gift-card btn" type="button" data-bind="click: submitGiftCard.bind(this, false), disable: loadingGiftCard" data-i18n="global.add">Adicionar</button>
+</div>

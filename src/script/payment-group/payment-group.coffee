@@ -186,7 +186,6 @@ class PaymentGroupViewModel
     selectedInstallment = @selectedInstallment()?.toJSON()
     payment = new Payment
       paymentSystem: @paymentSystem().id()
-      paymentSystemName: @paymentSystem().name()
       group: @paymentSystem().groupName()
       value: if selectedInstallment then selectedInstallment?.total else total
       referenceValue: total
