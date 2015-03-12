@@ -96,7 +96,8 @@ class PaymentFormViewModel
   update: (paymentJSON) =>
     # Only add payment groups on first run
     if @paymentGroups().length is 0
-      paymentSystemsGroupedByPaymentGroup = _.groupBy @paymentSystems(), (ps) -> ps.groupName()
+      paymentSystemsWithoutGift = _.reject @paymentSystems(), (ps) -> ps.groupName() is 'giftCardPaymentGroup'
+      paymentSystemsGroupedByPaymentGroup = _.groupBy paymentSystemsWithoutGift, (ps) -> ps.groupName()
       for groupName, paymentSystems of paymentSystemsGroupedByPaymentGroup
         PaymentGroupViewModelClass = @getPaymentGroupClass(groupName)
         @paymentGroups.push new PaymentGroupViewModelClass(paymentSystems, @availableAccounts)

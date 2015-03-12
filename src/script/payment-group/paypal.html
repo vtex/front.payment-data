@@ -1,4 +1,4 @@
-﻿<fieldset class="payment-method-fieldset payment-method-fieldset-paypal">
+﻿<fieldset class="payment-method-fieldset payment-method-fieldset-paypal" data-bind="template: {afterRender: vtex.i18n.translateHtml}">
     <h3 class="payment-method-title payment-paypal-title" data-bind="text: localizedLabel"></h3>
     <!-- ko if: installments() -->
     <p class="payment-paypal-title">

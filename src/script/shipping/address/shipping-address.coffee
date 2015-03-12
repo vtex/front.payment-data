@@ -57,11 +57,14 @@ class ShippingAddressViewModel extends Module
       @postalCode ""
       @postalCodeFound false
 
+    countriesWithNoPostalCode = ['ECU', 'CHL', 'COL', 'PRY']
+    countriesWithPostalCodeAccordingToCity = ['CHL', 'COL', 'PRY']
+
     @isNotUsingPostalCode = ko.computed =>
-      @deliveryCountry() in checkout.countriesWithNoPostalCode
+      @deliveryCountry() in countriesWithNoPostalCode
 
     @isPostalCodeAccordingToCity = ko.computed =>
-      @deliveryCountry() in checkout.countriesWithPostalCodeAccordingToCity
+      @deliveryCountry() in countriesWithPostalCodeAccordingToCity
 
     @country = ko.computed => @deliveryCountry()
     @postalCodeRegex = ko.computed =>
@@ -124,7 +127,6 @@ class ShippingAddressViewModel extends Module
     @changePostalCodeBasedOnState = ko.computed =>
       if @isPostalCodeAccordingToCity() or
          not @isNotUsingPostalCode() or
-         not checkout.canEditData() or
          not @state()
         return
 
@@ -142,7 +144,6 @@ class ShippingAddressViewModel extends Module
     @changePostalCodeBasedOnCity =  _.throttle(=>
       if not @isPostalCodeAccordingToCity() or
          not @isNotUsingPostalCode() or
-         not checkout.canEditData() or
          not @state()
         return
 
@@ -256,9 +257,6 @@ class ShippingAddressViewModel extends Module
     return this
 
   validate: (options) =>
-    # Caso esteja com os dados mascarados a validação retorna valido
-    return [result: @isComplete()] unless checkout.canEditData()
-
     fields = []
     fields.push(@[prop]) for prop in @serializableProperties()
     return vtex.ko.validation.validateObservables(fields, options)

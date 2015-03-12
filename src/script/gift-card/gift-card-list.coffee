@@ -13,10 +13,10 @@ class GiftCardListViewModel
     @giftCardCode = ko.observable()
     @loadingGiftCard = ko.observable(false)
     @giftCardInputVisible = ko.observable(false)
-    @selectedProvider = ko.observable(window.checkoutConfig.giftCardsProviders()[0])
+    @selectedProvider = ko.observable(window.giftCardsProviders()[0])
 
     @giftCardProviders = ko.computed =>
-      window.checkoutConfig.giftCardsProviders()
+      window.giftCardsProviders()
 
     @availableGiftCards = ko.computed =>
       _.filter @giftCards(), (gc) ->
@@ -38,18 +38,11 @@ class GiftCardListViewModel
     @giftCardInputVisible(true)
 
   login: =>
-    providersURL = window.location.origin + '/api/checkout/pub/gift-cards/providers'
-    request = $.ajax
-      url: providersURL
-      type: 'GET'
-      contentType: 'application/json; charset=utf-8'
-      dataType: 'json'
-    request.done (data) =>
-      vtexid.start
-        returnUrl: window.location.href
-        userEmail: window.clientProfileData.email()
-        locale: checkout.locale()
-        forceProviders: _.map @giftCardProviders(), (p) -> p.oauth
+    options =
+      userEmail: @email
+      forceProviders: _.map @giftCardProviders(), (p) -> p.oauth
+
+    $(window).trigger("authenticateUser.vtexid", [options])
 
   addGiftCard: (card) =>
     return unless card

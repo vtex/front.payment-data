@@ -19,10 +19,36 @@ class CreditCardViewModel
     @cardSafetyCodeRequired = ko.observable(true)
     @cardSafetyCode = ko.observable()
     @document = ko.observable()
-    @documentPlaceholder = vtex.validation.placeholders.document[window.checkout.countryCode()]
+
+    documentPlaceholders =
+      ARG: '99999999'
+      BRA: '999.999.999-99'
+      CHL: '99.999.999-K'
+      USA: '999-99-9999'
+      PRY: '99999999'
+      ECU: '999999999-9'
+      URY: '9.999.999-9'
+
+    documentMasks =
+      BRA: { mask: "999.999.999-99", autoUnmask: true}
+      ARG: { mask: "99999999", autoUnmask: true}
+      CHL: { mask: "99.999.999-*", autoUnmask: true}
+      ECU: { mask: "999999999-9", autoUnmask: true}
+      COL: { mask: "******[******]", autoUnmask: true}
+      URY: { mask: "9.999.999-9", autoUnmask: true}
+      PRY: { mask: "99999999", autoUnmask: true}
+      PER: { mask: "************", placeholder: "", showMaskOnHover: false }
+      USA: { mask: "999-99-9999" }
+      MEX: null
+
+    @documentPlaceholder = documentPlaceholders[window.paymentData.countryCode()]
+
     @documentInputType = ko.computed =>
-      documentPlaceholder = vtex.validation.placeholders.document[window.checkout.countryCode()]
+      documentPlaceholder = documentPlaceholders[window.paymentData.countryCode()]
       if documentPlaceholder?.match(/[a-z]/i) then "text" else "tel"
+
+    @documentMask = ko.computed =>
+      documentMasks[window.paymentData.countryCode()]
 
     @documentAttributeBindings =
       placeholder: @documentPlaceholder
@@ -38,8 +64,8 @@ class CreditCardViewModel
     @oldFlag = ko.observable()
     @isUsingNewCard = ko.observable()
     @cardSafetyCodeHasFocus = ko.observable()
-    giftRegistryAddressId = vtexjs.checkout.orderForm.giftRegistryData?.addressId
-    shippingAddressId = vtexjs.checkout.orderForm.shippingData?.address?.addressId
+    giftRegistryAddressId = window.paymentData.giftRegistryAddressId()
+    shippingAddressId = window.paymentData.shippingAddress()?.addressId
     shippingToGift = giftRegistryAddressId? and giftRegistryAddressId is shippingAddressId
     @sameBillingAddress = ko.observable(not shippingToGift)
     @isCreditCardCustom = ko.observable(@paymentGroup.isCustom())
@@ -83,8 +109,8 @@ class CreditCardViewModel
     @cardNumber.subscribe @cardNumberUpdatedHandler
 
     @shippingAddress = new ShippingAddressViewModel()
-    if vtexjs.checkout.orderForm?.shippingData?.address
-      @updateShippingAddress(vtexjs.checkout.orderForm.shippingData.address)
+    if window.paymentData.shippingAddress
+      @updateShippingAddress(window.paymentData.shippingAddress())
 
     $(window).on 'orderFormUpdated.vtex', (e, orderForm) =>
       return unless orderForm.shippingData?.address

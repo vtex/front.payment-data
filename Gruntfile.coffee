@@ -27,7 +27,7 @@ module.exports = (grunt) ->
     devReplaceMap: devReplaceMap
     livereload: !grunt.option('no-lr')
     open: false
-    copyIgnore: ['!**/*.coffee', '!**/*.less', '!script/**/*.html', '!script/**/*.js',
+    copyIgnore: ['!**/*.coffee', '!**/*.less', '!script/**/*.html',
       '!script/{common,payment*,shipping,shipping/*,payment-group/*}']
 
   delete defaultConfig.watch.coffee
@@ -51,7 +51,7 @@ module.exports = (grunt) ->
           ]
         devtool: "source-map"
       main:
-        entry: "./src/script/payment-data.coffee"
+        entry: "./src/script/app.coffee"
         externals: externals
         output:
           path: "build/<%= relativePath %>/script/"
@@ -60,21 +60,34 @@ module.exports = (grunt) ->
         plugins: [
           new webpack.optimize.UglifyJsPlugin(mangle: false)
         ]
-        entry: "./src/script/payment-data.coffee"
+        entry: "./src/script/app.coffee"
         externals: externals
         output:
           path: "build/<%= relativePath %>/script/"
           filename: "payment-data-bundle.js"
       demo:
-        entry: "./src/script/demo.js"
+        entry: "./src/script/demo.coffee"
         output:
           path: "build/<%= relativePath %>/script/"
           filename: "demo.js"
 
+    less:
+      main:
+        files: [
+          expand: true
+          cwd: 'src/style'
+          src: ['style.less', 'demo.less', 'print.less']
+          dest: "build/<%= relativePath %>/style/"
+          ext: '.css'
+        ]
+
     watch:
       coffee:
-        files: ['src/script/**/*.coffee']
+        files: ['src/script/**/*.coffee', '!src/script/demo.coffee']
         tasks: ['webpack:main']
+      demo:
+        files: ['src/script/demo.coffee']
+        tasks: ['webpack:demo']
       less:
         options:
           livereload: false
@@ -83,27 +96,27 @@ module.exports = (grunt) ->
       kotemplates:
         files: ['src/script/**/*.html']
         tasks: ['webpack:main']
-      script:
-        files: ['src/script/**/*.js']
-        tasks: ['webpack:demo', 'webpack:main']
       main:
         files: ['src/i18n/**/*.json',
                 'src/img/**/*',
                 'src/lib/**/*',
+                'src/script/**/*.js'
+                'src/mock/**/*',
+                'src/demo.html',
                 'src/index.html']
-        tasks: ['jshint', 'copy:main', 'getTags', 'copy:dev']
+        tasks: ['copy:main', 'getTags', 'copy:dev']
 
   tasks =
     # Building block tasks
-    build: ['clean', 'jshint', 'webpack:demo', 'webpack:main', 'copy:main', 'copy:pkg', 'less']
+    build: ['clean', 'webpack:demo', 'webpack:main', 'copy:main', 'copy:pkg', 'less']
     # Deploy tasks
-    dist: ['clean', 'jshint', 'webpack:dist', 'copy:main', 'copy:pkg', 'less', 'copy:deploy'] # Dist - minifies files
+    dist: ['clean', 'webpack:dist', 'copy:main', 'copy:pkg', 'less', 'copy:deploy'] # Dist - minifies files
     test: []
     vtex_deploy: ['shell:cp', 'shell:cp_br']
     # Development tasks
     dev: ['nolr', 'webpack:main', 'copy:main', 'less', 'watch']
-    default: ['build', 'connect', 'watch']
-    devmin: ['dist', 'connect:http:keepalive'] # Minifies files and serve
+    default: ['getTags', 'build', 'copy:dev', 'connect', 'watch']
+    devmin: ['getTags', 'dist', 'copy:dev', 'connect:http:keepalive'] # Minifies files and serve
 
   # Project configuration.
   grunt.config.init defaultConfig
