@@ -114,7 +114,7 @@ module.exports = (grunt) ->
     test: []
     vtex_deploy: ['shell:cp', 'shell:cp_br']
     # Development tasks
-    dev: ['nolr', 'webpack:main', 'copy:main', 'less', 'watch']
+    dev: ['getTags', 'nolr', 'webpack:main', 'copy:main', 'copy:dev', 'less', 'watch']
     default: ['getTags', 'build', 'copy:dev', 'connect', 'watch']
     devmin: ['getTags', 'dist', 'copy:dev', 'connect:http:keepalive'] # Minifies files and serve
 

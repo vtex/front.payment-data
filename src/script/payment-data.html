@@ -8,7 +8,7 @@
     </div>
     <div class="accordion-body collapse in payment-body">
         <div class="accordion-inner">
-            <p class="notification" data-bind="visible: !active()" data-i18n="global.waiting"></p>
+            <p class="notification" data-bind="visible: !active() && !visited()" data-i18n="global.waiting"></p>
             <div class="box-step">
                 <p data-bind="visible: active() && totalIsFree()" data-i18n="paymentData.totalIsFree"></p>
 

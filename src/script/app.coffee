@@ -13,7 +13,7 @@ ko.applyBindings(window.paymentData)
 Listens to events by the parent window
 ###
 $(window).on "message onmessage", (e) ->
-  console.log 'Received message', e
+  console.log 'Payment data received message', e.originalEvent?.data
   event = e.originalEvent.data.event
   args = e.originalEvent.data.arguments
   switch event

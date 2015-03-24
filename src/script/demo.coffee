@@ -32,7 +32,7 @@ $(window).on "authenticatedUser.vtexid", ->
   iframe[0].contentWindow.postMessage({event: 'authenticatedUser.vtexid', arguments: []})
 
 $(window).on "message onmessage", (e) ->
-  console.log 'Received message', e
+  console.log 'Received message', e.originalEvent?.data
   event = e.originalEvent.data.event
   args = e.originalEvent.data.arguments
   switch event
