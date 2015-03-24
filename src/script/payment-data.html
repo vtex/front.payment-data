@@ -8,7 +8,7 @@
     </div>
     <div class="accordion-body collapse in payment-body">
         <div class="accordion-inner">
-            <p class="notification" data-bind="visible: !active() && !visited()" data-i18n="global.waiting"></p>
+            <p class="notification" data-bind="visible: !active()" data-i18n="global.waiting"></p>
             <div class="box-step">
                 <p data-bind="visible: active() && totalIsFree()" data-i18n="paymentData.totalIsFree"></p>
 
@@ -32,7 +32,7 @@
                 </div>
 
                 <!-- Pagamentos -->
-                <div class="box-step-content" data-bind="visible: active() || visited(),
+                <div class="box-step-content" data-bind="visible: active(),
                     template: {name: 'payment-form', foreach: paymentForms, afterRender: vtex.i18n.translateHtml }">
                 </div>
             </div>
@@ -44,7 +44,7 @@
                     <span data-bind="text: totalPaidDifference"></span>
                 </p>
             </div>
-            <button class="payment-difference-add btn btn-link" data-bind="click: addPaymentForm" data-i18n="paymentData.addPayment"></button>
+            <button class="payment-difference-add btn btn-link" data-bind="click: addPaymentForm, visible: active" data-i18n="paymentData.addPayment"></button>
 
             <!-- Form para envio de pagamentos, preenchido e enviado programaticamente -->
             <form id="sendPayments" data-event="sendPayments" method="post" name="sendPayments" action="">
