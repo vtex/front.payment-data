@@ -47,7 +47,7 @@
             <button class="payment-difference-add btn btn-link" data-bind="click: addPaymentForm, visible: active" data-i18n="paymentData.addPayment"></button>
 
             <!-- Form para envio de pagamentos, preenchido e enviado programaticamente -->
-            <form id="sendPayments" data-event="sendPayments" method="post" name="sendPayments" action="">
+            <form id="sendPayments" target="_parent" data-event="sendPayments" method="post" name="sendPayments" action="">
                 <input id="paymentsArray" name="paymentsArray" type="hidden"/>
                 <input id="callbackURL" name="callbackUrl" type="hidden" data-bind="value: window.paymentData.gatewayCallbackUrl"/>
             </form>
