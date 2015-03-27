@@ -211,7 +211,7 @@ class ShippingAddressViewModel extends Module
   update: (address, logisticsInfo) =>
     @loading false
     postalCodeChanged = false
-    @deliveryCountry address.country  if address.country
+    @deliveryCountry address.country if address.country
     @street _.capitalizeSentence(address.street)  if postalCodeChanged or (address.street and address.street.length > 0)
     @neighborhood _.capitalizeSentence(address.neighborhood)  if postalCodeChanged or (address.neighborhood and address.neighborhood.length > 0)
 
