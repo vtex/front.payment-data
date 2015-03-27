@@ -52,6 +52,14 @@ $(window).on "message onmessage", (e) ->
       console.log 'authenticateUser', args
 
 # Initial load
-$(window).on "message onmessage", (e) ->
-  if e.originalEvent.data is 'ready'
+iframe.load ->
+  parentLocation =
+    protocol: window.location.protocol
+    host: window.location.host
+
+  try
+    iframe[0].contentWindow.postMessage({event: 'setup.vtex', arguments: [parentLocation, 'payment']}, 'http://' + window.location.host)
     sendOrderForm()
+  catch e
+    console.log e
+

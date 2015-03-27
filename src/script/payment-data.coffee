@@ -21,6 +21,7 @@ class PaymentDataViewModel extends Module
   constructor: (params) ->
     @id = 'paymentData'
     @route = params.route
+    @location = params.location
 
     @setupRouter()
 
@@ -188,27 +189,90 @@ class PaymentDataViewModel extends Module
 
   # Inicia uma transação com o gateway e envia todos os pagamentos.
   submit: =>
-    if @isScanningCard() then return
-
-    # Não inicie o submit enquanto estiver inválido - a menos que seja gratuito.
-    if !@totalIsFree() && !@isValid()
-      @validationError true
-      return false
-
     if not @active()
       return false
 
+    validationResults = @validate()
+    $('#payment-data').trigger('componentValidated.vtex', [validationResults])
+
+    if not _.all(validationResults, (v) -> v.result)
+      return false
+
+    # TODO move this to validation of paymentForm?
     paymentSystemRequiresAuthentication = _.any @paymentForms(), (pf) -> pf.requiresAuthentication()
     authenticated = @loggedIn() or @userType is 'callCenterOperator'
     if paymentSystemRequiresAuthentication and not authenticated
       return @authenticateBeforePaying(@submit)
 
-    payments = @getPayments()
+    payments = @getPayments(true)
     value = _.reduce(payments, ((memo, p)-> memo + p.value), 0)
     referenceValue = _.reduce(payments, ((memo, p)-> memo + p.referenceValue), 0)
     @loading true
-    $(window).trigger('submitPayments.vtex', [value, referenceValue, payments])
+    $('#payment-data').trigger('startTransaction.vtex', [value, referenceValue, payments])
     return false
+
+  sendPayments: (transactionResponse) =>
+    transactionURL = transactionResponse.receiverUri
+    merchantTransactions = transactionResponse.merchantTransactions
+    transactionPayments = transactionResponse.paymentData.payments
+    currencyCode = transactionResponse.storePreferencesData.currencyCode
+    payments = @getPayments()
+
+    # Caso seja pagamento utilizando a nova API do Checkout que suporta split
+    if merchantTransactions? and merchantTransactions.length > 0
+      payments = @splitPayments(payments, merchantTransactions, transactionPayments, currencyCode)
+
+    paymentsJSON = JSON.stringify payments
+    $("#sendPayments").attr('action', transactionURL)
+    $("#paymentsArray").val paymentsJSON
+    if transactionResponse.gatewayCallbackTemplatePath
+      gatewayUrl = @location.protocol + '//' + @location.host + transactionResponse.gatewayCallbackTemplatePath
+      $("#callbackURL").val gatewayUrl
+    $("#sendPayments").submit()
+
+  splitPayments: (payments, merchantTransactions, transactionPayments, currencyCode) =>
+    paymentsArray = []
+
+    # No caso de gift card, devemos pegar o primeiro merchant (API ainda nao sabe
+    # como vai lidar com isso)
+    giftPayments = _.filter payments, (p) -> p.group is "giftCardPaymentGroup"
+    for giftPayment in giftPayments
+      giftPayment.transaction =
+        id: merchantTransactions[0].transactionId
+        merchantName: merchantTransactions[0].merchantName
+    paymentsArray = paymentsArray.concat(giftPayments)
+
+    # No caso de pagamentos "normais" (não gift card)
+    for payment, i in payments
+      for transactionPayment, j in transactionPayments
+        if i is j
+          # Para cada merchantSellerPayments do payment
+          # criamos um pagamento novo
+          for merchant in transactionPayment.merchantSellerPayments
+            newPayment = _.clone payment
+            # A API do Checkout manda dentro do merchantSellerPayments
+            # o valor que será pago por cada pagamento, para isso, sobescrevemos
+            # o nosso objeto payment com os valores enviados pela API
+            _.extend newPayment, merchant
+
+            # Pegaremos agora no objeto merchantTransactions o número da
+            # transação e atrelamos ao pagamento
+            merchantId = newPayment.id
+            transaction = _.find merchantTransactions, (m) -> m.id is merchantId
+            newPayment.transaction =
+              id: transaction.transactionId
+              merchantName: transaction.merchantName
+
+            # hardcode installmentsValue
+            newPayment.installmentsValue = newPayment.installmentValue
+
+            # Repassa o currency code da transação
+            newPayment.currencyCode = currencyCode
+
+            # Adicionamos ao array de pagamentos
+            paymentsArray.push(newPayment)
+
+    payments = paymentsArray
 
   authenticateBeforePaying: (callback) =>
     options =
