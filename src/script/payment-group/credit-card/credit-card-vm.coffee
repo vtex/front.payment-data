@@ -109,7 +109,7 @@ class CreditCardViewModel
     @cardNumber.subscribe @cardNumberUpdatedHandler
 
     @shippingAddress = new ShippingAddressViewModel()
-    if window.paymentData.shippingAddress
+    if window.paymentData.shippingAddress()
       @updateShippingAddress(window.paymentData.shippingAddress())
 
     $(window).on 'orderFormUpdated.vtex', (e, orderForm) =>
