@@ -40,7 +40,7 @@ $(window).on "message onmessage", (e) ->
 ###
 Converts events sent by the component to messages to the parent window.
 ###
-origin = 'http://' + window.location.host
+origin = '*'
 $(window).on "sendAttachment.vtex", (e, attachmentName, attachmentData) ->
   parent.postMessage({"event": "sendAttachment.vtex", "arguments": [attachmentName, attachmentData]}, origin)
 
