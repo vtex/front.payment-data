@@ -1,0 +1,188 @@
+// general alert message
+// -----------------------------------------------
+.alert {
+	margin: 0 auto 20px auto;
+	width: 500px;
+	p { margin-bottom: 0; }
+	ul { margin-top: 10px; }
+}
+.alert-block {
+	line-height: 1.3em;
+	padding: 5px 20px 5px 10px;
+	.close {
+		right: -12px;
+		top: -5px;
+	}
+}
+
+// modal messages
+// -----------------------------------------------
+.default-modal {
+	background: #62c462;
+	color: #fff;
+	font-size: 18px;
+	height: 200px;
+	line-height: 1.3;
+	border: 1px solid rgba(0, 0, 0, .1);
+}
+
+.default-modal-body { width: 530px; }
+
+.default-modal-security {
+	float: left;
+	margin-right: 20px;
+	opacity: .4;
+}
+
+// payment confirmation
+// -----------------------------------------------
+.payment-confirmation-modal { height: 100px; }
+
+.payment-confirmation-message {
+	float: left;
+	width: 400px;
+}
+
+// other modals
+// -----------------------------------------------
+.masked-info-hello,
+.payment-unauthorized-hello {
+	font-size: 1.3em;
+	line-height: 1.1em;
+}
+
+.identified-user-hello,
+.payment-confirmation-thanks,
+.guest-login-title { font-size: 1.6em; }
+
+.masked-info-message,
+.payment-unauthorized-message {
+	p {
+		font-size: 16px;
+		margin-bottom: 10px;		
+	}
+}
+
+.masked-info-security,
+.identified-user-security,
+.payment-unauthorized-security{
+	font-size: 126px;
+	line-height: 126px;
+}
+
+.payment-confirmation-security,
+.guest-login-security {
+	font-size: 60px;
+	line-height: 66px;
+	right: 0;
+	position: absolute;
+}
+
+.masked-info-modal,
+.payment-unauthorized-modal { height: auto; }
+
+// masked info
+// -----------------------------------------------
+.masked-info-security { margin-bottom: 100px; }
+
+.identified-user-button { margin: 10px auto 0; }
+
+.masked-info-hello,
+.masked-info-message {
+	float: left;
+	width: 420px;
+    margin-bottom: 10px;
+}
+
+// guest message
+// -----------------------------------------------
+.guest-login-actions {
+	a {
+		color: #fff;
+		text-decoration: underline;
+	}
+	margin-top: 15px;
+}
+
+// payment unauthorized
+// -----------------------------------------------
+.payment-unauthorized-modal { background: #DFA620; }
+.payment-unauthorized-security { margin-bottom: 125px; }
+.payment-unauthorized-message3 { opacity: .75; }
+.payment-unauthorized-show-details {
+  a {
+    opacity: .75;
+    color: #fff;
+  }
+}
+
+// modal confirmation
+// -----------------------------------------------
+.confirmation-modal {
+	border: 1px solid #ccc;
+	border-width: 3px 1px;
+	border-top-color: #FFE699;
+	border-bottom-color: #FFE699;
+}
+.unavailable-message {
+	font-size: 16px;
+	margin-bottom: 10px;
+}
+.unavailable-items {
+	font-size: 14px;
+	border: 1px solid #ddd;
+	padding: 10px;
+	.border-radius;
+}
+.unavailable-items li + li {
+	border-top: 1px dotted #ddd;
+	margin-top: 10px;
+	padding-top: 10px;
+}
+
+// tooltip help message
+// -----------------------------------------------
+.field-help {
+	background-color: #1472ba;
+	border: 1px solid lighten(#1472BA, 12%);
+	color: #fff;
+	display: block;
+	line-height: 18px;
+	position: absolute;
+	padding: 2px 4px;
+	box-shadow: 0 1px 8px 3px rgba(0,0,0,0.2);
+	z-index: 10;
+
+	.border-radius;
+
+	.left-arrow {
+		border-right-color: #1472ba;
+		border-width: 5px 5px 5px 0;
+		left: 0;
+		margin-left: -5px;
+	}
+	.right-arrow {
+		border-left-color: #1472ba;
+		border-width: 5px 0 5px 5px;
+		right: 0;
+		margin-right: -5px;
+	}
+	.bottom-arrow {
+		border-top-color: #1472BA;
+		bottom: -10px;
+		left: 50%;
+		margin-left: -11px;
+		border-bottom-width: 0;
+		border-width: 5px;
+		top: auto;
+	}
+}
+.help-arrow {
+	border-color: transparent;
+	border-style: solid;
+	height: 0;
+	margin-top: -5px;
+	position: absolute;
+	top: 50%;
+	width: 0;
+}

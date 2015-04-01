@@ -5,7 +5,7 @@
                      <span class="card-flag" data-bind="text: name,
                         attr: {'class': 'card-flag ' + name()},
                         click: $parent.paymentGroup.paymentSystem,
-                        disable: checkout.disableInputs,
+                        disable: window.paymentData.loading,
                         css: {'card-selected': $parent.paymentGroup.paymentSystem() == $data}"></span>
         </label>
         <!-- /ko -->

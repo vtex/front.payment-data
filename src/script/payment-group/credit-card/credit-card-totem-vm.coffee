@@ -19,7 +19,7 @@ class CreditCardTotemViewModel extends CreditCardViewModel
     @cardRead = ""
 
     @canUseCardScanner = ko.computed =>
-      checkout.isTotem() and paymentData.active() # TODO and paymentData.selectedPaymentGroupId() is @paymentGroup.id
+      paymentData.useCardScanner() and paymentData.active() # TODO and paymentData.selectedPaymentGroupId() is @paymentGroup.id
 
     @isWaitingForCardScanner = ko.computed =>
       if @canUseCardScanner() and not @cardFormVisible()

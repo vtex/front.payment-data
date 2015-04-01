@@ -12,50 +12,50 @@
 
     <p class="ship-street required input text" data-bind="css: { hide: labelShippingFields }">
         <label for="ship-street"><span data-i18n="shippingData.shippingAddress.street">Rua</span> <span class="item-required">*</span></label>
-        <input type="text" id="ship-street" class="input-xlarge" data-bind="value: street, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', required: true, disable: checkout.disableInputs()">
+        <input type="text" id="ship-street" class="input-xlarge" data-bind="value: street, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', required: true, disable: window.paymentData.loading()">
     </p>
 
     <p class="ship-number required input text">
         <label for="ship-number"><span  data-i18n="shippingData.shippingAddress.number">Número</span> <span class="item-required">*</span></label>
-        <input type="text" id="ship-number" class="input-mini" data-bind="value: number, validate: 'alphaNumeric', valueUpdate:'afterkeydown', required: true, disable: checkout.disableInputs()">
+        <input type="text" id="ship-number" class="input-mini" data-bind="value: number, validate: 'alphaNumeric', valueUpdate:'afterkeydown', required: true, disable: window.paymentData.loading()">
     </p>
 
     <p class="ship-more-info input text">
         <label for="ship-more-info"><span data-i18n="shippingData.shippingAddress.additionalInfo">Complemento</span></label>
-        <input type="text" id="ship-more-info" class="input-medium" data-bind="value: complement, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', disable: checkout.disableInputs()" data-i18n="[placeholder]global.notRequired">
+        <input type="text" id="ship-more-info" class="input-medium" data-bind="value: complement, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', disable: window.paymentData.loading()" data-i18n="[placeholder]global.notRequired">
     </p>
 
     <p class="ship-reference input text hide">
         <label for="ship-reference"><span data-i18n="shippingData.shippingAddress.reference">Ponto de referência</span></label>
-        <input type="text" id="ship-reference" class="input-xlarge" data-bind="value: reference, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', disable: checkout.disableInputs()">
+        <input type="text" id="ship-reference" class="input-xlarge" data-bind="value: reference, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', disable: window.paymentData.loading()">
     </p>
 
     <p class="ship-neighborhood required input text" data-bind="css: { hide: labelShippingFields }">
         <label for="ship-neighborhood"><span data-i18n="shippingData.shippingAddress.district">Bairro</span> <span class="item-required">*</span></label>
-        <input type="text" id="ship-neighborhood" class="input-large" data-bind="value: neighborhood, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', required: true, disable: checkout.disableInputs()">
+        <input type="text" id="ship-neighborhood" class="input-large" data-bind="value: neighborhood, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', required: true, disable: window.paymentData.loading()">
     </p>
 
     <p class="ship-state required input text" data-bind="css: { hide: labelShippingFields }">
         <label for="ship-state"><span data-i18n="shippingData.shippingAddress.department"></span> <span class="item-required">*</span></label>
-        <input type="text" id="ship-state" class="input-large" data-bind="value: state, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', required: true, disable: checkout.disableInputs()">
+        <input type="text" id="ship-state" class="input-large" data-bind="value: state, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', required: true, disable: window.paymentData.loading()">
     </p>
 
     <p class="ship-city required input text" data-bind="css: { hide: labelShippingFields }">
         <label for="ship-city"><span data-i18n="shippingData.shippingAddress.city"></span> <span class="item-required">*</span></label>
-        <input type="text" id="ship-city" class="input-large" data-bind="value: city, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', required: true, disable: checkout.disableInputs()">
+        <input type="text" id="ship-city" class="input-large" data-bind="value: city, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', required: true, disable: window.paymentData.loading()">
     </p>
 
     <!-- ko if: !hasOwnProperty('isBillingAddress') -->
     <p class="ship-commercial input checkbox">
         <label for="ship-commercial">
-            <input type="checkbox" id="ship-commercial" data-bind="checked: addressTypeCommercial, disable: checkout.disableInputs()"/>
+            <input type="checkbox" id="ship-commercial" data-bind="checked: addressTypeCommercial, disable: window.paymentData.loading()"/>
             <span data-i18n="shippingData.shippingAddress.commercial">Endereço comercial</span>
         </label>
     </p>
 
     <p class="ship-name required input text separate">
         <label for="ship-name"><span data-i18n="shippingData.shippingAddress.receiver">Quem receberá</span></label>
-        <input type="text" id="ship-name" class="input-xlarge" data-bind="value: receiverName, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', required: true, disable: checkout.disableInputs()">
+        <input type="text" id="ship-name" class="input-xlarge" data-bind="value: receiverName, validate: 'alphaNumericPunctuation', valueUpdate:'afterkeydown', required: true, disable: window.paymentData.loading()">
     </p>
     <!-- /ko -->
 </div>

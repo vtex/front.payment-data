@@ -141,7 +141,7 @@ class PaymentGroupViewModel
     $(window).trigger('paymentUpdated.vtex') if @paidValue() > 0 and availableAccountViewModel
 
   removeAvailableAccount: (availableAccountViewModel) =>
-    window.vtexjs.checkout.removeAccountId(availableAccountViewModel.accountId())
+    $(window).trigger("removeAccount.vtex", [availableAccountViewModel.accountId()])
     # removes from the global availableAccounts array
     @availableAccountsObservableArray.remove availableAccountViewModel
 

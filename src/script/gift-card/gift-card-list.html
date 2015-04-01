@@ -11,7 +11,7 @@
   <!-- /Mensagens de gift card -->
 
   <!-- Alerta de loyalty gift cards disponíveis-->
-  <p class="payment-discounts-alert-wrap alert alert-block" data-bind="visible: availableLoyaltyCards().length > 0 && !window.checkout.loggedIn()">
+  <p class="payment-discounts-alert-wrap alert alert-block" data-bind="visible: availableLoyaltyCards().length > 0 && !window.paymentData.loggedIn()">
     <a href="#" class="payment-discounts-alert" data-bind="click: login" data-i18n="paymentData.paymentGroup.giftCard.showDiscounts"></a>
   </p>
   <!-- / Alerta de loyalty gift cards disponíveis-->
@@ -48,7 +48,7 @@
           </td>
         </tr>
       </tbody>
-      <!-- ko if: window.checkout.loggedIn -->
+      <!-- ko if: window.paymentData.loggedIn -->
       <tbody data-bind="foreach: availableLoyaltyCards" class="gift-card-loyalty">
         <tr>
           <td class="friendly-name" data-bind="visible: friendlyName, text: friendlyName"></td>

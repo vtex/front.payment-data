@@ -1,4 +1,4 @@
-<div class="step accordion-group" data-bind="css: {active: active, filled: visited() && !active()}">
+<div class="step accordion-group" data-bind="css: {active: active, filled: visited() && !active()}, template: {afterRender: vtex.i18n.translateHtml}">
     <div class="accordion-heading">
         <span class="accordion-toggle collapsed" data-bind="css: {'accordion-toggle-active': active}">
             <i class="icon-credit-card"></i>
@@ -32,7 +32,7 @@
                 </div>
 
                 <!-- Pagamentos -->
-                <div class="box-step-content" data-bind="visible: active() || visited(),
+                <div class="box-step-content" data-bind="visible: active(),
                     template: {name: 'payment-form', foreach: paymentForms, afterRender: vtex.i18n.translateHtml }">
                 </div>
             </div>
@@ -43,13 +43,13 @@
                     <span data-i18n="paymentData.totalPaidDifferenceExists"></span>
                     <span data-bind="text: totalPaidDifference"></span>
                 </p>
-                <a class="payment-difference-add btn btn-link" href="javascript:void(0);" data-bind="click: addPaymentForm" data-i18n="paymentData.addPayment"></a>
             </div>
+            <button class="payment-difference-add btn btn-link" data-bind="click: addPaymentForm, visible: active" data-i18n="paymentData.addPayment"></button>
 
             <!-- Form para envio de pagamentos, preenchido e enviado programaticamente -->
-            <form id="sendPayments" data-event="sendPayments" method="post" name="sendPayments" action="">
+            <form id="sendPayments" target="_parent" data-event="sendPayments" method="post" name="sendPayments" action="">
                 <input id="paymentsArray" name="paymentsArray" type="hidden"/>
-                <input id="callbackURL" name="callbackUrl" type="hidden" data-bind="value: window.vtexjs.checkout._getGatewayCallbackURL"/>
+                <input id="callbackURL" name="callbackUrl" type="hidden" data-bind="value: window.paymentData.gatewayCallbackUrl"/>
             </form>
 
             <div class="clearfix"></div>

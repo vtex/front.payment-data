@@ -16,7 +16,7 @@ class AvailableAccountViewModel
     @update json, paymentSystem
 
     @cardNumberLabel = ko.computed =>
-      checkout.locale()
+      window.paymentData.locale()
       lastNumbers = @cardRemoveAsterisks()
       return "#{@paymentSystemName()} #{i18n.t("paymentData.paymentGroup.creditCard.endingIn")} #{lastNumbers}"
 

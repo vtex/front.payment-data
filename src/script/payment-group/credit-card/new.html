@@ -7,18 +7,18 @@
 
     <!-- is waiting for card scanner -->
     <div class="card-scanner-waiting"
-         data-bind="template: { name: 'card-scanner', 'if': checkout.isTotem() && isWaitingForCardScanner(), afterRender: vtex.i18n.translateHtml }"></div>
+         data-bind="template: { name: 'card-scanner', 'if': window.paymentData.isTotem() && isWaitingForCardScanner(), afterRender: vtex.i18n.translateHtml }"></div>
 
     <!-- is not waiting for card scanner -->
     <div class="card-ready-for-typing"
-         data-bind="template: { name: 'card-fields', 'if': !checkout.isTotem() || !isWaitingForCardScanner(), afterRender: vtex.i18n.translateHtml }"></div>
+         data-bind="template: { name: 'card-fields', 'if': !window.paymentData.isTotem() || !isWaitingForCardScanner(), afterRender: vtex.i18n.translateHtml }"></div>
   </div>
 
 
   <div data-bind="if: cardFormVisible() && billingAddressRequired()">
-    <p class="same-address checkbox" data-bind="visible: !checkout.isUsingGiftRegistryAddress()">
+    <p class="same-address checkbox" data-bind="visible: !window.paymentData.giftRegistryAddressId()">
       <input type="checkbox"
-             data-bind="checked: sameBillingAddress, attr:{'id':'same-address'+$parentContext.$index()}, disable: checkout.disableInputs()"/>
+             data-bind="checked: sameBillingAddress, attr:{'id':'same-address'+$parentContext.$index()}, disable: window.paymentData.loading"/>
       <label data-bind="attr:{'for':'same-address'+$index(), 'htmlFor':'same-address'+$parentContext.$index()}">
         <span class="same-adress-text" data-i18n="paymentData.sameBillingAddress">O endereço da fatura do cartão é</span>
         <em class="short-billing-address">

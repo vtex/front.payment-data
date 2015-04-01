@@ -21,7 +21,7 @@
             <label data-bind="attr: { htmlFor: 'bank-invoice'+$index(),
                    'class': 'input btn label-vertical-group bank-invoice-list-item bank-invoice-item-' + _.sanitize(_.spacesToHyphens(name())).toLowerCase() }, css: { 'active':  $parent.paymentSystem().id() == id() }">
                 <input type="radio" tabindex="-1"
-                       data-bind="attr: { id: 'bank-invoice'+$index(), name: 'bank-invoice'+$index() }, value: $data, checked: $parent.paymentSystem, disable: checkout.disableInputs">
+                       data-bind="attr: { id: 'bank-invoice'+$index(), name: 'bank-invoice'+$index() }, value: $data, checked: $parent.paymentSystem, disable: window.paymentData.loading">
                 <span class="bank-invoice-icons">
                     <span class="bank-invoice-icon" data-bind="text: name(),
                             attr: {'class': 'bank-invoice-icon bank-invoice-' + _.sanitize(_.spacesToHyphens(name())).toLowerCase() }"></span>

@@ -1,0 +1,206 @@
+// main elements
+// -----------------------------------------------
+
+.notification {
+	color: @disabled;
+	margin-bottom: 0;
+}
+
+.collapse { overflow: visible; }
+
+// loading
+// -----------------------------------------------
+
+.loading-inline {
+	margin: 7px 10px 0 -25px;
+	position: relative;
+	z-index: 8;
+	span { .hide; }
+}
+.loading-text {
+	margin-right: 5px;
+	vertical-align: text-top;
+	span { .hide; }
+}
+.loading {
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0px;
+	position: absolute;
+}
+.loading-bg {
+	opacity: 0.8;
+	background-color: #fff;
+	margin-top: 10px;
+	min-height: 110px;
+	z-index: 2000;
+}
+
+.loading-img {
+	text-align: center;
+	.loading & {
+		height: 100%;
+		display: -moz-box;
+		display: -webkit-box;
+		display: box;
+		-moz-box-pack: center;
+		-moz-box-align: center;
+		-webkit-box-pack: center;
+		-webkit-box-align: center;
+		box-pack: center;
+		box-align: center;
+		width: 100%;
+		z-index: 201;
+	}
+	span {
+		.hide;
+	}
+}
+
+.loading-email { display: inline-block }
+
+.loading-item { display: none }
+
+.icon-spinner {
+	&.icon-3x {
+		opacity: .5;
+	}
+}
+
+// layout
+// -----------------------------------------------
+.row-fluid {
+	.full-cart.inactive { margin-left: -100%; }
+	.orderform-template.inactive { margin-left: 100%; }
+	.full-cart,
+	.orderform-template {
+		margin-bottom: 15px;
+		min-height: 200px;
+		opacity: 0;
+		position: absolute;
+		.transition(0.7s);
+		&.active {
+			margin-left: 0;
+			opacity: 1;
+			position: relative;
+		}
+	}
+}
+
+// boxes and borders
+// -----------------------------------------------
+.accordion-group,
+.accordion-inner { border: 0 }
+.accordion-toggle { position: relative; }
+
+.accordion-inner { padding: 9px; }
+
+.accordion-heading .accordion-toggle { padding: 4px 8px 0; }
+
+.accordion-toggle {
+	color: @disabled;
+	cursor: inherit;
+	font-size: 16px;
+	padding-bottom: 0;
+	padding-top: 4px;
+	span { line-height: 18px; }
+	.link-box-edit {
+		position: absolute;
+		right: -8px;
+		top: -8px;
+		padding: 4px 6px 2px;
+		border-radius: 0 6px;
+		background: #eee;
+		border-color: #eee;
+		color: #08c;
+		font-size: 14px;
+		opacity: .7;
+		&:hover {
+			opacity: 1;
+		}
+	}
+}
+.accordion-toggle-active {
+	color: @gray;
+	font-size: 24px;
+	line-height: 30px;
+	padding-top: 8px;
+}
+
+.step,
+.cart,
+.totalizers {
+	border: 3px solid @smooth;
+	margin-bottom: 15px;
+	padding: 5px;
+	.border-radius;
+	&.active { border-color: #e5e5e5; }
+}
+
+.box-info {
+	color: @disabled;
+	.font-12;
+	li { .font-12 }
+	&>p:last-child,
+	.shipping-options.just-one p { margin: 0 }
+	.client-profile-email{
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}
+
+// masked information
+// -----------------------------------------------
+.masked-info {
+	font-size: 0;
+	width: 0;
+	&:after {
+		content: 'x';
+		color: #dfdfdf;
+		display: inline-block;
+		font-size: @normal-size;
+		text-shadow: 0 0 6px rgba(0,0,0,0.5);
+	}
+}
+
+// icons
+// -----------------------------------------------
+.icon-ok-circle,
+.icon-circle-blank {
+	display: block;
+	font-size: 20px;
+	-webkit-text-stroke: 0.1px;
+	position: absolute;
+	right: 10px;
+	top: 4px;
+}
+.label-vertical-group:hover .icon-circle-blank,
+.icon-ok-circle {color: #46A546;}
+.icon-circle-blank { color: @disabled; }
+
+// badge
+// -----------------------------------------------
+.badge {
+	display: inline-block;
+	padding: 2px 4px;
+	font-size: 10px;
+	font-weight: bold;
+	line-height: 11px;
+	color: #468847;
+	white-space: nowrap;
+	vertical-align: baseline;
+	background-color: #dff0d8;
+	border-radius: 9px;
+	cursor: default;
+}
+
+// spinner
+// -----------------------------------------------
+.icon-spin {
+	-moz-animation: spin @spin-time infinite linear;
+	-o-animation: spin @spin-time infinite linear;
+	-webkit-animation: spin @spin-time infinite linear;
+	animation: spin @spin-time infinite linear;
+}
+

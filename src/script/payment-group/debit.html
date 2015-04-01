@@ -21,7 +21,7 @@
         <label class="payment-debit-list-item input btn label-vertical-group"
                data-bind="attr: { htmlFor: 'debit'+$index() }, css: { 'active':  $parent.paymentSystem().id() == id() }">
             <input class="payment-debit-list-item-input" type="radio" tabindex="-1"
-                   data-bind="attr: { id: 'debit'+$index(), name: 'debit'+$index() }, value: $data, checked: $parent.paymentSystem, disable: checkout.disableInputs">
+                   data-bind="attr: { id: 'debit'+$index(), name: 'debit'+$index() }, value: $data, checked: $parent.paymentSystem, disable: window.paymentData.loading">
             <span class="payment-debit-list-item-icon" data-bind="text: name(),
                     attr: {'class': 'payment-debit-list-item-icon debit-icon-' + _.sanitize(_.spacesToHyphens(name())).toLowerCase() }"></span>
             </span>

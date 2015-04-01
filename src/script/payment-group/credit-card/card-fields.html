@@ -1,5 +1,5 @@
 <!-- block link for card scanner -->
-<p class="card-scanner-scan" data-bind="if: checkout.isTotem">
+<p class="card-scanner-scan" data-bind="if: window.paymentData.isTotem">
     <a class="card-scanner-scan-link" href="javascript:void(0);"
        data-bind="visible: canUseCardScanner() && !labelCardFields(), click: toggleCardForm"
        data-i18n="paymentData.paymentGroup.creditCard.scanner.scanCard">Usar leitor de cartão</a>
@@ -16,18 +16,18 @@
                 <span data-i18n="paymentData.paymentGroup.creditCard.number">Número</span>
             </label>
             <p class="payment-card-number-input-wrapper">
-                <!-- ko if: checkout.isTotem -->
+                <!-- ko if: window.paymentData.isTotem -->
                 <input type="password"
                        data-bind="attr: {id: $parent.identifier()+'payment-card' + id + 'Number', maxlength: 19 },
                             value: cardNumberTotem, valueUpdate: 'afterkeydown', validate: validateCreditCard, required: true,
-                            disable: checkout.disableInputs()"
+                            disable: window.paymentData.loading"
                        class="payment-card-number-input input-medium autofocus input-totem dont-track-input">
                 <!-- /ko -->
-                <!-- ko ifnot: checkout.isTotem -->
+                <!-- ko ifnot: window.paymentData.isTotem -->
                 <input type="tel"
                        data-bind="attr: {id: $parent.identifier()+'payment-card' + id + 'Number'},
                             value: cardNumber, valueUpdate: 'afterkeydown', validate: validateCreditCard, required: true,
-                            disable: checkout.disableInputs()"
+                            disable: window.paymentData.loading"
                        class="payment-card-number-input payment-card-number-input-totem input-medium autofocus dont-track-input" data-i18n="[placeholder]paymentData.paymentGroup.creditCard.number">
                 <!-- /ko -->
             </p>
@@ -55,13 +55,13 @@
             </label>
 
             <p class="payment-card-due-date-month-input-wrapper input text" data-bind="css: {'required': cardExpirationDateRequired}">
-                <input type="tel" class="payment-card-due-date-month-input input-nano" data-i18n="[placeholder]paymentData.paymentGroup.creditCard.dueMonth" maxlength="2" data-bind="attr: {id: $parent.identifier()+'payment-card' + id + 'Month'}, value: cardDueMonth, validate: validateDueMonth, required: cardExpirationDateRequired, disable: checkout.disableInputs" />
+                <input type="tel" class="payment-card-due-date-month-input input-nano" data-i18n="[placeholder]paymentData.paymentGroup.creditCard.dueMonth" maxlength="2" data-bind="attr: {id: $parent.identifier()+'payment-card' + id + 'Month'}, value: cardDueMonth, validate: validateDueMonth, required: cardExpirationDateRequired, disable: window.paymentData.loading" />
             </p>
 
             <p class="payment-card-due-date-lash">/</p>
 
             <p class="payment-card-due-date-year-input-wrapper input text" data-bind="css: {'required': cardExpirationDateRequired}">
-                <input type="tel" class="payment-card-due-date-year-input input-nano" data-i18n="[placeholder]paymentData.paymentGroup.creditCard.dueYear" maxlength="2" data-bind="attr: {id: $parent.identifier()+'payment-card' + id + 'Year'}, value: cardDueYear, validate: validateDueYear, required: cardExpirationDateRequired, disable: checkout.disableInputs">
+                <input type="tel" class="payment-card-due-date-year-input input-nano" data-i18n="[placeholder]paymentData.paymentGroup.creditCard.dueYear" maxlength="2" data-bind="attr: {id: $parent.identifier()+'payment-card' + id + 'Year'}, value: cardDueYear, validate: validateDueYear, required: cardExpirationDateRequired, disable: window.paymentData.loading">
             </p>
         </div>
         <!-- block /due date -->
@@ -75,7 +75,7 @@
                 <input type="text" class="payment-card-name-input input-large"
                    data-bind="attr: {id: $parent.identifier()+'payment-card' + id + 'Name'},
                        value: cardOwnerName, valueUpdate:'afterkeydown',
-                       validate: 'alpha', required: cardOwnerNameRequired, disable: checkout.disableInputs()"
+                       validate: 'alpha', required: cardOwnerNameRequired, disable: window.paymentData.loading"
                     data-i18n="[placeholder]paymentData.paymentGroup.creditCard.holderName">
             </p>
         </div>
@@ -133,7 +133,7 @@
             <input type="text" class="payment-card-name-input input-medium"
                data-bind="attr: {id: $parent.identifier()+'payment-card' + id + 'Name'},
                    value: cardOwnerName, valueUpdate:'afterkeydown',
-                   validate: 'alpha', required: cardOwnerNameRequired, disable: checkout.disableInputs()">
+                   validate: 'alpha', required: cardOwnerNameRequired, disable: window.paymentData.loading">
         </p>
     </div>
 </div>
@@ -148,7 +148,7 @@
         <input type="text" id="payment-card-holder-document" class="payment-card-holder-document-input input-small"
                data-bind="value: document, valueUpdate:'afterkeydown',
                     validate: validateDocument, required: holderDocumentRequired,
-                    maskOnBlur: checkout.documentMask(), attr: documentAttributeBindings, disable: checkout.disableInputs()">
+                    maskOnBlur: documentMask, attr: documentAttributeBindings, disable: window.paymentData.loading">
     </p>
 </div>
 <!-- block /holder document -->

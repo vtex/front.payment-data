@@ -1,0 +1,12 @@
+[
+  {
+    "id": "boticario",
+    "oauth": "clubeviva",
+    "caption": "Clube Viva"
+  },
+  {
+    "id": "VtexGiftCard",
+    "oauth": "vtex",
+    "caption": "Padrão"
+  }
+]

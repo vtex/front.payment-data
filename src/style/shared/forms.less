@@ -1,0 +1,189 @@
+// input wraps
+// -----------------------------------------------
+p.client-first-name,
+p.client-different-document,
+p.client-document,
+p.client-company-ie,
+p.client-company-postal-code,
+p.client-document-type,
+p.ship-number,
+p.ship-city,
+p.payment-card-due-date { margin-right: 10px }
+p.client-document,
+p.client-phone,
+p.client-company-document,
+p.client-company-ie,
+p.client-company-postal-code,
+p.client-company-phone,
+p.ship-number,
+p.ship-city,
+p.ship-state,
+p.payment-card-due-month,
+p.payment-card-lash,
+p.payment-card-due-year { float: left }
+p.client-document,
+p.client-document2,
+p.client-document-type { clear: left; }
+p.ship-name,
+p.ship-reference,
+p.ship-commercial,
+p.ship-neighborhood { clear: both }
+
+p.submit {
+	margin-top: 5px;
+	text-align: right;
+}
+
+// labels
+// -----------------------------------------------
+.label-vertical-group {
+	background: #fff;
+	border: @default-border;
+	box-shadow: none;
+	color: @disabled;
+	text-align: left;
+	.icon-remove {
+		color: #dd4b39;
+		right: -10px;
+		z-index: 999;
+	}
+	&:hover {
+		background: #fff;
+		color: @selected;
+	}
+	&.active {
+		background: @bg-selected;
+		border-color: #BED0DF;
+		box-shadow: inset 0px 0px 5px rgba(0,0,0,0.2);
+		color: @selected;
+		.card-flag {
+			opacity: 1;
+		}
+		.icon-remove {
+			color: #dd4b39;
+		}
+	}
+	&:active { box-shadow: none; }
+	&:first-child { border-top: @default-border; }
+	&:last-child { border-bottom: @default-border; }
+	&:first-child:last-child {
+		.border-radius(4px);
+	}
+}
+
+.step {
+	.text label,
+	.select label { color: @disabled; }
+	.select label { .hide }
+	.text input {
+		position: relative;
+		z-index: 6;
+	}
+}
+
+// input elements
+// -----------------------------------------------
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input { margin-bottom: 0; }
+
+input[type=radio] {
+	.btn-group-vertical &,
+	.address-item & {
+		left: -999em;
+		position: absolute;
+	}
+}
+
+input,
+select {
+	&.required,
+	&.required:focus,
+	&.error { border-color: #dd4b39; }
+	&.error:focus { border-color: #ccc; }
+	&:focus:invalid:focus {
+		border-color: rgba(82, 168, 236, 0.8);
+		color: #555;
+		.box-shadow-blue;
+	}
+}
+
+.input-small { width: 123px }
+.input-mini { width: 70px }
+.input-micro { width: 40px }
+.input-nano { width: 25px }
+.input-large { width: 190px }
+
+.ship-more-info input { width: 176px }
+
+input.success {
+	background-image: url('../img/ico-ready.png');
+	background-position: right top;
+	background-repeat: no-repeat;
+}
+
+input.not-ready { background-image: none; }
+
+// form error messages
+// -----------------------------------------------
+span.error {
+	color: #dd4b39;
+	display: block;
+	line-height: 1.2em;
+	margin-top: 5px;
+	padding: 0;
+	.input-nano+& { width: 70px; }
+	.input-mini+& { width: 80px; }
+	select.input-mini+& { width: 70px; }
+	.input-small+& { width: 135px; }
+	&.filled { margin-top: 5px; }
+	&.error-list:not(.filled) { margin-top: 0; }
+}
+
+// postal code an coupon input
+// -----------------------------------------------
+input.postal-code {
+	width: 72px;
+	max-width: 72px; 
+	.transition(.4s, width);
+
+	&.loading-postal-code {
+		width: 85px;
+		max-width: 85px; 
+		.transition(width);
+	}
+
+	&:disabled { background-image: none; }
+}
+
+input.coupon-value {
+	&:disabled { background-image: none; }
+}
+
+// actions in forms
+// -----------------------------------------------
+label {
+	.link-delete {
+		display: none;
+		padding: 0 4px;
+		position: absolute;
+		right: -12px;
+		top: -8px;
+		.border-radius(20px);
+	}
+	&:hover .link-delete { display: block; }
+}

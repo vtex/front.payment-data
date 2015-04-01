@@ -7,7 +7,7 @@
          data-bind="attr: {
                       id: $parent.identifier()+'payment-card' + id + 'Code',
                       'maxlength': cardCodeMask().length,
-                      type: checkout.isTotem() ? 'password' : 'tel'
+                      type: window.paymentData.isTotem() ? 'password' : 'tel'
                     },
                     value: cardSafetyCode,
                     valueUpdate:'afterkeydown',
@@ -15,7 +15,7 @@
                     required: cardSafetyCodeRequired,
                     maskOnBlur: cardCodeMask,
                     hasfocus: cardSafetyCodeHasFocus,
-                    disable: checkout.disableInputs()">
+                    disable: window.paymentData.loading">
   <span class="cvv-help not-saved-cvv-help field-help cvv-four-digits" data-bind="css: { 'cvv-four-digits': cardCodeMask().length > 3 }, fadeVisible: cardSafetyCodeHasFocus() && !cardSafetyCode.lastValidationResult()">
     <span class="cvv-help-arrow help-arrow left-arrow"></span>
     <span class="cvv-help-message cvv-help-message-3-numbers help-message" data-i18n="paymentData.paymentGroup.creditCard.help" data-bind="visible: cardCodeMask().length == 3">Três últimos números atrás do seu cartão.</span>

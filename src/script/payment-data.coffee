@@ -1,4 +1,3 @@
-template = require './payment-data.html'
 Module = require 'Module'
 Translatable = require 'Translatable'
 Step = require 'Step'
@@ -7,6 +6,10 @@ PaymentFormViewModel = require './payment-form/payment-form.coffee'
 PaymentSystem = require './payment-system/payment-system.coffee'
 AvailableAccountViewModel = require './payment-group/credit-card/available-account-vm.coffee'
 GiftCardListViewModel = require './gift-card/gift-card-list.coffee'
+require './validation.coffee'
+require './ko/ko-calculator-caret.coffee'
+require './ko/ko-utils.coffee'
+require './ko/ko-mask.coffee'
 
 debug = require('debug')('payment')
 
@@ -18,6 +21,7 @@ class PaymentDataViewModel extends Module
   constructor: (params) ->
     @id = 'paymentData'
     @route = params.route
+    @location = params.location
 
     @setupRouter()
 
@@ -30,9 +34,17 @@ class PaymentDataViewModel extends Module
     @selectedPaymentFormViewModel = ko.observable()
     @giftCardMessages = ko.observableArray([])
     @validationError = ko.observable(false)
-
-    @totalToPay = ko.computed =>
-      window.checkout.total?() ? window.summary.total()
+    @locale = ko.observable()
+    @totalToPay = ko.observable()
+    @loggedIn = ko.observable()
+    @useCardScanner = ko.observable()
+    @countryCode = ko.observable('BRA')
+    @gatewayCallbackURL = ko.observable('/checkout/gatewayCallback/{0}/{1}/{2}')
+    @loading = ko.observable(false)
+    @giftRegistryAddressId = ko.observable()
+    @shippingAddress = ko.observable()
+    @items = ko.observableArray([])
+    @isTotem = ko.observable(window.location.href.indexOf('totem') isnt -1)
 
     @totalPaid = ko.computed =>
       payments = @getPayments(true)
@@ -79,7 +91,6 @@ class PaymentDataViewModel extends Module
     @isValid({giveFocus: true, showErrorMessage: false, applyErrorClass: false})
     if window.Mobile
       Mobile.SwipeCardReaderIsConnected()
-    $(window).trigger('checkout.fixCart')
 
   addPaymentForm: =>
     # Don't add a payment unless all existing payments are valid
@@ -130,7 +141,7 @@ class PaymentDataViewModel extends Module
       payments: @getPaymentFormPayments(true)
       giftCards: _.map @giftCards(), (g) -> g.toJSON()
 
-    window.vtexjs.checkout.sendAttachment('paymentData', paymentAttachment)
+    $(window).trigger('sendAttachment.vtex', ['paymentData', paymentAttachment])
 
   paidValueUpdatedHandler: (e, data) =>
     totalToPay = @totalToPay()
@@ -147,19 +158,9 @@ class PaymentDataViewModel extends Module
     return if not @active()
 
     # Don't send any payments if there aren't items on the cart.
-    return if window.cart.items.peek().length is 0
+    return if @items.peek().length is 0
 
     @sendAttachment()
-
-  updateInterestTotalizer: =>
-    payments = @getPayments(true)
-
-    interest = 0
-    for payment in payments
-      if payment.value and payment.referenceValue
-        interest += payment.value - payment.referenceValue
-
-    $(window).trigger('checkout.totalizers.interest', [interest])
 
   # @return {string} O array de Payments serializados como JSON
   paymentsArrayJSON: => return JSON.stringify @getPayments()
@@ -188,43 +189,101 @@ class PaymentDataViewModel extends Module
 
   # Inicia uma transação com o gateway e envia todos os pagamentos.
   submit: =>
-    if @isScanningCard() then return
-
-    # Não inicie o submit enquanto estiver inválido - a menos que seja gratuito.
-    if !@totalIsFree() && !@isValid()
-      @validationError true
-      return false
-
     if not @active()
       return false
 
+    validationResults = @validate()
+    $('#payment-data').trigger('componentValidated.vtex', [validationResults])
+
+    if not _.all(validationResults, (v) -> v.result)
+      return false
+
+    # TODO move this to validation of paymentForm?
     paymentSystemRequiresAuthentication = _.any @paymentForms(), (pf) -> pf.requiresAuthentication()
-    authenticated = checkout.loggedIn() or checkout.userType() is 'callCenterOperator'
+    authenticated = @loggedIn() or @userType is 'callCenterOperator'
     if paymentSystemRequiresAuthentication and not authenticated
       return @authenticateBeforePaying(@submit)
 
-    payments = @getPayments()
+    payments = @getPayments(true)
     value = _.reduce(payments, ((memo, p)-> memo + p.value), 0)
     referenceValue = _.reduce(payments, ((memo, p)-> memo + p.referenceValue), 0)
     @loading true
-    $(window).trigger('checkout.paymentData.submit', [value, referenceValue, payments])
+    $('#payment-data').trigger('startTransaction.vtex', [value, referenceValue, payments])
     return false
 
+  sendPayments: (transactionResponse) =>
+    transactionURL = transactionResponse.receiverUri
+    merchantTransactions = transactionResponse.merchantTransactions
+    transactionPayments = transactionResponse.paymentData.payments
+    currencyCode = transactionResponse.storePreferencesData.currencyCode
+    payments = @getPayments()
+
+    # Caso seja pagamento utilizando a nova API do Checkout que suporta split
+    if merchantTransactions? and merchantTransactions.length > 0
+      payments = @splitPayments(payments, merchantTransactions, transactionPayments, currencyCode)
+
+    paymentsJSON = JSON.stringify payments
+    $("#sendPayments").attr('action', transactionURL)
+    $("#paymentsArray").val paymentsJSON
+    if transactionResponse.gatewayCallbackTemplatePath
+      gatewayUrl = @location.protocol + '//' + @location.host + transactionResponse.gatewayCallbackTemplatePath
+      $("#callbackURL").val gatewayUrl
+    $("#sendPayments").submit()
+
+  splitPayments: (payments, merchantTransactions, transactionPayments, currencyCode) =>
+    paymentsArray = []
+
+    # No caso de gift card, devemos pegar o primeiro merchant (API ainda nao sabe
+    # como vai lidar com isso)
+    giftPayments = _.filter payments, (p) -> p.group is "giftCardPaymentGroup"
+    for giftPayment in giftPayments
+      giftPayment.transaction =
+        id: merchantTransactions[0].transactionId
+        merchantName: merchantTransactions[0].merchantName
+    paymentsArray = paymentsArray.concat(giftPayments)
+
+    # No caso de pagamentos "normais" (não gift card)
+    for payment, i in payments
+      for transactionPayment, j in transactionPayments
+        if i is j
+          # Para cada merchantSellerPayments do payment
+          # criamos um pagamento novo
+          for merchant in transactionPayment.merchantSellerPayments
+            newPayment = _.clone payment
+            # A API do Checkout manda dentro do merchantSellerPayments
+            # o valor que será pago por cada pagamento, para isso, sobescrevemos
+            # o nosso objeto payment com os valores enviados pela API
+            _.extend newPayment, merchant
+
+            # Pegaremos agora no objeto merchantTransactions o número da
+            # transação e atrelamos ao pagamento
+            merchantId = newPayment.id
+            transaction = _.find merchantTransactions, (m) -> m.id is merchantId
+            newPayment.transaction =
+              id: transaction.transactionId
+              merchantName: transaction.merchantName
+
+            # hardcode installmentsValue
+            newPayment.installmentsValue = newPayment.installmentValue
+
+            # Repassa o currency code da transação
+            newPayment.currencyCode = currencyCode
+
+            # Adicionamos ao array de pagamentos
+            paymentsArray.push(newPayment)
+
+    payments = paymentsArray
+
   authenticateBeforePaying: (callback) =>
-    vtexid.start
-      returnUrl: window.location.href
-      userEmail: window.clientProfileData.email()
-      locale: window.checkout.locale()
+    options =
+      userEmail: @email
       title: i18n.t('paymentData.requiresAuthentication')
-      $(window).one 'authenticatedUser.vtexid', ->
-        oldEmail = window.clientProfileData.email()
-        $(window).trigger('startLoading.vtex')
-        xhr = vtexjs.checkout.getOrderForm()
-        xhr.then ->
-          if oldEmail is window.vtexjs.checkout.orderForm.clientProfileData.email
-            callback()
-        xhr.always ->
-          $(window).trigger('stopLoading.vtex')
+
+    $(window).trigger("authenticateUser.vtexid", [options])
+
+    $(window).one 'authenticatedUser.vtexid', ->
+      callback()
+
     return false
 
   updatePaymentSystems: (paymentData) =>
@@ -300,6 +359,17 @@ class PaymentDataViewModel extends Module
       @selectedPaymentFormViewModel(@paymentForms()[0])
 
   update: (orderForm) =>
+    if orderForm.clientPreferencesData?.locale?
+      @locale if orderForm.clientPreferencesData.locale.match 'es-' then 'es' else orderForm.clientPreferencesData.locale
+    @email = orderForm.clientProfileData?.email
+    @userType = orderForm.userType
+    @loggedIn orderForm.loggedIn
+    @totalToPay _.reduce(orderForm.totalizers, ((memo, t) -> memo + t.value), 0)
+    @countryCode orderForm.storePreferencesData?.countryCode
+    @giftRegistryAddressId orderForm.giftRegistryData?.addressId
+    @shippingAddress orderForm.shippingData?.address
+    @items orderForm.items
+
     paymentData = orderForm.paymentData ? {}
 
     if !paymentData.paymentSystems
@@ -318,11 +388,7 @@ class PaymentDataViewModel extends Module
 
     @updatePaymentForms(paymentData.payments)
 
-    @updateInterestTotalizer() if paymentData.payments?.length > 0
-
     @giftCardMessages(paymentData.giftCardMessages) if paymentData.giftCardMessages?
-
-    #@ultraUglyAutomaticInstallmentSelectionThatShouldTotallyBeDoneByAPI()
 
     validationResults = @validate(dontChangeDOM: true)
     $('#payment-data').trigger('componentValidated.vtex', [validationResults])
@@ -384,15 +450,22 @@ class PaymentDataViewModel extends Module
         payments: payments
         giftCards: paymentData.giftCards
 
-      window.vtexjs.checkout.sendAttachment('paymentData', paymentAttachment)
+      $(window).trigger('sendAttachment.vtex', ['paymentData', paymentAttachment])
 
     return adjustmentsMade
 
 # TODO: remove global declaration
-window.PaymentDataViewModel = PaymentDataViewModel
-window.paymentDataTemplate = template;
 ###
 ko.components.register 'payment-data',
   viewModel: {instance: window.paymentData}
   template: template
 ###
+
+# TODO: use address component
+bra = require('./shipping/locales/bra')
+usa = require('./shipping/locales/usa')
+vtex.localeUtils =
+  BRA: bra
+  BRA: usa
+
+module.exports = PaymentDataViewModel

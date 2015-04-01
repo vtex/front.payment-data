@@ -1,0 +1,66 @@
+// mobile
+// -----------------------------------------------
+@media (max-width: 490px) {
+	.input-large,
+	.input-xlarge,
+	.input-xxlarge,
+	input[class*="span"],
+	select[class*="span"],
+	textarea[class*="span"],
+	.uneditable-input { max-width: 100% !important; }
+
+	button.btn.btn-large, 
+	input[type="submit"].btn.btn-large { width: 100%; }
+
+	.default-modal { height: auto; }
+	.default-modal-body { width: auto; }
+
+	.default-modal-body .identified-user-message,
+	.masked-info-hello,
+	.masked-info-message {
+		width: 72%;
+		float: left;
+		font-size: 12px;
+	}
+	.masked-info-hello {
+		font-size: 13px;
+		font-weight: 700;
+	}
+	.identified-user-security,
+	.masked-info-security {
+		font-size: 58px;
+		line-height: 58px;
+	}
+	.identified-user-button { font-size: 14px; }
+	.step { padding: 0; }
+	.accordion-toggle .link-box-edit {
+		right: -2px;
+		top: -2px;
+	}
+}
+
+// mobile e tablet
+// -----------------------------------------------
+@media (max-width: 767px) {
+	.alert { width: 90%; }
+}
+
+// less than tablet
+// -----------------------------------------------
+@media (max-width: 767px) {
+	.input-large,
+	.input-xlarge,
+	.input-xxlarge,
+	input[class*="span"],
+	select[class*="span"],
+	textarea[class*="span"],
+	.uneditable-input { max-width: 284px; }
+}
+
+// desktop
+@media (min-width: 1200px) {
+	.input-small { width: 125px }
+	.input-xlarge { width: 274px }
+
+	.ship-more-info input { width: 180px; }
+}
