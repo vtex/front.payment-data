@@ -110,7 +110,7 @@ module.exports = (grunt) ->
     # Building block tasks
     build: ['clean', 'webpack:demo', 'webpack:main', 'copy:main', 'copy:pkg', 'less']
     # Deploy tasks
-    dist: ['clean', 'webpack:dist', 'copy:main', 'copy:pkg', 'less', 'copy:deploy'] # Dist - minifies files
+    dist: ['getTags', 'clean', 'webpack:dist', 'copy:main', 'copy:pkg', 'less', 'copy:dev', 'copy:deploy'] # Dist - minifies files
     test: []
     vtex_deploy: ['shell:cp', 'shell:cp_br']
     # Development tasks
