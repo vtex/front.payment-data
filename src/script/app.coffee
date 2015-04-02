@@ -4,6 +4,7 @@ window.vtex.i18n.init()
 window.giftCardsProviders = ko.observableArray()
 setup = (location, route) ->
   window.paymentData = new PaymentDataViewModel({route: route, location: location});
+  window.allowedOrigin = location.protocol + '//' + location.host
   ko.components.register('payment-data', {
     viewModel: {instance: window.paymentData},
     template: paymentDataTemplate
@@ -14,6 +15,8 @@ setup = (location, route) ->
 Listens to events by the parent window
 ###
 $(window).on "message onmessage", (e) ->
+  if window.allowedOrigin? and e.originalEvent?.origin isnt window.allowedOrigin
+    return console.log('Received message from different origin', e.originalEvent?.origin)
   console.log 'Payment data received message', e.originalEvent?.data
   event = e.originalEvent.data.event
   args = e.originalEvent.data.arguments
@@ -40,18 +43,17 @@ $(window).on "message onmessage", (e) ->
 ###
 Converts events sent by the component to messages to the parent window.
 ###
-origin = '*'
 $(window).on "sendAttachment.vtex", (e, attachmentName, attachmentData) ->
-  parent.postMessage({"event": "sendAttachment.vtex", "arguments": [attachmentName, attachmentData]}, origin)
+  parent.postMessage({"event": "sendAttachment.vtex", "arguments": [attachmentName, attachmentData]}, window.allowedOrigin)
 
 $(window).on "componentValidated.vtex", (e, validationResults) ->
-  parent.postMessage({"event": "componentValidated.vtex", "arguments": [validationResults]}, origin)
+  parent.postMessage({"event": "componentValidated.vtex", "arguments": [validationResults]}, window.allowedOrigin)
 
 $(window).on "startTransaction.vtex", (e, value, referenceValue, payments) ->
-  parent.postMessage({"event": "startTransaction.vtex", "arguments": [value, referenceValue, payments]}, origin)
+  parent.postMessage({"event": "startTransaction.vtex", "arguments": [value, referenceValue, payments]}, window.allowedOrigin)
 
 $(window).on "removeAccount.vtex", (e, accountId) ->
-  parent.postMessage({"event": "removeAccount.vtex", "arguments": [accountId]}, origin)
+  parent.postMessage({"event": "removeAccount.vtex", "arguments": [accountId]}, window.allowedOrigin)
 
 $(window).on "authenticateUser.vtexid", (e, options) ->
-  parent.postMessage({"event": "authenticateUser.vtexid", "arguments": [options]}, origin)
+  parent.postMessage({"event": "authenticateUser.vtexid", "arguments": [options]}, window.allowedOrigin)
